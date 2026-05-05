@@ -10,6 +10,7 @@ class Reservation extends Model
         'nama_pelanggan',
         'plat_nomor',
         'jenis_paket',
-        'status'
+        'status',
+        'total_bayar'
     ];
 }

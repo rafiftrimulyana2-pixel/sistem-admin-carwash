@@ -47,20 +47,32 @@
             <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 border-2 border-white rounded-full"></span>
         </button>
 
-        <!-- Profil Admin -->
+    <!-- Profil Admin -->
         <div class="flex items-center space-x-3 cursor-pointer group">
             <div class="flex flex-col text-right">
                 <span class="text-[11px] font-inter-black text-gray-700 leading-none group-hover:text-blue-600 transition-colors">{{ Auth::user()->name }}</span>
                 <span class="text-[8px] font-inter-bold text-gray-400 uppercase tracking-tighter mt-1">Administrator</span>
             </div>
 
-            <div class="relative">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-blue-400 border-2 border-white shadow-md flex items-center justify-center text-white text-[10px] font-inter-black uppercase">
-                    {{ substr(Auth::user()->name, 0, 1) }}
-                </div>
-            </div>
+            <a href="{{ route('profile.edit') }}" class="relative inline-block group">
+    @if(Auth::user()->avatar)
+        <img src="{{ asset('storage/' . Auth::user()->avatar) }}"
+             class="w-9 h-9 rounded-full object-cover border-2 border-white shadow-md group-hover:border-blue-500 transition-all">
+    @else
+        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-blue-400 border-2 border-white shadow-md flex items-center justify-center text-white font-inter-bold text-[11px] group-hover:from-blue-700 transition-all">
+            {{ substr(Auth::user()->name, 0, 1) }}
         </div>
-    </div>
+    @endif
+    <!-- Tambahkan icon kamera kecil saat di-hover biar user tahu bisa diklik -->
+        <div class="absolute inset-0 bg-black/20 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+                </div>
+            </a>
+        </div> <!-- Penutup Profil Admin -->
+    </div> <!-- Penutup Bagian Kanan (Notifikasi & Profil) -->
 </header>
 
         <div class="p-4">

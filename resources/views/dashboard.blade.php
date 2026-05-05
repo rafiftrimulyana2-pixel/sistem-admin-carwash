@@ -64,7 +64,7 @@
     <h1 class="text-white text-2xl font-inter-black tracking-tight leading-none uppercase">
         Halo, Selamat Beraktivitas Chief!
     </h1>
-</div>
+    </div>
         <div class="flex gap-3">
             <button class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-4 py-2 rounded-xl font-inter-bold text-[10px] backdrop-blur-md uppercase tracking-widest transition">Update Data</button>
             <button class="bg-white text-[#624bff] px-6 py-2 rounded-xl font-inter-bold text-[10px] shadow-xl hover:scale-105 transition-all uppercase tracking-widest">+ Unit Baru</button>
@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div>
-                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">0</h3>
+                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">{{ $antreanAktif }}</h3>
                 <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Antrian Unit Berjalan</p>
             </div>
         </div>
@@ -107,7 +107,7 @@
                 <span class="text-[7px] font-inter-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md uppercase tracking-widest">Target Hari Ini</span>
             </div>
             <div>
-                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">0</h3>
+                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">{{ $layananSelesai }}</h3>
                 <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Layanan Unit Selesai</p>
             </div>
         </div>
@@ -122,7 +122,7 @@
                 <span class="text-[7px] font-inter-black text-violet-600 bg-violet-50 px-2 py-1 rounded-md uppercase tracking-widest">Database</span>
             </div>
             <div>
-                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">0</h3>
+                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">{{ $totalPelanggan }}</h3>
                 <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Total Pelanggan Terdaftar</p>
             </div>
         </div>
@@ -137,16 +137,16 @@
                 <span class="text-[7px] font-inter-black text-orange-600 bg-orange-50 px-2 py-1 rounded-md uppercase tracking-widest">Keuangan</span>
             </div>
             <div>
-                <h3 class="text-2xl font-inter-black text-slate-800 leading-none tracking-tighter">Rp 0</h3>
+                <h3 class="text-2xl font-inter-black text-slate-800 leading-none tracking-tighter">Rp {{ number_format($omzetHariIni, 0, ',', '.') }}</h3>
                 <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Omzet Pendapatan Hari Ini</p>
-            </div>
-        </div>
+                    </div>
+             </div>
 
+         </div>
     </div>
-</div>
 
         <!-- GRID BAWAH: Antrian & Informasi (items-start agar card kanan tidak melar) -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 pb-10 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 pb-10 items-start">
 
     <!-- 1. DAFTAR ANTRIAN UNIT (KIRI) -->
     <div class="lg:col-span-2 bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col h-[420px]">

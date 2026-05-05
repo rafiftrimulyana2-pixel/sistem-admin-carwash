@@ -57,11 +57,7 @@
                 </a>
                 <a href="#" class="group flex items-center px-4 py-3 text-gray-500 rounded-xl transition-all duration-300 hover:bg-blue-50 hover:text-blue-600 hover:translate-x-2">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                    <span class="text-sm">Stok Sparepart</span>
-                </a>
-                <a href="#" class="group flex items-center px-4 py-3 text-gray-500 rounded-xl transition-all duration-300 hover:bg-blue-50 hover:text-blue-600 hover:translate-x-2">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                    <span class="text-sm">Member & Loyalitas</span>
+                    <span class="text-sm">Stok Bahan</span>
                 </a>
             </div>
         </div>
