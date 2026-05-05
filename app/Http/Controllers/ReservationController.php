@@ -11,28 +11,29 @@ class ReservationController extends Controller
 {
     public function index()
     {
-    // Mengambil data antrean yang masih berstatus 'proses'
-    $antreanAktif = Reservation::where('status', 'proses')->count();
+        // 1. Ambil DATA LENGKAP untuk Tabel (Bukan cuma angka)
+        $antreanAktif = Reservation::where('status', 'proses')->get(); // Gunakan get() agar data orangnya muncul
 
-    // Mengambil jumlah layanan yang selesai khusus hari ini
-    $layananSelesai = Reservation::where('status', 'selesai')
-                        ->whereDate('updated_at', Carbon::today())
-                        ->count();
+        // 2. Hitung jumlah untuk angka di Kotak Statistik (Opsional, tapi bagus untuk tampilan)
+        $jumlahAntrean = $antreanAktif->count();
 
-    // Mengambil total pelanggan (User dengan role customer)
-    $totalPelanggan = User::where('role', 'customer')->count();
+        // 3. Ambil data statistik lainnya (Biarkan seperti yang kamu punya)
+        $layananSelesai = Reservation::where('status', 'selesai')
+            ->whereDate('updated_at', Carbon::today())
+            ->count();
 
-    // Menjumlahkan total bayar dari layanan yang selesai hari ini
-    $omzetHariIni = Reservation::where('status', 'selesai')
-                        ->whereDate('updated_at', Carbon::today())
-                        ->sum('total_bayar');
+        $totalPelanggan = User::where('role', 'customer')->count();
 
-    // Mengirimkan semua data di atas ke file view dashboard
-    return view('dashboard', compact(
-        'antreanAktif',
-        'layananSelesai',
-        'totalPelanggan',
-        'omzetHariIni'
-    ));
+        $omzetHariIni = Reservation::where('status', 'selesai')
+            ->whereDate('updated_at', Carbon::today())
+            ->sum('total_bayar');
+
+        // 4. Kirimkan semua data ke dashboard
+        return view('dashboard', compact(
+            'antreanAktif',
+            'layananSelesai',
+            'totalPelanggan',
+            'omzetHariIni'
+        ));
     }
 }

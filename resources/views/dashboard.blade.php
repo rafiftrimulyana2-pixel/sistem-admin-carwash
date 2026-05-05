@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div>
-                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">{{ $antreanAktif }}</h3>
+                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">{{ count($antreanAktif ?? []) }}</h3>
                 <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Antrian Unit Berjalan</p>
             </div>
         </div>
@@ -119,11 +119,11 @@
                 <div class="w-12 h-12 bg-violet-600 text-white rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(124,58,237,0.4)] group-hover:scale-110 transition-transform duration-500">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 </div>
-                <span class="text-[7px] font-inter-black text-violet-600 bg-violet-50 px-2 py-1 rounded-md uppercase tracking-widest">Database</span>
+                <span class="text-[7px] font-inter-black text-violet-600 bg-violet-50 px-2 py-1 rounded-md uppercase tracking-widest">Customer</span>
             </div>
             <div>
                 <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">{{ $totalPelanggan }}</h3>
-                <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Total Pelanggan Terdaftar</p>
+                <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Total Pelanggan</p>
             </div>
         </div>
 
@@ -145,27 +145,62 @@
          </div>
     </div>
 
-        <!-- GRID BAWAH: Antrian & Informasi (items-start agar card kanan tidak melar) -->
+    <!-- GRID BAWAH: Antrian & Informasi (items-start agar card kanan tidak melar) -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 pb-10 items-start">
 
-    <!-- 1. DAFTAR ANTRIAN UNIT (KIRI) -->
-    <div class="lg:col-span-2 bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col h-[420px]">
+    <!-- 1. DAFTAR ANTRIAN UNIT (KIRI) - REVISI TABEL VIBRANT -->
+    <div class="lg:col-span-2 bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col h-[420px] transition-all duration-300 hover:shadow-xl">
+        <!-- Header Tabel -->
         <div class="px-7 py-5 border-b border-gray-50 flex justify-between items-center bg-gray-50/30">
             <div class="flex items-center space-x-3">
-                <div class="w-1.5 h-4 bg-blue-600 rounded-full"></div>
-                <h4 class="text-[11px] font-inter-bold text-gray-800 uppercase tracking-widest">Daftar Antrian Unit</h4>
+                <div class="w-1.5 h-6 bg-blue-600 rounded-full"></div>
+                <h4 class="text-[11px] font-inter-bold text-gray-800 uppercase tracking-widest">Daftar Antrean Unit</h4>
             </div>
-            <span class="text-[9px] font-inter-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase italic tracking-wider">Status Progres</span>
+            <span class="text-[9px] font-inter-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase italic tracking-wider">
+                0 Unit Terpantau
+            </span>
         </div>
 
-        <!-- Area Tabel / Empty State -->
-        <div class="flex-1 flex flex-col items-center justify-center p-10 opacity-30">
-            <div class="p-8 bg-gray-50 rounded-[40px] mb-4">
-                <svg class="w-14 h-14 text-gray-1000" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-            </div>
-            <p class="text-[11px] font-inter-bold text-gray-1000 uppercase tracking-widest italic">Belum ada unit yang terdaftar</p>
-        </div>
+    <!-- Area Tabel -->
+    <div class="flex-1 overflow-y-auto p-4">
+        <table class="w-full text-left border-separate border-spacing-y-2">
+            <thead>
+                <tr class="text-[9px] font-inter-bold text-slate-400 uppercase tracking-[0.2em]">
+                    <th class="px-4 pb-2">Pelanggan</th>
+                    <th class="px-4 pb-2">Plat Nomor</th>
+                    <th class="px-4 pb-2">Paket</th>
+                    <th class="px-4 pb-2 text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($antreanAktif ?? [] as $row)
+                <tr class="group hover:bg-blue-50/50 transition-all duration-300">
+                    <td class="px-4 py-3 bg-gray-50/50 group-hover:bg-transparent rounded-l-xl">
+                        <p class="text-[10px] font-inter-black text-slate-700 uppercase leading-none">{{ $row->nama_pelanggan }}</p>
+                    </td>
+                    <td class="px-4 py-3 bg-gray-50/50 group-hover:bg-transparent">
+                        <span class="text-[10px] font-inter-bold text-blue-600 tracking-wider">{{ $row->plat_nomor }}</span>
+                    </td>
+                    <td class="px-4 py-3 bg-gray-50/50 group-hover:bg-transparent">
+                        <span class="text-[9px] font-inter-bold text-slate-500 uppercase">{{ $row->jenis_paket }}</span>
+                    </td>
+                    <td class="px-4 py-3 bg-gray-50/50 group-hover:bg-transparent rounded-r-xl text-center">
+                        <span class="px-2 py-1 {{ $row->status == 'proses' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600' }} rounded-md text-[8px] font-inter-black uppercase tracking-tighter">
+                            {{ $row->status }}
+                        </span>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4" class="py-20 text-center opacity-30 italic text-[10px] font-inter-bold uppercase tracking-widest text-gray-500">
+                        Belum ada unit yang terdaftar
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
+</div>
 
         <!-- SLOT BOOKING (DESAIN VIBRANT 3 SHIFT) -->
         <div class="figma-card h-auto p-6 shadow-xl border-t-4 border-t-blue-600">
