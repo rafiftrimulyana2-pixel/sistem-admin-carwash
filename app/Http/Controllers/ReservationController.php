@@ -36,4 +36,11 @@ class ReservationController extends Controller
             'omzetHariIni'
         ));
     }
+    public function statusProgress()
+    {
+        // Mengambil semua transaksi untuk dikelola di halaman progres
+        $semuaTransaksi = \App\Models\Transaksi::latest()->get();
+
+        return view('status_progress.index', compact('semuaTransaksi'));
+    }
 }

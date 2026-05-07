@@ -149,91 +149,102 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 pb-10 items-start">
 
     <!-- 1. DAFTAR ANTRIAN UNIT (KIRI) - REVISI TABEL VIBRANT -->
-    <div class="lg:col-span-2 bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col h-[420px] transition-all duration-300 hover:shadow-xl">
-        <!-- Header Tabel -->
-        <div class="px-7 py-5 border-b border-gray-50 flex justify-between items-center bg-gray-50/30">
-            <div class="flex items-center space-x-3">
-                <div class="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                <h4 class="text-[11px] font-inter-bold text-gray-800 uppercase tracking-widest">Daftar Antrean Unit</h4>
-            </div>
-            <span class="text-[9px] font-inter-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase italic tracking-wider">
-                0 Unit Terpantau
-            </span>
+    <div class="lg:col-span-2 bg-white border-2 border-slate-100 flex flex-col h-[520px] overflow-hidden rounded-none shadow-none">
+
+    <div class="px-7 py-5 border-b-2 border-slate-100 flex justify-between items-center bg-white">
+        <div class="flex items-center gap-3">
+            <div class="w-1.5 h-5 bg-blue-600"></div>
+            <h4 class="text-slate-800 font-bold uppercase tracking-widest text-[11px]">Daftar Antrean Unit</h4>
         </div>
 
-    <!-- Area Tabel -->
-    <div class="flex-1 overflow-y-auto p-4">
-        <table class="w-full text-left border-separate border-spacing-y-2">
-            <thead>
-                <tr class="text-[9px] font-inter-bold text-slate-400 uppercase tracking-[0.2em]">
-                    <th class="px-4 pb-2">Pelanggan</th>
-                    <th class="px-4 pb-2">Plat Nomor</th>
-                    <th class="px-4 pb-2">Paket</th>
-                    <th class="px-4 pb-2 text-center">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($antreanAktif ?? [] as $row)
-                <tr class="group hover:bg-blue-50/50 transition-all duration-300">
-                    <td class="px-4 py-3 bg-gray-50/50 group-hover:bg-transparent rounded-l-xl">
-                        <p class="text-[10px] font-inter-black text-slate-700 uppercase leading-none">{{ $row->nama_pelanggan }}</p>
-                    </td>
-                    <td class="px-4 py-3 bg-gray-50/50 group-hover:bg-transparent">
-                        <span class="text-[10px] font-inter-bold text-blue-600 tracking-wider">{{ $row->plat_nomor }}</span>
-                    </td>
-                    <td class="px-4 py-3 bg-gray-50/50 group-hover:bg-transparent">
-                        <span class="text-[9px] font-inter-bold text-slate-500 uppercase">{{ $row->jenis_paket }}</span>
-                    </td>
-                    <td class="px-4 py-3 bg-gray-50/50 group-hover:bg-transparent rounded-r-xl text-center">
-                        <span class="px-2 py-1 {{ $row->status == 'proses' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600' }} rounded-md text-[8px] font-inter-black uppercase tracking-tighter">
-                            {{ $row->status }}
-                        </span>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="4" class="py-20 text-center opacity-30 italic text-[10px] font-inter-bold uppercase tracking-widest text-gray-500">
-                        Belum ada unit yang terdaftar
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+        @php $jumlahAntrean = $antreanAktif->count(); @endphp
+        <div class="flex items-center gap-2 px-4 py-1.5 transition-all duration-500 {{ $jumlahAntrean > 0 ? 'bg-green-50 border border-green-200' : 'bg-blue-50 border border-blue-100' }}">
+            <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 {{ $jumlahAntrean > 0 ? 'bg-green-500' : 'bg-blue-500' }}"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 {{ $jumlahAntrean > 0 ? 'bg-green-600' : 'bg-blue-600' }}"></span>
+            </span>
+            <span class="text-[10px] font-black uppercase tracking-widest {{ $jumlahAntrean > 0 ? 'text-green-600' : 'text-blue-600' }}">
+                {{ $jumlahAntrean }} Unit Terpantau
+            </span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-[1.5fr,1fr,1fr,1fr] gap-2 px-7 py-3 bg-slate-100 border-b border-slate-200">
+        <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest">Data Pelanggan</div>
+        <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest text-center">Nomor Plat</div>
+        <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest text-center">Jenis Paket</div>
+        <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest text-right">Status Kerja</div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto bg-white">
+        @forelse($antreanAktif as $row)
+            <div class="grid grid-cols-[1.5fr,1fr,1fr,1fr] gap-2 px-7 py-4 border-b border-slate-50">
+                <div class="text-[12px] font-bold text-slate-700">{{ $row->nama_pelanggan }}</div>
+                <div class="text-[11px] font-black text-blue-600 uppercase text-center italic">{{ $row->plat_nomor }}</div>
+                <div class="text-[11px] text-slate-500 font-medium text-center">{{ $row->jenis_paket }}</div>
+                <div class="flex justify-end text-right">
+                    <span class="px-2 py-0.5 {{ $row->status == 'proses' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600' }} text-[9px] font-black uppercase">
+                        {{ $row->status }}
+                    </span>
+                </div>
+            </div>
+        @empty
+            <div class="h-full flex flex-col items-center justify-center p-10">
+                <h1 class="text-7xl font-black text-slate-50 italic tracking-tighter mb-2">0 UNIT</h1>
+                <p class="text-slate-500 text-[11px] font-bold uppercase tracking-[0.2em] mb-1">Antrean Kosong</p>
+                <p class="text-slate-400 text-[10px] font-medium max-w-[300px] text-center leading-relaxed">
+                    Belum ada kendaraan terdaftar dalam antrean. Gunakan menu <span class="text-blue-600 font-bold italic">Input Transaksi</span> untuk menambahkan unit baru.
+                </p>
+            </div>
+        @endforelse
+    </div>
+
+    <div class="px-7 pb-8 bg-white">
+        <a href="{{ route('status-progress.index') }}"
+           class="flex items-center justify-center w-full py-4 bg-[#2563eb] active:bg-[#1d4ed8] rounded-none text-white text-[12px] font-bold uppercase tracking-widest">
+            Kelola Seluruh Antrean →
+        </a>
     </div>
 </div>
 
-        <!-- SLOT BOOKING (DESAIN VIBRANT 3 SHIFT) -->
-        <div class="figma-card h-auto p-6 shadow-xl border-t-4 border-t-blue-600">
-    <div class="flex justify-between items-center mb-6 border-b border-gray-50 pb-4">
+    <!-- SLOT BOOKING (DESAIN VIBRANT 3 SHIFT) -->
+    <div class="bg-white border border-slate-100 flex flex-col rounded-none shadow-none overflow-hidden mb-6">
+
+    <div class="bg-slate-50 px-6 py-4 border-b border-slate-100 flex justify-between items-center">
         <div>
-            <h4 class="text-[10px] font-inter-black text-gray-800 uppercase tracking-[0.2em]">Slot Booking</h4>
-            <p class="text-[8px] font-inter-bold text-gray-400 uppercase italic">Update: {{ date('H:i') }} WIB</p>
+            <span class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Live Slot Booking</span>
+            <p class="text-[9px] text-slate-400 font-bold uppercase mt-1">
+                Update: <span id="real-time" class="text-blue-600">--:--:--</span> WIB
+            </p>
         </div>
-        <div class="text-right">
-            <p class="text-[11px] font-inter-black text-blue-600 uppercase">{{ date('d M Y') }}</p>
-            <div class="flex items-center justify-end mt-1">
-                <span class="w-2 h-2 bg-green-500 rounded-full mr-1 animate-ping"></span>
-                <span class="text-[8px] font-inter-bold text-green-500 uppercase">System Open</span>
+        <div class="flex flex-col items-end gap-1">
+            <div class="flex items-center gap-2">
+                <span id="status-dot" class="w-2 h-2 rounded-full"></span>
+                <span id="system-status" class="text-[9px] font-black uppercase tracking-wider">Checking...</span>
             </div>
+            <span id="real-date" class="text-[9px] font-bold text-slate-500 italic"></span>
         </div>
     </div>
 
-    <div class="space-y-3">
-        <!-- Shift Pagi (Biru Cerah) -->
-        <div class="relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-400 p-4 rounded-2xl shadow-md group hover:scale-[1.02] transition-all cursor-pointer">
-            <div class="absolute -right-4 -top-4 opacity-10 group-hover:rotate-12 transition-transform">
-                <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
-            </div>
-            <div class="flex justify-between items-center relative z-10">
-                <div class="flex items-center space-x-3 text-white">
-                    <div class="p-2 bg-white/20 rounded-xl backdrop-blur-md">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 3v1m0 16v1m9-9h-1M4 11H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707"></path></svg>
+    <div class="p-6 border-t-4 border-t-blue-600">
+
+        <div class="space-y-3">
+
+            <!-- Shift Pagi (Biru Cerah) -->
+                <div class="relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-400 p-4 rounded-2xl shadow-md group hover:scale-[1.02] transition-all cursor-pointer">
+                    <div class="absolute -right-4 -top-4 opacity-10 group-hover:rotate-12 transition-transform">
+                        <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
                     </div>
-                    <div>
-                        <p class="text-[8px] font-inter-black uppercase text-blue-50 leading-none mb-1">Morning Shift</p>
-                        <p class="text-[10px] font-inter-black">08:00 - 12:00 WIB</p>
+                    <div class="flex justify-between items-center relative z-10">
+                        <div class="flex items-center space-x-3 text-white">
+                            <div class="p-2 bg-white/20 rounded-xl backdrop-blur-md">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 3v1m0 16v1m9-9h-1M4 11H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-[8px] font-inter-black uppercase text-blue-50 leading-none mb-1">Morning Shift</p>
+                            <p class="text-[10px] font-inter-black">08:00 - 12:00 WIB</p>
+                        </div>
                     </div>
-                </div>
                 <span class="text-[8px] font-inter-black text-blue-600 bg-white px-2.5 py-1 rounded-lg uppercase italic shadow-sm">Available</span>
             </div>
         </div>
@@ -301,4 +312,39 @@
         </div>
     </div>
 </div>
+
+<script>
+    function updateClock() {
+        const now = new Date();
+
+        // 1. Update Jam (HH:MM:SS)
+        const timeString = now.getHours().toString().padStart(2, '0') + ':' +
+                           now.getMinutes().toString().padStart(2, '0') + ':' +
+                           now.getSeconds().toString().padStart(2, '0');
+        document.getElementById('real-time').innerText = timeString;
+
+        // 2. Update Tanggal (Contoh: 07 May 2026)
+        const options = { day: '2-digit', month: 'long', year: 'numeric' };
+        document.getElementById('real-date').innerText = now.toLocaleDateString('en-GB', options);
+
+        // 3. Logic System Open (Buka jam 08:00 - 21:00)
+        const hour = now.getHours();
+        const statusText = document.getElementById('system-status');
+        const statusDot = document.getElementById('status-dot');
+
+        if (hour >= 8 && hour < 21) {
+            statusText.innerText = "System Open";
+            statusText.className = "text-[9px] font-black uppercase tracking-wider text-green-600";
+            statusDot.className = "w-2 h-2 rounded-full bg-green-500 animate-pulse";
+        } else {
+            statusText.innerText = "System Closed";
+            statusText.className = "text-[9px] font-black uppercase tracking-wider text-red-600";
+            statusDot.className = "w-2 h-2 rounded-full bg-red-500";
+        }
+    }
+
+    // Jalankan setiap 1 detik
+    setInterval(updateClock, 1000);
+    updateClock(); // Panggil sekali saat halaman dimuat
+</script>
 @endsection

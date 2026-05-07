@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_pelanggan');
-            $table->string('plat_nomor');
-            $table->string('jenis_kendaraan'); // Mobil/Motor
-            $table->string('paket_cuci'); // Reguler/Premium/Full Service
-            $table->decimal('total_bayar', 10, 2);
+            $table->string('nama_pelanggan');                                               // Untuk Nama Pemilik
+            $table->string('plat_nomor');                                                   // Untuk Plat Nomor
+            $table->string('jenis_kendaraan');                                              // Untuk kategori (Mobil/Motor)
+            $table->string('paket_cuci');                                                   // Untuk pilihan paket layanan
+            $table->decimal('total_bayar', 10, 2);                                          // Untuk menyimpan harga (misal: 45000)
             $table->enum('status', ['antri', 'proses', 'selesai'])->default('antri');
             $table->timestamps();
         });

@@ -69,7 +69,7 @@
                         <p class="text-[9px] text-gray-500 mt-0.5">Sisa stok: <span class="text-red-500 font-bold">{{ $item->stok }}</span>. Segera lakukan pengadaan.</p>
                     </div>
                 </div>
-            @empty
+                @empty
                 <div class="p-8 text-center">
                     <p class="text-[10px] text-gray-400 font-inter-bold uppercase tracking-widest">Tidak ada peringatan</p>
                 </div>

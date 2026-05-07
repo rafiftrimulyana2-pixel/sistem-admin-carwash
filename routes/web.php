@@ -7,6 +7,7 @@ use App\Http\Controllers\TransaksiController;
 
 Route::get('/transaksi/tambah', [TransaksiController::class, 'create']);
 Route::get('/dashboard', [ReservationController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/status-progress', [ReservationController::class, 'statusProgress'])->name('status-progress.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
