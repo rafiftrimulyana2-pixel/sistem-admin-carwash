@@ -62,7 +62,7 @@
 
     <!-- Judul Utama: Sapaan yang lebih "Cowok" & Ukuran sedang (text-2xl) -->
     <h1 class="text-white text-2xl font-inter-black tracking-tight leading-none uppercase">
-        Halo, Selamat Beraktivitas Chief!
+        Hallo, Selamat Beraktivitas Rafif!
     </h1>
     </div>
         <div class="flex gap-3">
@@ -76,157 +76,235 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
         <!-- KOTAK 1: ANTRIAN UNIT -->
-        <div onclick="this.classList.add('scale-95'); setTimeout(() => this.classList.remove('scale-95'), 150)"
-             class="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-blue-200 hover:-translate-y-2 group h-[155px] flex flex-col justify-between">
-            <div class="flex justify-between items-start">
-                <!-- Kotak Icon Hidup (Warna Solid & Glow) -->
-                <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(37,99,235,0.4)] group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                </div>
-                <div class="flex flex-col items-end">
-                    <span class="text-[7px] font-inter-black text-blue-600 bg-blue-50 px-2 py-1 rounded-md uppercase tracking-widest mb-1">Status</span>
-                    <div class="flex items-center space-x-1">
-                        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
-                        <span class="text-[8px] font-inter-bold text-blue-500 uppercase italic">Terpantau</span>
-                    </div>
-                </div>
+        <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/20 transition-all duration-300">
+    <div class="flex flex-col gap-4">
+        <div class="flex justify-between items-start">
+            <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-600/30">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
             </div>
-            <div>
-                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">{{ count($antreanAktif ?? []) }}</h3>
-                <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Antrian Unit Berjalan</p>
+
+            <div class="flex flex-col items-end">
+                <span class="text-[7px] font-black text-blue-600 bg-blue-50 px-2 py-1 rounded-md uppercase tracking-widest mb-1">Status</span>
+                <div class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
+                    <span class="text-[9px] font-bold text-blue-500 uppercase italic">Terpantau</span>
+                </div>
             </div>
         </div>
 
-        <!-- KOTAK 2: TOTAL SELESAI -->
-        <div onclick="this.classList.add('scale-95'); setTimeout(() => this.classList.remove('scale-95'), 150)"
-             class="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-200 hover:-translate-y-2 group h-[155px] flex flex-col justify-between">
-            <div class="flex justify-between items-start">
-                <div class="w-12 h-12 bg-emerald-500 text-white rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(16,185,129,0.4)] group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <span class="text-[7px] font-inter-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md uppercase tracking-widest">Target Hari Ini</span>
-            </div>
-            <div>
-                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">{{ $layananSelesai }}</h3>
-                <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Layanan Unit Selesai</p>
-            </div>
+        <div class="flex flex-col items-start pl-1">
+            <h3 class="text-3xl font-black text-slate-800 leading-none tracking-tighter">
+                {{ count($antreanAktif ?? []) }}
+            </h3>
+            <p class="text-[11px] font-bold text-slate-400 uppercase mt-2 tracking-wide">
+                Antrean Unit Berjalan
+            </p>
         </div>
-
-        <!-- KOTAK 3: TOTAL PELANGGAN -->
-        <div onclick="this.classList.add('scale-95'); setTimeout(() => this.classList.remove('scale-95'), 150)"
-             class="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-violet-200 hover:-translate-y-2 group h-[155px] flex flex-col justify-between">
-            <div class="flex justify-between items-start">
-                <div class="w-12 h-12 bg-violet-600 text-white rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(124,58,237,0.4)] group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                </div>
-                <span class="text-[7px] font-inter-black text-violet-600 bg-violet-50 px-2 py-1 rounded-md uppercase tracking-widest">Customer</span>
-            </div>
-            <div>
-                <h3 class="text-4xl font-inter-black text-slate-800 leading-none tracking-tighter">{{ $totalPelanggan }}</h3>
-                <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Total Pelanggan</p>
-            </div>
-        </div>
-
-        <!-- KOTAK 4: PENDAPATAN -->
-        <div onclick="this.classList.add('scale-95'); setTimeout(() => this.classList.remove('scale-95'), 150)"
-             class="bg-white rounded-[24px] p-5 border border-gray-100 shadow-sm cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-orange-200 hover:-translate-y-2 group h-[155px] flex flex-col justify-between">
-            <div class="flex justify-between items-start">
-                <div class="w-12 h-12 bg-orange-500 text-white rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(249,115,22,0.4)] group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <span class="text-[7px] font-inter-black text-orange-600 bg-orange-50 px-2 py-1 rounded-md uppercase tracking-widest">Keuangan</span>
-            </div>
-            <div>
-                <h3 class="text-2xl font-inter-black text-slate-800 leading-none tracking-tighter">Rp {{ number_format($omzetHariIni, 0, ',', '.') }}</h3>
-                <p class="text-[10px] font-inter-bold text-slate-400 uppercase mt-1 tracking-widest">Omzet Pendapatan Hari Ini</p>
-                    </div>
-             </div>
-
-         </div>
-    </div>
-
-    <!-- GRID BAWAH: Antrian & Informasi (items-start agar card kanan tidak melar) -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 pb-10 items-start">
-
-    <!-- 1. DAFTAR ANTRIAN UNIT (KIRI) - REVISI TABEL VIBRANT -->
-    <div class="lg:col-span-2 bg-white border-2 border-slate-100 flex flex-col h-[520px] overflow-hidden rounded-none shadow-none">
-
-    <div class="px-7 py-5 border-b-2 border-slate-100 flex justify-between items-center bg-white">
-        <div class="flex items-center gap-3">
-            <div class="w-1.5 h-5 bg-blue-600"></div>
-            <h4 class="text-slate-800 font-bold uppercase tracking-widest text-[11px]">Daftar Antrean Unit</h4>
-        </div>
-
-        @php $jumlahAntrean = $antreanAktif->count(); @endphp
-        <div class="flex items-center gap-2 px-4 py-1.5 transition-all duration-500 {{ $jumlahAntrean > 0 ? 'bg-green-50 border border-green-200' : 'bg-blue-50 border border-blue-100' }}">
-            <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 {{ $jumlahAntrean > 0 ? 'bg-green-500' : 'bg-blue-500' }}"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 {{ $jumlahAntrean > 0 ? 'bg-green-600' : 'bg-blue-600' }}"></span>
-            </span>
-            <span class="text-[10px] font-black uppercase tracking-widest {{ $jumlahAntrean > 0 ? 'text-green-600' : 'text-blue-600' }}">
-                {{ $jumlahAntrean }} Unit Terpantau
-            </span>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-[1.5fr,1fr,1fr,1fr] gap-2 px-7 py-3 bg-slate-100 border-b border-slate-200">
-        <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest">Data Pelanggan</div>
-        <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest text-center">Nomor Plat</div>
-        <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest text-center">Jenis Paket</div>
-        <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest text-right">Status Kerja</div>
-    </div>
-
-    <div class="flex-1 overflow-y-auto bg-white">
-        @forelse($antreanAktif as $row)
-            <div class="grid grid-cols-[1.5fr,1fr,1fr,1fr] gap-2 px-7 py-4 border-b border-slate-50">
-                <div class="text-[12px] font-bold text-slate-700">{{ $row->nama_pelanggan }}</div>
-                <div class="text-[11px] font-black text-blue-600 uppercase text-center italic">{{ $row->plat_nomor }}</div>
-                <div class="text-[11px] text-slate-500 font-medium text-center">{{ $row->jenis_paket }}</div>
-                <div class="flex justify-end text-right">
-                    <span class="px-2 py-0.5 {{ $row->status == 'proses' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600' }} text-[9px] font-black uppercase">
-                        {{ $row->status }}
-                    </span>
-                </div>
-            </div>
-        @empty
-            <div class="h-full flex flex-col items-center justify-center p-10">
-                <h1 class="text-7xl font-black text-slate-50 italic tracking-tighter mb-2">0 UNIT</h1>
-                <p class="text-slate-500 text-[11px] font-bold uppercase tracking-[0.2em] mb-1">Antrean Kosong</p>
-                <p class="text-slate-400 text-[10px] font-medium max-w-[300px] text-center leading-relaxed">
-                    Belum ada kendaraan terdaftar dalam antrean. Gunakan menu <span class="text-blue-600 font-bold italic">Input Transaksi</span> untuk menambahkan unit baru.
-                </p>
-            </div>
-        @endforelse
-    </div>
-
-    <div class="px-7 pb-8 bg-white">
-        <a href="{{ route('status-progress.index') }}"
-           class="flex items-center justify-center w-full py-4 bg-[#2563eb] active:bg-[#1d4ed8] rounded-none text-white text-[12px] font-bold uppercase tracking-widest">
-            Kelola Seluruh Antrean →
-        </a>
     </div>
 </div>
 
-    <!-- SLOT BOOKING (DESAIN VIBRANT 3 SHIFT) -->
-    <div class="bg-white border border-slate-100 flex flex-col rounded-none shadow-none overflow-hidden mb-6">
+        <!-- KOTAK 2: TOTAL SELESAI -->
+        <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/20 transition-all duration-300">
+    <div class="flex flex-col gap-4">
+        <div class="flex justify-between items-start">
+            <div class="w-12 h-12 bg-emerald-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
 
-    <div class="bg-slate-50 px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-        <div>
-            <span class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Live Slot Booking</span>
-            <p class="text-[9px] text-slate-400 font-bold uppercase mt-1">
-                Update: <span id="real-time" class="text-blue-600">--:--:--</span> WIB
+            <div class="flex flex-col items-end">
+                <span class="text-[7px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md uppercase tracking-widest mb-1">Target Hari Ini</span>
+                <div class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase italic tracking-widest italic">Selesai</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="flex flex-col items-start pl-1">
+            <h3 class="text-3xl font-black text-slate-800 leading-none tracking-tighter">
+                {{ $layananSelesai }}
+            </h3>
+            <p class="text-[11px] font-bold text-slate-400 uppercase mt-2 tracking-wide">
+                Layanan Unit Selesai
             </p>
         </div>
-        <div class="flex flex-col items-end gap-1">
-            <div class="flex items-center gap-2">
-                <span id="status-dot" class="w-2 h-2 rounded-full"></span>
-                <span id="system-status" class="text-[9px] font-black uppercase tracking-wider">Checking...</span>
+    </div>
+</div>
+        <!-- KOTAK 3: TOTAL PELANGGAN -->
+        <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/20 transition-all duration-300">
+    <div class="flex flex-col gap-4">
+        <div class="flex justify-between items-start">
+            <div class="w-12 h-12 bg-violet-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-violet-600/30">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
             </div>
-            <span id="real-date" class="text-[9px] font-bold text-slate-500 italic"></span>
+
+            <div class="flex flex-col items-end">
+                <span class="text-[7px] font-black text-violet-600 bg-violet-50 px-2 py-1 rounded-md uppercase tracking-widest mb-1">Data</span>
+                <div class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest italic">Customer</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-start pl-1">
+            <h3 class="text-3xl font-black text-slate-800 leading-none tracking-tighter">
+                {{ $totalPelanggan }}
+            </h3>
+            <p class="text-[11px] font-bold text-slate-400 uppercase mt-2 tracking-wide">
+                Total Pelanggan
+            </p>
         </div>
     </div>
+</div>
 
-    <div class="p-6 border-t-4 border-t-blue-600">
+        <!-- KOTAK 4: PENDAPATAN -->
+        <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/20 transition-all duration-300">
+    <div class="flex flex-col gap-4">
+        <div class="flex justify-between items-start">
+            <div class="w-12 h-12 bg-orange-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+
+            <div class="flex flex-col items-end">
+                <span class="text-[7px] font-black text-orange-600 bg-orange-50 px-2 py-1 rounded-md uppercase tracking-widest mb-1">Keuangan</span>
+                <div class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase italic tracking-widest">Revenue</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="flex flex-col items-start pl-1 mt-auto">
+            <h3 class="text-2xl font-black text-slate-800 leading-none tracking-tighter">
+                Rp {{ number_format($omzetHariIni ?? 0, 0, ',', '.') }}
+                    </h3>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase mt-3 tracking-wide leading-tight">
+                        Omzet Pendapatan Hari Ini
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- GRID BAWAH: Antrian & Informasi (items-start agar card kanan tidak melar) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 pb-10 items-stretch px-8">
+
+    <!-- 1. DAFTAR ANTRIAN UNIT (KIRI) - REVISI TABEL VIBRANT -->
+    <div class="lg:col-span-2 flex flex-col">
+        <div class="bg-white border-2 border-slate-100 flex flex-col h-full overflow-hidden rounded-xl">
+
+        <div class="px-7 py-6 border-b border-slate-100 flex justify-between items-center bg-white">
+            <div class="flex items-center gap-4">
+                <div class="w-1.5 h-9 bg-blue-600 rounded-full"></div>
+                    <div class="flex flex-col justify-center gap-0.5">
+                        <h4 class="text-slate-800 font-bold uppercase tracking-widest text-[12px] leading-none">
+                        Daftar Antrean Unit
+                    </h4>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider leading-none mt-1">
+                        Monitoring Antrean Pelanggan Real-time
+                    </p>
+                </div>
+            </div>
+
+            @php $jumlah = $antreanAktif->count(); @endphp
+            <div class="flex items-center gap-3 px-5 py-2 rounded-lg transition-all duration-500 {{ $jumlah > 0 ? 'bg-emerald-500' : 'bg-blue-600' }}">
+                <div class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-white"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+                </div>
+                <span class="text-[10px] font-black uppercase tracking-wider text-white">
+                    {{ $jumlah }} UNIT TERPANTAU
+                </span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-[2fr_1.2fr_1.5fr_1fr] gap-4 px-8 py-3 bg-blue-600">
+    <div class="text-[10px] font-bold text-white uppercase tracking-widest">Pelanggan</div>
+    <div class="text-[10px] font-bold text-white uppercase tracking-widest text-center border-l border-blue-400/50">Kendaraan</div>
+    <div class="text-[10px] font-bold text-white uppercase tracking-widest text-center border-l border-blue-400/50">Kategori Layanan</div>
+    <div class="text-[10px] font-bold text-white uppercase tracking-widest text-right border-l border-blue-400/50">Status</div>
+</div>
+
+<div class="flex-1 overflow-y-auto bg-white min-h-[450px]">
+    @forelse($antreanAktif as $row)
+        <div class="grid grid-cols-[2fr_1.2fr_1.5fr_1fr] gap-4 px-8 py-5 border-b border-slate-50 hover:bg-slate-50 transition-colors duration-300 items-center">
+
+            <div class="flex flex-col gap-0.5">
+                <span class="text-[12px] font-bold text-slate-700 leading-tight">{{ $row->nama_pelanggan }}</span>
+                <span class="text-[9px] text-slate-400 font-medium uppercase">{{ $row->no_hp ?? '-' }}</span>
+            </div>
+
+            <div class="flex justify-center items-center">
+                <span class="text-[11px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-md italic tracking-wider border border-blue-100">
+                    {{ $row->plat_nomor }}
+                </span>
+            </div>
+
+            <div class="flex flex-col items-center justify-center">
+                <span class="text-[11px] text-slate-600 font-bold uppercase leading-tight">
+                    {{ $row->jenis_paket }}
+                </span>
+                <span class="text-[8px] text-blue-500 font-black uppercase italic tracking-tighter">Premium Service</span>
+            </div>
+
+            <div class="flex justify-end items-center">
+                <span class="px-3 py-1 bg-blue-600 text-white text-[9px] font-black uppercase rounded-md italic tracking-widest">
+                    {{ $row->status }}
+                </span>
+            </div>
+        </div>
+        @empty
+            <div class="h-full flex flex-col items-center justify-center py-24 px-10">
+                <div class="mb-6 text-slate-200">
+                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                    </svg>
+                </div>
+                    <h2 class="text-xl font-bold text-slate-700 uppercase tracking-tight mb-2 italic">Belum Ada Pelanggan</h2>
+                    <p class="text-[11px] font-medium text-slate-400 uppercase tracking-widest text-center max-w-xs leading-relaxed">
+                        Sistem sedang stand-by menunggu data pelanggan baru dari admin untuk ditampilkan di monitor.
+                    </p>
+                </div>
+            @endforelse
+        </div>
+
+        <div class="px-7 py-6 bg-white border-t border-slate-50 mt-auto">
+            <a href="{{ route('status-progress.index') }}"
+                class="flex items-center justify-center w-full py-4 bg-blue-600 rounded-xl transition-all duration-500 hover:bg-blue-700 hover:-translate-y-1 shadow-lg shadow-blue-200/50 hover:shadow-slate-400/60">
+                <span class="text-white text-[12px] font-bold uppercase tracking-widest">
+                    Kelola Seluruh Antrean →
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="lg:col-span-1 flex flex-col">
+    <div class="bg-white border-2 border-slate-100 flex flex-col h-full overflow-hidden rounded-xl">
+        <div class="bg-slate-50 px-6 py-5 border-b border-slate-100 flex justify-between items-center">
+            <div>
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Live Monitor</span>
+                <h4 class="text-slate-800 font-bold uppercase text-[12px] mt-1">Slot Booking</h4>
+            </div>
+            <div class="text-right">
+                <p id="real-time" class="text-blue-600 font-black text-[14px]">--:--:--</p>
+                <p id="system-status" class="text-[9px] font-bold text-slate-400 uppercase">Checking...</p>
+            </div>
+        </div>
+
+        <div class="p-6 border-t-4 border-t-blue-600 flex-1 overflow-y-auto">
 
         <div class="space-y-3">
 
@@ -321,30 +399,34 @@
         const timeString = now.getHours().toString().padStart(2, '0') + ':' +
                            now.getMinutes().toString().padStart(2, '0') + ':' +
                            now.getSeconds().toString().padStart(2, '0');
-        document.getElementById('real-time').innerText = timeString;
+
+        const timeElement = document.getElementById('real-time');
+        if(timeElement) timeElement.innerText = timeString;
 
         // 2. Update Tanggal (Contoh: 07 May 2026)
         const options = { day: '2-digit', month: 'long', year: 'numeric' };
-        document.getElementById('real-date').innerText = now.toLocaleDateString('en-GB', options);
+        const dateElement = document.getElementById('real-date');
+        if(dateElement) dateElement.innerText = now.toLocaleDateString('en-GB', options);
 
-        // 3. Logic System Open (Buka jam 08:00 - 21:00)
+        // 3. Logic System Status
         const hour = now.getHours();
-        const statusText = document.getElementById('system-status');
-        const statusDot = document.getElementById('status-dot');
+        const sText = document.getElementById('system-status');
+        const sDot = document.getElementById('status-dot');
 
-        if (hour >= 8 && hour < 21) {
-            statusText.innerText = "System Open";
-            statusText.className = "text-[9px] font-black uppercase tracking-wider text-green-600";
-            statusDot.className = "w-2 h-2 rounded-full bg-green-500 animate-pulse";
-        } else {
-            statusText.innerText = "System Closed";
-            statusText.className = "text-[9px] font-black uppercase tracking-wider text-red-600";
-            statusDot.className = "w-2 h-2 rounded-full bg-red-500";
+        if (sText && sDot) {
+            if (hour >= 8 && hour < 21) {
+                sText.innerText = "System Open";
+                sText.className = "text-[9px] font-black uppercase tracking-wider text-green-600";
+                sDot.className = "w-2 h-2 rounded-full bg-green-500 animate-pulse";
+            } else {
+                sText.innerText = "System Closed";
+                sText.className = "text-[9px] font-black uppercase tracking-wider text-red-600";
+                sDot.className = "w-2 h-2 rounded-full bg-red-500";
+            }
         }
     }
 
-    // Jalankan setiap 1 detik
     setInterval(updateClock, 1000);
-    updateClock(); // Panggil sekali saat halaman dimuat
+    updateClock();
 </script>
 @endsection
