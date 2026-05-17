@@ -4,6 +4,25 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
+    /* ==========================================================================
+       ANTI-SCROLLBAR HACK: HAPUS SCROLLBAR KANAN, DASHBOARD TETAP BISA DI-SCROLL
+       ========================================================================== */
+    html, body, main, .dashboard-container, #app, .content-wrapper {
+        scrollbar-width: none !important; /* Menghilangkan batang scrollbar di Firefox */
+        -ms-overflow-style: none !important; /* Menghilangkan batang scrollbar di IE & Edge */
+    }
+
+    /* Menghilangkan batang scrollbar fisik di Google Chrome, Safari, dan Opera */
+    {
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    main::-webkit-scrollbar,
+        width: 0px !important;
+        height: 0px !important;
+        display: none !important;
+        background: transparent !important;
+    }
+
     body { font-family: 'Inter', sans-serif; background-color: #fcfcfd; }
     .font-inter-bold { font-weight: 700; }
     .font-inter-black { font-weight: 800; }
@@ -52,9 +71,11 @@
 </style>
 
 <div class="dashboard-container">
+
     <!-- Header Vibrant -->
     <div class="header-bg flex justify-between items-start">
         <div class="div">
+
     <!-- Teks atas: Dirubah jadi lebih taktis -->
     <p class="text-white/70 text-[10px] font-inter-bold uppercase tracking-[0.3em] mb-2">
         Command Center Monitoring
@@ -72,6 +93,7 @@
     </div>
 
     <div class="px-8">
+
     <!-- Grid 4 Kolom: Rapi dan Sejajar -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
