@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <h1 class="text-white text-2xl font-bold mb-4 tracking-wider">CARWASH <span class="text-blue-300">MODERN</span></h1>
+            <h1 class="text-white text-2xl font-bold mb-4 tracking-wider">CARWASH <span class="text-blue-300"></span></h1>
 
             <div class="w-full sm:max-w-md mt-2 px-8 py-10 bg-white shadow-2xl overflow-hidden sm:rounded-2xl border-t-4 border-blue-500">
                 {{ $slot }}

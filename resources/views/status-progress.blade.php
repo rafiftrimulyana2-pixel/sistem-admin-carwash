@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.workspace')
 
 @section('content')
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
