@@ -172,4 +172,5 @@
     setInterval(updateClockLive, 1000);
     updateClockLive();
 </script>
+
 @endsection

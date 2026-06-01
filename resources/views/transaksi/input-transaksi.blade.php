@@ -373,4 +373,5 @@
         }, 2000);
     }
 </script>
+
 @endsection

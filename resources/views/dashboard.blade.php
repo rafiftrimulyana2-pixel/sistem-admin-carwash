@@ -4,25 +4,6 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
-    /* ==========================================================================
-       ANTI-SCROLLBAR HACK: HAPUS SCROLLBAR KANAN, DASHBOARD TETAP BISA DI-SCROLL
-       ========================================================================== */
-    html, body, main, .dashboard-container, #app, .content-wrapper {
-        scrollbar-width: none !important; /* Menghilangkan batang scrollbar di Firefox */
-        -ms-overflow-style: none !important; /* Menghilangkan batang scrollbar di IE & Edge */
-    }
-
-    /* Menghilangkan batang scrollbar fisik di Google Chrome, Safari, dan Opera */
-    {
-    html::-webkit-scrollbar,
-    body::-webkit-scrollbar,
-    main::-webkit-scrollbar,
-        width: 0px !important;
-        height: 0px !important;
-        display: none !important;
-        background: transparent !important;
-    }
-
     body { font-family: 'Inter', sans-serif; background-color: #fcfcfd; }
     .font-inter-bold { font-weight: 700; }
     .font-inter-black { font-weight: 800; }
@@ -259,7 +240,7 @@
     <div class="text-[10px] font-bold text-white uppercase tracking-widest text-right border-l border-blue-400/50">Status</div>
 </div>
 
-<div class="flex-1 overflow-y-auto bg-white min-h-[450px]">
+<div class="flex-1 overflow-y-hidden bg-white min-h-[450px]">
     @forelse($antreanAktif as $row)
         <div class="grid grid-cols-[2fr_1.2fr_1.5fr_1fr] gap-4 px-8 py-5 border-b border-slate-50 hover:bg-slate-50 transition-colors duration-300 items-center">
 
@@ -325,8 +306,7 @@
                 <p id="system-status" class="text-[9px] font-bold text-slate-400 uppercase">Checking...</p>
             </div>
         </div>
-
-        <div class="p-6 border-t-4 border-t-blue-600 flex-1 overflow-y-auto">
+    <div class="p-6 border-t-4 border-t-blue-600 flex-1 overflow-y-hidden">
 
         <div class="space-y-3">
 
@@ -451,4 +431,5 @@
     setInterval(updateClock, 1000);
     updateClock();
 </script>
+
 @endsection

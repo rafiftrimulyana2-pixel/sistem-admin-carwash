@@ -1,4 +1,5 @@
 <aside class="w-64 bg-white border-r border-slate-100 h-screen flex flex-col shadow-sm fixed left-0 top-0">
+
     <!-- Logo Section - Tetap Diam -->
     <div class="p-8 border-b border-slate-50 flex items-center justify-center shrink-0">
         <div class="font-black text-blue-600 text-lg tracking-tighter uppercase flex items-center gap-2">
@@ -10,7 +11,7 @@
     </div>
 
     <!-- Container Menu - Scrollable tapi tanpa scrollbar -->
-    <div class="flex-1 px-4 py-6 space-y-8 overflow-y-scroll no-scrollbar">
+    <div class="flex-1 px-4 py-6 space-y-8 overflow-y-auto no-scrollbar">
 
         <!-- KATEGORI MENU -->
         <div>
@@ -61,17 +62,24 @@
                 @endforeach
             </div>
         </div>
-        
+
     </div>
 </aside>
 
 <style>
-    /* Menghilangkan scrollbar di semua browser */
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    /* Hapus scrollbar di mana pun ia muncul */
+    * {
+        scrollbar-width: none !important;
+    }
+    *::-webkit-scrollbar {
+        display: none !important;
+    }
 
-    /* Memastikan sidebar tidak goyang saat ada reload */
-    aside { will-change: transform; }
+    /* Kunci layar utama agar tidak ada scrollbar browser */
+    html, body {
+        overflow: hidden !important;
+        height: 100vh !important;
+    }
 </style>
 
 <script src="https://unpkg.com/lucide@latest"></script>

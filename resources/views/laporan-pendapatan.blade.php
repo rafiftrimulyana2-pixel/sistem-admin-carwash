@@ -19,7 +19,7 @@
     .report-scroll-clean::-webkit-scrollbar-thumb {
         background: #c7d2fe !important; /* Warna ungu indigo lembut */
         border-radius: 10px !important;
-        
+
     }
 </style>
 
@@ -276,4 +276,5 @@
         onFilterBulanTahunLaporanChange();
     });
 </script>
+
 @endsection
