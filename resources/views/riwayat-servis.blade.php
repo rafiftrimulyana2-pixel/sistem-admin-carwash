@@ -1,296 +1,276 @@
-@extends('layouts.app')
+@extends('layouts.workspace')
 
 @section('content')
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-    /* 1. Bersihkan Header Dashboard Bawaan */
-    header, .top-navigation, #header-dashboard, [class*="CARWASH-CENTRAL"] {
-        display: none !important;
-    }
-
-    .font-800 { font-weight: 800; }
-    .font-700 { font-weight: 700; }
-
-    /* Container utama agar mengikuti scroll dashboard */
-    .archive-wrapper {
-        padding: 30px 40px;
+    body {
         font-family: 'Inter', sans-serif;
-        background-color: #f8fafc;
-        min-height: 100vh;
     }
-
-    /* Styling Input Filter */
-    .filter-box {
-        background: white;
-        border: 1px solid #e2e8f0;
-        padding: 10px 15px;
-        font-size: 11px;
-        font-weight: 700;
-        border-radius: 12px;
-        outline: none;
+    /* Menghilangkan scrollbar default browser pada area tabel internal, diganti garis tipis elegan */
+    .table-scroll-clean::-webkit-scrollbar {
+        width: 5px !important;
+        height: 5px !important;
+    }
+    .table-scroll-clean::-webkit-scrollbar-track {
+        background: #f1f5f9 !important;
+    }
+    .table-scroll-clean::-webkit-scrollbar-thumb {
+        background: #c7d2fe !important; /* Warna ungu indigo lembut */
+        border-radius: 10px !important;
+    }
+    .row-hover-effect {
+        transition: all 0.12s ease;
+    }
+    .row-hover-effect:hover {
+        background-color: #f1f5f9 !important;
     }
 </style>
-<div class="bg-[#2563eb] min-h-[160px] px-10 flex items-center justify-between w-full relative overflow-hidden shadow-[0_15px_50px_rgba(0,0,0,0.25)]"
-     style="margin-top: -30px; margin-left: -40px; width: calc(100% + 80px); border-radius: 0px !important;">
 
-    <div class="absolute top-0 right-0 w-1/4 h-full bg-white/5 -skew-x-12 translate-x-10"></div>
-    <div class="absolute bottom-0 left-0 w-full h-1.5 bg-black/10"></div>
+<div class="w-full h-[calc(100vh-2px)] bg-[#f8fafc] flex flex-col overflow-hidden select-none antialiased text-slate-700">
 
-    <div class="relative z-10 flex flex-col justify-center h-full pt-4">
+    <div class="w-full bg-gradient-to-r from-[#1e40af] via-[#4338ca] to-[#5b21b6] px-6 py-3.5 flex justify-between items-center flex-shrink-0 shadow-md">
+        <div>
+            <h1 class="text-white text-sm font-extrabold uppercase tracking-tight">DATA ARSIP RIWAYAT SERVIS CARWASH</h1>
+            <p class="text-indigo-200 text-[9px] font-bold uppercase tracking-wider mt-0.5">Manajemen Track Record Pemesanan, Status Kerja, & Arsip Transaksi Selesai</p>
+        </div>
+        <div class="bg-white/10 border border-white/20 px-3 py-1.5 rounded-xl flex items-center gap-2">
+            <span class="text-[9px] font-bold text-indigo-100 uppercase tracking-wider">Data Ditemukan:</span>
+            <span id="total-records-badge" class="text-xs font-black text-white bg-indigo-600 px-2 py-0.5 rounded-md">0 Data</span>
+        </div>
+    </div>
 
-        <div class="flex flex-col mb-4">
-            <h1 class="text-xl font-800 text-white uppercase tracking-tight leading-none"
-                style="font-family: 'Inter', sans-serif;">
-                Riwayat Servis
-            </h1>
-            <p class="text-[9px] font-700 text-blue-100 uppercase tracking-[0.2em] mt-1.5 opacity-70"
-               style="font-family: 'Inter', sans-serif;">
-                Database & Arsip Aktivitas Pelanggan
-            </p>
+    <div class="w-full flex-1 flex flex-col p-4 gap-3.5 overflow-hidden">
+
+        <div class="grid grid-cols-4 gap-3.5 flex-shrink-0">
+            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Total Pendapatan</span>
+                    <span id="stat-pendapatan" class="block text-sm font-black text-slate-900 mt-0.5">Rp 0</span>
+                </div>
+                <div class="text-[9px] font-extrabold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">💰 INCOME</div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Mobil Selesai</span>
+                    <span id="stat-selesai" class="block text-sm font-black text-slate-900 mt-0.5">0 Kendaraan</span>
+                </div>
+                <div class="text-[9px] font-extrabold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">✅ DONE</div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Servis Disetujui</span>
+                    <span id="stat-disetujui" class="block text-sm font-black text-slate-900 mt-0.5">0 Kendaraan</span>
+                </div>
+                <div class="text-[9px] font-extrabold text-amber-600 bg-amber-50 px-2 py-1 rounded-md">📦 APPROVED</div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Rata-rata / Paket</span>
+                    <span id="stat-rata" class="block text-sm font-black text-slate-900 mt-0.5">Rp 0</span>
+                </div>
+                <div class="text-[9px] font-extrabold text-purple-600 bg-purple-50 px-2 py-1 rounded-md">📊 AVERAGE</div>
+            </div>
         </div>
 
-        <div class="flex items-center gap-5 border-t border-white/20 pt-4">
-            <div class="flex flex-col pr-5 border-r border-white/10">
-                <span class="text-[8px] font-800 text-blue-200 uppercase tracking-widest mb-0.5">Unit</span>
-                <div class="flex items-baseline gap-1">
-                    <span class="text-lg font-800 text-white leading-none tracking-tighter">{{ $totalUnits ?? 0 }}</span>
-                    <span class="text-[7px] font-800 text-blue-300 uppercase opacity-60">Selesai</span>
-                </div>
+        <div class="w-full bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex flex-col sm:flex-row gap-4 justify-between items-center flex-shrink-0">
+
+            <div class="flex items-center gap-2 w-full sm:w-1/4">
+                <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider flex-shrink-0">Cari:</span>
+                <input type="text" id="pencarian-live" onkeyup="jalankanFilterSistemKombinasi()" placeholder="Nopol atau Nama..."
+                    class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs font-bold text-slate-800 focus:outline-none focus:border-[#4338ca] focus:bg-white transition-all shadow-inner">
             </div>
 
-            <div class="flex flex-col pr-5 border-r border-white/10">
-                <span class="text-[8px] font-800 text-blue-200 uppercase tracking-widest mb-0.5">Total Omzet</span>
-                <span class="text-lg font-800 text-white leading-none tracking-tighter">
-                    Rp {{ number_format($totalRevenue ?? 0, 0, ',', '.') }}
-                </span>
-            </div>
+            <div class="flex items-center gap-3 flex-wrap sm:flex-nowrap">
 
-            <div class="flex flex-col pr-5 border-r border-white/10">
-                <span class="text-[8px] font-800 text-blue-200 uppercase tracking-widest mb-0.5">Server</span>
                 <div class="flex items-center gap-1.5">
-                    <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.5)]"></div>
-                    <span class="text-[9px] font-800 text-white uppercase">Online</span>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Tanggal:</span>
+                    <select id="filter-tanggal" onchange="jalankanFilterSistemKombinasi()" class="bg-slate-50 border border-slate-200 text-slate-800 text-[9px] font-bold p-2 rounded-lg focus:outline-none cursor-pointer shadow-inner">
+                        <option value="ALL">Semua Tanggal</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                    </select>
                 </div>
-            </div>
 
-            <div class="flex flex-col">
-                <span class="text-[8px] font-800 text-blue-200 uppercase tracking-widest mb-0.5">Aktivitas</span>
-                <span class="text-[9px] font-800 text-white uppercase tracking-tighter opacity-80">Sistem Berjalan</span>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Bulan:</span>
+                    <select id="filter-bulan" onchange="jalankanFilterSistemKombinasi()" class="bg-slate-50 border border-slate-200 text-slate-800 text-[9px] font-bold p-2 rounded-lg focus:outline-none cursor-pointer shadow-inner">
+                        <option value="ALL">Semua Bulan</option>
+                        <option value="05">Mei</option>
+                        <option value="06">Juni</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Tahun:</span>
+                    <select id="filter-tahun" onchange="jalankanFilterSistemKombinasi()" class="bg-slate-50 border border-slate-200 text-slate-800 text-[9px] font-bold p-2 rounded-lg focus:outline-none cursor-pointer shadow-inner">
+                        <option value="ALL">Semua Tahun</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                    </select>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="relative z-10 pr-10 flex items-center h-full pt-4">
-        <div class="bg-white/10 backdrop-blur-md p-[1px] shadow-[0_15px_30px_rgba(0,0,0,0.3)]">
-            <div class="bg-white px-5 py-3 flex flex-col items-center" style="border-radius: 0px !important;">
-                <div class="flex items-center gap-2">
-                    <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <span id="live-date" class="text-[9px] font-800 text-slate-700 tracking-widest uppercase">
-                        {{ date('l, d F Y') }}
-                    </span>
-                </div>
-                <div class="w-full h-[1px] bg-slate-100 my-1.5"></div>
-                <span id="live-time" class="text-[10px] font-800 text-blue-600 tracking-[0.3em]">00:00:00</span>
-            </div>
-        </div>
-    </div>
-</div>
+        <div class="w-full flex-1 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
+            <div class="w-full flex-1 overflow-y-auto table-scroll-clean">
 
-<script>
-    function updateDateTime() {
-        const now = new Date();
-        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+                <table class="w-full border-collapse text-left table-fixed">
+                    <thead class="sticky top-0 z-10 bg-[#1e40af] border-b border-blue-900 shadow-sm text-white text-[9px] font-black uppercase tracking-wider">
+                        <tr>
+                            <th class="p-3 text-center w-[5%]">No</th>
+                            <th class="p-3 w-[15%]">Nomor Polisi</th>
+                            <th class="p-3 w-[22%]">Nama Customer</th>
+                            <th class="p-3 w-[20%]">Tipe / Model Mobil</th>
+                            <th class="p-3 w-[23%]">Paket & Detail Kerja Selesai</th>
+                            <th class="p-3 text-right w-[15%]">Total Biaya</th>
+                            <th class="p-3 text-center w-[12%]">Status Kerja</th>
+                        </tr>
+                    </thead>
 
-        document.getElementById('live-date').innerText = now.toLocaleDateString('en-GB', dateOptions);
-        document.getElementById('live-time').innerText = now.toLocaleTimeString('en-GB', timeOptions);
-    }
-    setInterval(updateDateTime, 1000);
-    updateDateTime();
-</script>
+                    <tbody id="tabel-riwayat-body" class="divide-y divide-slate-100 text-[11px] font-bold text-slate-800">
 
-    <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto">
-        <!-- Header -->
-        <header class="bg-white border-b border-slate-200 px-8 py-5 flex items-center justify-between sticky top-0 z-10">
-            <div>
-                <h2 class="text-slate-800 font-extrabold text-xl">Riwayat Servis</h2>
-                <p class="text-xs text-slate-400 font-medium tracking-wide uppercase">Laporan Seluruh Aktivitas Layanan</p>
-            </div>
-            <div class="flex items-center space-x-6">
-                <div class="hidden lg:flex items-center space-x-2 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
-                    <i data-lucide="calendar-days" class="w-4 h-4 text-slate-500"></i>
-                    <span class="text-xs font-bold text-slate-600">15 Mei 2026</span>
-                </div>
-                <div class="flex items-center space-x-3 border-l pl-6 border-slate-200">
-                    <div class="text-right">
-                        <p class="text-sm font-bold">Admin Bengkel</p>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Administrator</p>
-                    </div>
-                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg shadow-blue-200">A</div>
-                </div>
-            </div>
-        </header>
-
-        <div class="p-8">
-            <!-- Filter Section -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mb-8">
-                <div class="flex flex-wrap lg:flex-nowrap items-end gap-4">
-                    <div class="flex-1 min-w-[200px]">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase mb-2 block tracking-widest">Cari Transaksi</label>
-                        <div class="relative">
-                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
-                            <input type="text" placeholder="ID, Nama, atau No. Plat..." class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all">
-                        </div>
-                    </div>
-                    <div class="w-full lg:w-48">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase mb-2 block tracking-widest">Rentang Tanggal</label>
-                        <select class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all cursor-pointer">
-                            <option>Hari Ini</option>
-                            <option>7 Hari Terakhir</option>
-                            <option>30 Hari Terakhir</option>
-                            <option>Pilih Manual...</option>
-                        </select>
-                    </div>
-                    <div class="w-full lg:w-48">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase mb-2 block tracking-widest">Kategori Layanan</label>
-                        <select class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all cursor-pointer">
-                            <option>Semua Layanan</option>
-                            <option>Regular Wash</option>
-                            <option>Premium Detailing</option>
-                            <option>Full Wash + Wax</option>
-                        </select>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-100 hover:bg-blue-700 transition-all flex items-center">
-                            <i data-lucide="filter" class="w-4 h-4 mr-2"></i> Filter
-                        </button>
-                        <button class="bg-slate-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-slate-200 hover:bg-slate-900 transition-all flex items-center">
-                            <i data-lucide="download" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Table Section -->
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-slate-50/50 border-b border-slate-200">
-                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">ID Transaksi</th>
-                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Waktu & Tanggal</th>
-                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pelanggan</th>
-                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Layanan</th>
-                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Total Bayar</th>
-                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Status</th>
-                                <th class="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            @php
-                                $history = [
-                                    ['id' => 'INV-2024-001', 'date' => '15 Mei 2026', 'time' => '10:30', 'name' => 'Rafliansyah', 'car' => 'Honda HR-V (B 1234 ABC)', 'service' => 'Full Wash + Wax', 'price' => 150000, 'status' => 'Lunas'],
-                                    ['id' => 'INV-2024-002', 'date' => '15 Mei 2026', 'time' => '09:15', 'name' => 'Siti Aminah', 'car' => 'Toyota Fortuner (F 999 SS)', 'service' => 'Premium Detailing', 'price' => 450000, 'status' => 'Lunas'],
-                                    ['id' => 'INV-2024-003', 'date' => '14 Mei 2026', 'time' => '16:45', 'name' => 'Andi Wijaya', 'car' => 'Mitsubishi Pajero (B 777 RFS)', 'service' => 'Regular Wash', 'price' => 50000, 'status' => 'Lunas'],
-                                    ['id' => 'INV-2024-004', 'date' => '14 Mei 2026', 'time' => '14:20', 'name' => 'Budi Santoso', 'car' => 'Yamaha XMAX (D 4455 XY)', 'service' => 'Full Wash', 'price' => 35000, 'status' => 'Menunggu'],
-                                    ['id' => 'INV-2024-005', 'date' => '14 Mei 2026', 'time' => '11:05', 'name' => 'Rina Kartika', 'car' => 'Mazda CX-5 (L 1234 ZZ)', 'service' => 'Premium Detailing', 'price' => 550000, 'status' => 'Lunas'],
-                                    ['id' => 'INV-2024-006', 'date' => '13 Mei 2026', 'time' => '13:10', 'name' => 'Dedi Setiadi', 'car' => 'Honda Brio (B 2024 OK)', 'service' => 'Regular Wash', 'price' => 50000, 'status' => 'Lunas'],
-                                ];
-                            @endphp
-
-                            @foreach($history as $item)
-                            <tr class="hover:bg-slate-50 transition-colors group">
-                                <td class="px-6 py-4">
-                                    <span class="text-xs font-black text-slate-700">#{{ $item['id'] }}</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-xs font-bold text-slate-700">{{ $item['date'] }}</p>
-                                    <p class="text-[10px] text-slate-400">{{ $item['time'] }} WIB</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-sm font-bold text-slate-800">{{ $item['name'] }}</p>
-                                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-tight">{{ $item['car'] }}</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold uppercase tracking-tight">{{ $item['service'] }}</span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <p class="text-sm font-black text-blue-600">Rp {{ number_format($item['price'], 0, ',', '.') }}</p>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase
-                                        {{ $item['status'] == 'Lunas' ? 'bg-green-100 text-green-600' : 'bg-orange-100 text-orange-600' }}">
-                                        {{ $item['status'] }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <div class="flex justify-center space-x-2">
-                                        <button class="p-2 bg-slate-50 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="Detail">
-                                            <i data-lucide="eye" class="w-4 h-4"></i>
-                                        </button>
-                                        <button class="p-2 bg-slate-50 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Cetak Struk">
-                                            <i data-lucide="printer" class="w-4 h-4"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
                         </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination Footer -->
-                <div class="px-6 py-4 bg-slate-50/50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
-                    <p class="text-xs text-slate-500 font-medium">Menampilkan <span class="font-bold">6</span> dari <span class="font-bold">124</span> transaksi</p>
-                    <div class="flex items-center space-x-2">
-                        <button class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-blue-600 transition-colors disabled:opacity-50">
-                            <i data-lucide="chevron-left" class="w-4 h-4"></i>
-                        </button>
-                        <button class="px-3 py-1.5 rounded-lg border border-blue-600 bg-blue-600 text-white font-bold text-xs">1</button>
-                        <button class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-bold text-xs hover:bg-slate-50">2</button>
-                        <button class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 font-bold text-xs hover:bg-slate-50">3</button>
-                        <button class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-blue-600 transition-colors">
-                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Summary Summary Info -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                <div class="bg-blue-600 rounded-2xl p-6 text-white shadow-xl shadow-blue-100 relative overflow-hidden group">
-                    <div class="relative z-10">
-                        <p class="text-xs font-bold uppercase opacity-80 mb-1">Total Pendapatan Hari Ini</p>
-                        <h3 class="text-2xl font-black">Rp 1.250.000</h3>
-                        <p class="text-[10px] mt-4 font-medium flex items-center">
-                            <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> Naik 12% dari kemarin
-                        </p>
-                    </div>
-                    <i data-lucide="wallet" class="absolute -right-4 -bottom-4 w-32 h-32 text-white opacity-10 group-hover:scale-110 transition-transform"></i>
-                </div>
-                <div class="bg-slate-800 rounded-2xl p-6 text-white shadow-xl shadow-slate-200 relative overflow-hidden group">
-                    <div class="relative z-10">
-                        <p class="text-xs font-bold uppercase opacity-80 mb-1">Unit Selesai (Bulan Ini)</p>
-                        <h3 class="text-2xl font-black">482 Unit</h3>
-                        <p class="text-[10px] mt-4 font-medium flex items-center">
-                            <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> Target tercapai 85%
-                        </p>
-                    </div>
-                    <i data-lucide="car" class="absolute -right-4 -bottom-4 w-32 h-32 text-white opacity-10 group-hover:scale-110 transition-transform"></i>
-                </div>
+                </table>
             </div>
         </div>
-    </main>
+
+    </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        lucide.createIcons();
+    // 📝 MASTER DATABASE ARSIP: Data Pelanggan Baru Yang Otomatis Muncul Jika Tanggal & Bulan Sesuai
+    const arrayDatabaseRiwayat = [
+        { tgl: "22", bln: "05", thn: "2026", nopol: "B 1111 AAA", nama: "Doni Perdana Kusuma Atmaja", mobil: "Toyota Avanza Veloz Luxury", paket: "PREMIUM WAX", addons: ["Engine Detailing"], total: 216450, proses_kerja: "SELESAI WAX" },
+        { tgl: "22", bln: "05", thn: "2026", nopol: "B 8888 BOSS", nama: "Kevin Sanjaya", mobil: "Toyota Alphard G-Edition", paket: "ULTIMATE COATING", addons: ["Jamur Kaca Depan", "Fogging Interior"], total: 505050, proses_kerja: "SELESAI COATING" },
+        { tgl: "23", bln: "05", thn: "2026", nopol: "B 2026 RFV", nama: "Hendra Wijaya Sukses", mobil: "Mitsubishi Fortuner VRZ TRD", paket: "REGULER WASH", addons: [], total: 55500, proses_kerja: "SELESAI CUCI" },
+        { tgl: "24", bln: "05", thn: "2026", nopol: "D 1411 XYZ", nama: "Ibu Rina Mariana", mobil: "Honda Civic Turbo Dual-VTEC", paket: "PREMIUM WAX", addons: ["Ekstra Vacuum"], total: 160950, proses_kerja: "SELESAI WAX" }
+    ];
+
+    function formatRupiah(angka) {
+        return "Rp " + angka.toLocaleString('id-ID');
+    }
+
+    // 🔥 ENGINE HITUNG STATISTIK OTOMATIS: Mengubah isi kotak menjadi 0 jika data kosong
+    function kalkulasiKotakSainsRealtime(dataTerfilter) {
+        let totalPendapatan = 0;
+        let totalSelesai = dataTerfilter.length;
+        let totalDisetujui = dataTerfilter.length; // Menghitung track record terkonfirmasi kasir
+
+        dataTerfilter.forEach(row => {
+            totalPendapatan += row.total;
+        });
+
+        let rataRata = totalSelesai > 0 ? Math.round(totalPendapatan / totalSelesai) : 0;
+
+        // Render Angka ke Tampilan Grid Kotak Atas
+        document.getElementById('stat-pendapatan').innerText = formatRupiah(totalPendapatan);
+        document.getElementById('stat-selesai').innerText = totalSelesai + " Kendaraan";
+        document.getElementById('stat-disetujui').innerText = totalDisetujui + " Kendaraan";
+        document.getElementById('stat-rata').innerText = formatRupiah(rataRata);
+    }
+
+    function renderTabelRiwayat(dataToRender) {
+        const tbody = document.getElementById('tabel-riwayat-body');
+        tbody.innerHTML = "";
+
+        // Update Badge Informasi Baris
+        document.getElementById('total-records-badge').innerText = dataToRender.length + " Data";
+
+        // Kondisi Pabrikasi Awal: Jika data 0, tampilkan layar kosong bersih seperti maumu!
+        if (dataToRender.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="p-10 text-center text-slate-400 font-medium italic">
+                        👋 Belum ada data riwayat servis terarsip pada periode tanggal ini, Chief.
+                    </td>
+                </tr>
+            `;
+            kalkulasiKotakSainsRealtime([]);
+            return;
+        }
+
+        dataToRender.forEach((row, index) => {
+            let tr = document.createElement('tr');
+            tr.className = "row-hover-effect bg-white border-b border-slate-100 min-h-[50px]";
+
+            // 1. Nomor
+            let tdNo = document.createElement('td');
+            tdNo.className = "p-3 text-center text-slate-400 font-medium";
+            tdNo.innerText = index + 1;
+            tr.appendChild(tdNo);
+
+            // 2. Nomor Polisi
+            let tdNopol = document.createElement('td');
+            tdNopol.className = "p-3 font-extrabold text-slate-900 uppercase tracking-wide";
+            tdNopol.innerText = row.nopol;
+            tr.appendChild(tdNopol);
+
+            // 3. Nama Customer (Anti-Himpit Kolom)
+            let tdNama = document.createElement('td');
+            tdNama.className = "p-3 text-slate-700 whitespace-normal break-words leading-tight";
+            tdNama.innerText = row.nama;
+            tr.appendChild(tdNama);
+
+            // 4. Model Mobil
+            let tdMobil = document.createElement('td');
+            tdMobil.className = "p-3 text-slate-600 font-medium whitespace-normal break-words leading-tight";
+            tdMobil.innerText = row.mobil;
+            tr.appendChild(tdMobil);
+
+            // 5. Paket & Detail Kerja Selesai Sesuai Pilihan Admin Kasir
+            let tdPaket = document.createElement('td');
+            tdPaket.className = "p-3 flex flex-col justify-center gap-0.5 whitespace-normal break-words";
+            let txtAddons = row.addons.length > 0 ? `<span class="text-[8px] text-slate-400 font-medium leading-tight">+ ${row.addons.join(', ')}</span>` : '';
+            tdPaket.innerHTML = `<span class="text-[9px] font-black text-blue-700 leading-none uppercase">${row.paket}</span>${txtAddons}`;
+            tr.appendChild(tdPaket);
+
+            // 6. Total Biaya
+            let tdTotal = document.createElement('td');
+            tdTotal.className = "p-3 text-right font-extrabold text-slate-900";
+            tdTotal.innerText = formatRupiah(row.total);
+            tr.appendChild(tdTotal);
+
+            // 7. Status Kerja Nyata: Menampilkan Tahapan Selesai Kerja Workshop Dinamis
+            let tdStatus = document.createElement('td');
+            tdStatus.className = "p-3 text-center";
+            tdStatus.innerHTML = `<span class="inline-block bg-indigo-50 border border-indigo-200 text-[#4338ca] text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">✨ ${row.proses_kerja}</span>`;
+            tr.appendChild(tdStatus);
+
+            tbody.appendChild(tr);
+        });
+
+        // Jalankan mesin hitung kotak atas
+        kalkulasiKotakSainsRealtime(dataToRender);
+    }
+
+    // 🔥 CORE MULTI-FILTER COMBINATION ENGINE: Menyaring Nama, Tanggal, Bulan & Tahun Sekaligus Tanpa Reload!
+    function jalankanFilterSistemKombinasi() {
+        const keyword = document.getElementById('pencarian-live').value.toLowerCase();
+        const tglFilter = document.getElementById('filter-tanggal').value;
+        const blnFilter = document.getElementById('filter-bulan').value;
+        const thnFilter = document.getElementById('filter-tahun').value;
+
+        const hasilPenyaringanMatang = arrayDatabaseRiwayat.filter(item => {
+            const matchKeyword = item.nopol.toLowerCase().includes(keyword) || item.nama.toLowerCase().includes(keyword) || item.mobil.toLowerCase().includes(keyword);
+            const matchTanggal = (tglFilter === "ALL") || (item.tgl === tglFilter);
+            const matchBulan = (blnFilter === "ALL") || (item.bln === blnFilter);
+            const matchTahun = (thnFilter === "ALL") || (item.thn === thnFilter);
+
+            return matchKeyword && matchTanggal && matchBulan && matchTahun;
+        });
+
+        renderTabelRiwayat(hasilPenyaringanMatang);
+    }
+
+    // 🚀 INIT RUN: Pertama kali dibuka website diset kosong (Atau panggil filter global)
+    document.addEventListener("DOMContentLoaded", () => {
+        // Kita set filter default ke "ALL" agar kasir bisa melihat simulasi,
+        // ganti ke variabel tanggal kosong jika ingin murni 0 dari hari pertama rilis web.
+        renderTabelRiwayat(arrayDatabaseRiwayat);
     });
 </script>
-</body>
+
 @endsection
