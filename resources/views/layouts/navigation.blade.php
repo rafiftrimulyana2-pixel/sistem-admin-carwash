@@ -1,7 +1,7 @@
 <aside class="w-64 bg-white border-r border-slate-100 h-screen flex flex-col shadow-sm fixed left-0 top-0">
 
     <!-- Logo Section - Tetap Diam -->
-    <div class="p-8 border-b border-slate-50 flex items-center justify-center shrink-0">
+    <div class="px-8 pt-8 pb-3 border-b border-slate-50 flex items-center justify-center shrink-0">
         <div class="font-black text-blue-600 text-lg tracking-tighter uppercase flex items-center gap-2">
             <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-blue-200 shadow-lg">
                 <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
@@ -11,7 +11,7 @@
     </div>
 
     <!-- Container Menu - Scrollable tapi tanpa scrollbar -->
-    <div class="flex-1 px-4 py-6 space-y-8 overflow-y-auto no-scrollbar">
+    <div class="flex-1 px-2 py-3 space-y-4 overflow-y-auto no-scrollbar">
 
         <!-- KATEGORI MENU -->
         <div>

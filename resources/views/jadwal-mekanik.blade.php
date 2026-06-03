@@ -1,176 +1,690 @@
 @extends('layouts.workspace')
 
 @section('content')
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
 <style>
-    .monitor-area {
-        background-color: #f1f5f9;
-        padding: 30px;
-        font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    *{
+        font-family: 'Inter', sans-serif;
     }
 
-    /* HEADER: BIRU DASHBOARD & KOTAK SIKU */
-    .header-box-premium {
-        background-color: #2563eb;
-        padding: 25px 35px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.25); /* Bayangan Hitam Abu Deep */
-        margin-bottom: 40px;
-        border-radius: 0px !important;
+    body{
+        overflow: hidden;
     }
 
-    /* GRID: 4 KOLOM RAPAT */
-    .grid-mekanik-sistem {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 25px;
+    .hide-scroll::-webkit-scrollbar{
+        display: none;
     }
 
-    /* KARTU MEKANIK */
-    .card-mekanik-premium {
-        background: white;
-        border: 1px solid #e2e8f0;
-        position: relative;
-        padding: 25px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        border-radius: 0px !important;
+    .hide-scroll{
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
-    .line-indicator {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 6px;
-        height: 100%;
+    .calendar-day{
+        transition: all .2s ease;
     }
 
-    /* BADGE STATUS */
-    .badge-status-siku {
-        font-size: 8px;
-        font-weight: 800;
-        padding: 4px 10px;
-        text-transform: uppercase;
-        border: 1px solid;
+    .calendar-day:hover{
+        transform: scale(1.08);
     }
 
-    /* INFO BOX TUGAS */
-    .box-info-tugas-rapat {
-        background: #f8fafc;
-        padding: 12px;
-        border: 1px solid #f1f5f9;
-        margin: 15px 0;
+    .action-btn{
+        transition: .2s ease;
     }
 
-    /* TYPOGRAPHY */
-    .font-tebal { font-weight: 800; text-transform: uppercase; margin: 0; }
-    .font-kecil { font-weight: 700; font-size: 8px; text-transform: uppercase; color: #94a3b8; }
-
-    /* TOMBOL */
-    .btn-siku-hitam {
-        width: 100%;
-        padding: 12px;
-        background: #0f172a;
-        color: white;
-        font-weight: 800;
-        font-size: 10px;
-        text-transform: uppercase;
-        border: none;
-        cursor: pointer;
-        letter-spacing: 1px;
+    .action-btn:hover{
+        transform: translateY(-1px);
     }
 </style>
 
-<div class="monitor-area">
+<div class="w-full h-[calc(100vh-2px)] bg-[#f4f7fb] overflow-y-auto hide-scroll">
 
-    <div class="header-box-premium">
+    {{-- HEADER --}}
+    <div class="w-full bg-gradient-to-r from-[#1e40af] via-[#3157d5] to-[#4338ca] px-6 py-3 flex justify-between items-center shadow-md">
         <div>
-            <h1 class="font-tebal" style="color: white; font-size: 22px; font-style: italic;">Personnel Monitoring</h1>
-            <p class="font-kecil" style="color: #bfdbfe; font-size: 10px; letter-spacing: 3px; margin-top: 5px;">
-                DATABASE AKTIVITAS & JADWAL AKTIF MEKANIK
+            <h1 class="text-white text-[18px] font-extrabold uppercase tracking-wide">
+                SISTEM JADWAL MEKANIK
+            </h1>
+
+            <p class="text-blue-100 text-[10px] mt-0.5 tracking-wide">
+                Monitoring realtime jadwal kerja mekanik, shift bengkel, dan aktivitas operasional harian.
             </p>
         </div>
-        <div style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 10px 25px; text-align: center;">
-            <span id="date-live" class="font-tebal" style="color: white; font-size: 10px;">FRIDAY, 15 MAY 2026</span>
-            <div style="height: 1px; background: rgba(255,255,255,0.2); margin: 5px 0;"></div>
-            <span id="time-live" class="font-tebal" style="color: #93c5fd; font-size: 13px;">10:45:00 AM</span>
+
+        <div class="flex items-center gap-2">
+
+            <div class="bg-white/10 border border-white/10 px-3 py-1.5 rounded-lg text-white text-[10px] font-semibold">
+                Hari :
+                <span id="tanggalRealtime"></span>
+            </div>
+
+            <div class="bg-white border border-white px-3 py-1.5 rounded-lg text-blue-600 text-[10px] font-bold flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                Sistem Online
+            </div>
         </div>
     </div>
 
-    <div class="grid-mekanik-sistem">
+    <div class="p-4 grid grid-cols-12 gap-4">
 
-        <div class="card-mekanik-premium">
-            <div class="line-indicator" style="background: #10b981;"></div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <div>
-                    <h3 class="font-tebal" style="font-size: 13px; color: #1e293b;">Ahmad Subarjo</h3>
-                    <p style="color: #2563eb; font-weight: 700; font-size: 8px; margin-top: 4px;">ID: MKN-001</p>
-                </div>
-                <span class="badge-status-siku" style="background: #ecfdf5; color: #059669; border-color: #d1fae5;">Available</span>
-            </div>
+        {{-- LEFT --}}
+        <div class="col-span-9 space-y-4">
 
-            <div style="margin-top: 20px;">
-                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 8px;">
-                    <span class="font-kecil">Spesialis:</span>
-                    <span class="font-tebal" style="font-size: 9px;">INTERIOR TECH</span>
+            {{-- FILTER --}}
+            <div class="bg-white border border-blue-100 rounded-xl p-4">
+
+                <div class="flex justify-between items-center mb-4">
+
+                    <div>
+                        <h2 class="text-[15px] font-bold text-[#1e3a8a]">
+                            Pengaturan Monitoring
+                        </h2>
+
+                        <p class="text-[10px] text-slate-500">
+                            Sistem filter monitoring jadwal mekanik realtime.
+                        </p>
+                    </div>
                 </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <span class="font-kecil">Shift:</span>
-                    <span class="font-tebal" style="font-size: 9px;">PAGI (08:00)</span>
+
+                <div class="grid grid-cols-5 gap-3">
+
+                    <div>
+                        <label class="text-[10px] font-semibold text-slate-600">
+                            Filter Shift
+                        </label>
+
+                        <select id="filterShift"
+                            class="w-full h-10 px-3 rounded-lg border border-slate-200 text-[11px] outline-none">
+
+                            <option value="all">Semua Shift</option>
+                            <option value="Pagi">Shift Pagi</option>
+                            <option value="Siang">Shift Siang</option>
+                            <option value="Malam">Shift Malam</option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-semibold text-slate-600">
+                            Status Kehadiran
+                        </label>
+
+                        <select id="filterStatus"
+                            class="w-full h-10 px-3 rounded-lg border border-slate-200 text-[11px] outline-none">
+
+                            <option value="all">Semua Status</option>
+                            <option value="Hadir">Hadir</option>
+                            <option value="Izin">Izin</option>
+                            <option value="Libur">Libur</option>
+
+                        </select>
+                    </div>
+                    <div>
                 </div>
             </div>
-            <button class="btn-siku-hitam" style="margin-top: 20px;">Assign Unit</button>
         </div>
 
-        <div class="card-mekanik-premium">
-            <div class="line-indicator" style="background: #f59e0b;"></div>
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <div>
-                    <h3 class="font-tebal" style="font-size: 13px; color: #1e293b;">Rian Hidayat</h3>
-                    <p style="color: #2563eb; font-weight: 700; font-size: 8px; margin-top: 4px;">ID: MKN-002</p>
+            {{-- TABEL --}}
+            <div class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+
+                <div class="px-4 py-3 border-b border-slate-200 flex justify-between items-center">
+
+                    <div>
+                        <h2 class="text-[20px] font-bold text-[#1e3a8a]">
+                            Data Jadwal Mekanik
+                        </h2>
+
+                        <p class="text-[10px] text-slate-500">
+                            Pemantauan realtime data mekanik bengkel.
+                        </p>
+                    </div>
+
+                    <div class="flex gap-2">
+
+                        <div
+                            class="px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-[10px] font-semibold">
+                            18 Mekanik Aktif
+                        </div>
+
+                        <div
+                            class="px-3 py-1 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white text-[10px] font-semibold">
+                            14 Hadir
+                        </div>
+
+                    </div>
+
                 </div>
-                <span class="badge-status-siku" style="background: #fffbeb; color: #d97706; border-color: #fef3c7;">On Duty</span>
+
+                <div class="bg-gradient-to-r from-[#1e40af] to-[#3157d5] text-white">
+
+                    <div class="grid grid-cols-7 text-center text-[10px] font-semibold">
+
+                        <div class="py-3 border-r border-white/10">NO</div>
+                        <div class="py-3 border-r border-white/10">NAMA MEKANIK</div>
+                        <div class="py-3 border-r border-white/10">KEAHLIAN</div>
+                        <div class="py-3 border-r border-white/10">SHIFT</div>
+                        <div class="py-3 border-r border-white/10">JAM KERJA</div>
+                        <div class="py-3 border-r border-white/10">STATUS</div>
+                        <div class="py-3">AKSI</div>
+
+                    </div>
+
+                </div>
+
+                <div id="tableData"
+                    class="max-h-[520px] overflow-y-auto hide-scroll">
+
+                    {{-- ROW --}}
+                    <div data-shift="Pagi" data-status="Hadir"
+                        class="grid grid-cols-7 items-center text-center text-[11px] border-b border-slate-100 bg-white">
+
+                        <div class="py-3">1</div>
+
+                        <div class="py-3 font-semibold text-slate-700">
+                            Dani Ardiansyah
+                        </div>
+
+                        <div class="py-3 text-blue-700">
+                            Engine Specialist
+                        </div>
+
+                        <div class="py-3 text-amber-600 font-semibold">
+                            Pagi
+                        </div>
+
+                        <div class="py-3">
+                            08:00 - 16:00
+                        </div>
+
+                        <div class="py-3">
+                            <span class="px-2 py-1 rounded-md bg-green-100 text-green-700 text-[10px] font-semibold">
+                                Hadir
+                            </span>
+                        </div>
+
+                        <div class="py-3 flex justify-center gap-2">
+
+                            <button onclick="aturData('Dani Ardiansyah')"
+                                class="action-btn w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+
+                                ✎
+
+                            </button>
+
+                            <button onclick="detailData('Dani Ardiansyah')"
+                                class="action-btn w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center text-slate-700">
+
+                                ⓘ
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    {{-- ROW --}}
+                    <div data-shift="Siang" data-status="Hadir"
+                        class="grid grid-cols-7 items-center text-center text-[11px] border-b border-slate-100 bg-[#fcfdff]">
+
+                        <div class="py-3">2</div>
+
+                        <div class="py-3 font-semibold text-slate-700">
+                            Kevin Sanjaya
+                        </div>
+
+                        <div class="py-3 text-blue-700">
+                            Body Repair
+                        </div>
+
+                        <div class="py-3 text-orange-600 font-semibold">
+                            Siang
+                        </div>
+
+                        <div class="py-3">
+                            13:00 - 21:00
+                        </div>
+
+                        <div class="py-3">
+                            <span class="px-2 py-1 rounded-md bg-green-100 text-green-700 text-[10px] font-semibold">
+                                Hadir
+                            </span>
+                        </div>
+
+                        <div class="py-3 flex justify-center gap-2">
+
+                            <button onclick="aturData('Kevin Sanjaya')"
+                                class="action-btn w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+
+                                ✎
+
+                            </button>
+
+                            <button onclick="detailData('Kevin Sanjaya')"
+                                class="action-btn w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center text-slate-700">
+
+                                ⓘ
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    {{-- ROW --}}
+                    <div data-shift="Malam" data-status="Izin"
+                        class="grid grid-cols-7 items-center text-center text-[11px] border-b border-slate-100 bg-white">
+
+                        <div class="py-3">3</div>
+
+                        <div class="py-3 font-semibold text-slate-700">
+                            Marda Wijaya
+                        </div>
+
+                        <div class="py-3 text-blue-700">
+                            Kelistrikan
+                        </div>
+
+                        <div class="py-3 text-indigo-600 font-semibold">
+                            Malam
+                        </div>
+
+                        <div class="py-3">
+                            21:00 - 05:00
+                        </div>
+
+                        <div class="py-3">
+                            <span class="px-2 py-1 rounded-md bg-yellow-100 text-yellow-700 text-[10px] font-semibold">
+                                Izin
+                            </span>
+                        </div>
+
+                        <div class="py-3 flex justify-center gap-2">
+
+                            <button onclick="aturData('Marda Wijaya')"
+                                class="action-btn w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+
+                                ✎
+
+                            </button>
+
+                            <button onclick="detailData('Marda Wijaya')"
+                                class="action-btn w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center text-slate-700">
+
+                                ⓘ
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    {{-- TAMBAHAN --}}
+                    @for($i = 4; $i <= 15; $i++)
+                    <div data-shift="Pagi" data-status="Hadir"
+                        class="grid grid-cols-7 items-center text-center text-[11px] border-b border-slate-100 bg-[#fcfdff]">
+
+                        <div class="py-3">{{ $i }}</div>
+
+                        <div class="py-3 font-semibold text-slate-700">
+                            Mekanik {{ $i }}
+                        </div>
+
+                        <div class="py-3 text-blue-700">
+                            General Service
+                        </div>
+
+                        <div class="py-3 text-amber-600 font-semibold">
+                            Pagi
+                        </div>
+
+                        <div class="py-3">
+                            08:00 - 16:00
+                        </div>
+
+                        <div class="py-3">
+                            <span class="px-2 py-1 rounded-md bg-green-100 text-green-700 text-[10px] font-semibold">
+                                Hadir
+                            </span>
+                        </div>
+
+                        <div class="py-3 flex justify-center gap-2">
+
+                            <button onclick="aturData('Mekanik {{ $i }}')"
+                                class="action-btn w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+
+                                ✎
+
+                            </button>
+
+                            <button onclick="detailData('Mekanik {{ $i }}')"
+                                class="action-btn w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center text-slate-700">
+
+                                ⓘ
+
+                            </button>
+
+                        </div>
+
+                    </div>
+                    @endfor
+
+                </div>
+
             </div>
 
-            <div class="box-info-tugas-rapat">
-                <div style="display: flex; justify-content: space-between;">
-                    <span class="font-kecil">Plat Unit:</span>
-                    <span class="font-tebal" style="font-size: 9px; font-style: italic;">B 1234 XYZ</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 6px;">
-                    <span class="font-kecil">Destinasi:</span>
-                    <span class="font-tebal" style="font-size: 9px; color: #2563eb;">CENTRAL PARK</span>
-                </div>
-            </div>
-
-            <div style="margin-top: 10px;">
-                <div style="display: flex; justify-content: space-between;">
-                    <span class="font-kecil">Progress:</span>
-                    <span class="font-tebal" style="font-size: 9px; color: #d97706;">75%</span>
-                </div>
-                <div style="width: 100%; height: 4px; background: #f1f5f9; margin-top: 5px;">
-                    <div style="width: 75%; height: 100%; background: #f59e0b;"></div>
-                </div>
-            </div>
-            <button class="btn-siku-hitam" style="background: #94a3b8; cursor: not-allowed; margin-top: 15px;">In Progress</button>
         </div>
 
-        <div style="border: 3px dashed #cbd5e1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; background: #f8fafc; cursor: pointer;">
-            <div style="width: 35px; height: 35px; background: white; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #cbd5e1; font-size: 20px;">+</div>
-            <span class="font-kecil" style="margin-top: 10px;">Tambah Personil</span>
+        {{-- RIGHT --}}
+        <div class="col-span-3 space-y-4">
+
+            {{-- KALENDAR --}}
+            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+
+                <div class="bg-gradient-to-r from-[#1e40af] to-[#3157d5] px-4 py-3 flex justify-between items-center">
+
+                    <div>
+
+                        <h2 class="text-white text-[14px] font-bold">
+                            Kalendar
+                        </h2>
+
+                        <p class="text-blue-100 text-[10px]">
+                            Kalender realtime bengkel
+                        </p>
+
+                    </div>
+
+                    <div class="text-white text-lg">
+                        📅
+                    </div>
+
+                </div>
+
+                <div class="p-4">
+
+                    <div class="flex justify-between items-center mb-4">
+
+                        <button id="prevMonth"
+                            class="w-8 h-8 rounded-md bg-red-100 text-red-700 text-sm">
+                            ←
+                        </button>
+
+                        <h3 id="monthYear"
+                            class="text-[13px] font-bold text-slate-700">
+                        </h3>
+
+                        <button id="nextMonth"
+                            class="w-8 h-8 rounded-md bg-blue-100 text-blue-700 text-sm">
+                            →
+                        </button>
+
+                    </div>
+
+                    <div class="grid grid-cols-7 gap-2 text-center text-[10px] font-bold text-slate-500 mb-3">
+
+                        <div>MIN</div>
+                        <div>SEN</div>
+                        <div>SEL</div>
+                        <div>RAB</div>
+                        <div>KAM</div>
+                        <div>JUM</div>
+                        <div>SAB</div>
+
+                    </div>
+
+                    <div id="calendarDays"
+                        class="grid grid-cols-7 gap-2 text-center">
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- AKTIVITAS --}}
+<div class="bg-gradient-to-br from-[#1e40af] via-[#3157d5] to-[#4338ca] rounded-2xl overflow-hidden shadow-md">
+
+    <div class="px-4 py-3 border-b border-white/10 flex justify-between items-center">
+
+        <div>
+
+            <h2 class="text-[14px] font-bold text-white">
+                Aktivitas Sistem
+            </h2>
+
+            <p class="text-[10px] text-blue-100 mt-1">
+                Monitoring aktivitas jadwal bengkel realtime
+            </p>
+
+        </div>
+
+        <div class="flex items-center gap-2 text-[10px] font-semibold text-white">
+
+            <span class="w-2 h-2 rounded-full bg-green-300 animate-pulse"></span>
+            ONLINE
+
         </div>
 
     </div>
+
+    <div class="p-4 space-y-3">
+
+        <div
+            class="bg-white/10 border border-white/10 rounded-xl p-3 hover:translate-x-1 duration-300">
+
+            <div class="flex justify-between items-center">
+
+                <span class="text-[11px] font-semibold text-white">
+                    Jadwal Diperbarui
+                </span>
+
+                <span class="text-[10px] text-blue-100">
+                    1 Menit
+                </span>
+
+            </div>
+
+            <p class="text-[10px] text-blue-100 mt-2 leading-relaxed">
+                Admin melakukan sinkronisasi jadwal mekanik realtime.
+            </p>
+
+        </div>
+
+        <div
+            class="bg-white/10 border border-white/10 rounded-xl p-3 hover:translate-x-1 duration-300">
+
+            <div class="flex justify-between items-center">
+
+                <span class="text-[11px] font-semibold text-white">
+                    Shift Malam Aktif
+                </span>
+
+                <span class="text-[10px] text-blue-100">
+                    Live
+                </span>
+
+            </div>
+
+            <p class="text-[10px] text-blue-100 mt-2 leading-relaxed">
+                Sistem mendeteksi mekanik shift malam sedang aktif bekerja.
+            </p>
+
+        </div>
+
+    </div>
+
 </div>
 
 <script>
-    function updateClockLive() {
-        const d = new Date();
-        document.getElementById('time-live').innerText = d.toLocaleTimeString('en-US', { hour12: true });
-        document.getElementById('date-live').innerText = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
+
+    function sinkronSistem(){
+
+        alert(
+            'Sistem berhasil melakukan sinkronisasi data jadwal, kalender, tabel, dan monitoring realtime.'
+        );
+
     }
-    setInterval(updateClockLive, 1000);
-    updateClockLive();
+
+    function ubahJadwal(nama){
+
+        const jadwalBaru = prompt(
+            'Masukkan jadwal baru untuk ' + nama,
+            '08:00 - 16:00'
+        );
+
+        if(jadwalBaru){
+
+            alert(
+                'Jadwal kerja mekanik berhasil diperbarui menjadi : ' + jadwalBaru
+            );
+
+        }
+
+    }
+
 </script>
 
+<script>
+
+    // realtime tanggal atas
+    function updateTanggalRealtime(){
+
+        const sekarang = new Date();
+
+        const opsi = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
+
+        document.getElementById('tanggalRealtime').innerHTML =
+            sekarang.toLocaleDateString('id-ID', opsi);
+
+    }
+
+    updateTanggalRealtime();
+
+    // filter shift + status
+    const filterShift = document.getElementById('filterShift');
+    const filterStatus = document.getElementById('filterStatus');
+
+    function filterTable(){
+
+        const shift = filterShift.value;
+        const status = filterStatus.value;
+
+        const rows = document.querySelectorAll('#tableData > div');
+
+        rows.forEach(row => {
+
+            const rowShift = row.dataset.shift;
+            const rowStatus = row.dataset.status;
+
+            let show = true;
+
+            if(shift !== 'all' && rowShift !== shift){
+                show = false;
+            }
+
+            if(status !== 'all' && rowStatus !== status){
+                show = false;
+            }
+
+            row.style.display = show ? 'grid' : 'none';
+
+        });
+
+    }
+
+    filterShift.addEventListener('change', filterTable);
+    filterStatus.addEventListener('change', filterTable);
+
+    // aksi
+    function aturData(nama){
+        alert('Mengatur jadwal mekanik : ' + nama);
+    }
+
+    function detailData(nama){
+        alert('Melihat detail data mekanik : ' + nama);
+    }
+
+    // kalender realtime
+    const monthYear = document.getElementById('monthYear');
+    const calendarDays = document.getElementById('calendarDays');
+
+    let currentDate = new Date();
+
+    function renderCalendar(){
+
+        calendarDays.innerHTML = '';
+
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        const monthNames = [
+            'Januari','Februari','Maret','April','Mei','Juni',
+            'Juli','Agustus','September','Oktober','November','Desember'
+        ];
+
+        monthYear.innerHTML = `${monthNames[month]} ${year}`;
+
+        for(let i = 0; i < firstDay; i++){
+
+            const empty = document.createElement('div');
+            calendarDays.appendChild(empty);
+
+        }
+
+        for(let day = 1; day <= lastDate; day++){
+
+            const date = new Date(year, month, day);
+
+            const isSunday = date.getDay() === 0;
+
+            const today = new Date();
+
+            const isToday =
+                day === today.getDate() &&
+                month === today.getMonth() &&
+                year === today.getFullYear();
+
+            const dayDiv = document.createElement('div');
+
+            dayDiv.className =
+                `calendar-day h-10 flex items-center justify-center rounded-lg text-[11px] font-semibold cursor-pointer
+                ${isToday ? 'bg-blue-600 text-white' : ''}
+                ${isSunday ? 'bg-red-100 text-red-700' : ''}
+                ${!isToday && !isSunday ? 'bg-white border border-slate-200 text-slate-700' : ''}
+                `;
+
+            dayDiv.innerHTML = day;
+
+            calendarDays.appendChild(dayDiv);
+
+        }
+
+    }
+
+    renderCalendar();
+
+    document.getElementById('prevMonth').addEventListener('click', () => {
+
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', () => {
+
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+
+    });
+
+</script>
 @endsection
