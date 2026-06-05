@@ -1,276 +1,363 @@
 @extends('layouts.workspace')
 
 @section('content')
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-    body {
-        font-family: 'Inter', sans-serif;
+    /* Mengubah seluruh elemen teks di halaman internal menggunakan font Inter & Bold */
+    .riwayat-scope, .riwayat-scope * {
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 700 !important;
     }
-    /* Menghilangkan scrollbar default browser pada area tabel internal, diganti garis tipis elegan */
-    .table-scroll-clean::-webkit-scrollbar {
+    /* Custom scrollbar internal tipis dan sangat bersih saat data menumpuk */
+    .report-scroll-clean::-webkit-scrollbar {
         width: 5px !important;
         height: 5px !important;
     }
-    .table-scroll-clean::-webkit-scrollbar-track {
-        background: #f1f5f9 !important;
+    .report-scroll-clean::-webkit-scrollbar-track {
+        background: #f8fafc !important;
     }
-    .table-scroll-clean::-webkit-scrollbar-thumb {
-        background: #c7d2fe !important; /* Warna ungu indigo lembut */
+    .report-scroll-clean::-webkit-scrollbar-thumb {
+        background: #cbd5e1 !important;
         border-radius: 10px !important;
-    }
-    .row-hover-effect {
-        transition: all 0.12s ease;
-    }
-    .row-hover-effect:hover {
-        background-color: #f1f5f9 !important;
     }
 </style>
 
-<div class="w-full h-[calc(100vh-2px)] bg-[#f8fafc] flex flex-col overflow-hidden select-none antialiased text-slate-700">
+<!-- CONTAINER UTAMA DASHBOARD RIWAYAT SERVIS -->
+<div class="riwayat-scope w-full h-[calc(100vh-2px)] bg-[#f8fafc] flex flex-col overflow-hidden select-none antialiased text-slate-700">
 
-    <div class="w-full bg-gradient-to-r from-[#1e40af] via-[#4338ca] to-[#5b21b6] px-6 py-3.5 flex justify-between items-center flex-shrink-0 shadow-md">
+    <!-- HEADER UTAMA - WARNA BIRU SOLID SIDEBAR (BG-BLUE-600) & TANPA ICON DEKAT TEKS -->
+    <div class="w-full bg-blue-600 border-b border-blue-700 px-6 py-3.5 flex justify-between items-center flex-shrink-0 shadow-md shadow-slate-900/10 z-20">
         <div>
-            <h1 class="text-white text-sm font-extrabold uppercase tracking-tight">DATA ARSIP RIWAYAT SERVIS CARWASH</h1>
-            <p class="text-indigo-200 text-[9px] font-bold uppercase tracking-wider mt-0.5">Manajemen Track Record Pemesanan, Status Kerja, & Arsip Transaksi Selesai</p>
+            <h1 class="text-white text-sm font-black uppercase tracking-tight">DATA ARSIP RIWAYAT SERVIS CARWASH</h1>
+            <p class="text-blue-100 text-[9px] font-bold uppercase tracking-wider mt-0.5">Manajemen Track Record Pemesanan, Status Kerja, &amp; Arsip Transaksi Selesai</p>
         </div>
-        <div class="bg-white/10 border border-white/20 px-3 py-1.5 rounded-xl flex items-center gap-2">
-            <span class="text-[9px] font-bold text-indigo-100 uppercase tracking-wider">Data Ditemukan:</span>
-            <span id="total-records-badge" class="text-xs font-black text-white bg-indigo-600 px-2 py-0.5 rounded-md">0 Data</span>
+        <div class="bg-white/10 border border-white/20 px-3 py-1.5 rounded-xl text-white text-[10px] font-black uppercase tracking-wide">
+            Data Ditemukan: <span id="live-counter-data" class="text-amber-300 font-black">0 Data</span>
         </div>
     </div>
 
+    <!-- AREA GRID DATA & SINKRONISASI -->
     <div class="w-full flex-1 flex flex-col p-4 gap-3.5 overflow-hidden">
 
-        <div class="grid grid-cols-4 gap-3.5 flex-shrink-0">
-            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex items-center justify-between">
+        <!-- 📊 4 KOTAK CARD METRIK UTAMA - KONDISI AWAL RILIS WEBSITE 0 BERSIH DENGAN BAYANGAN ABU-ABU TIPIS -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3.5 flex-shrink-0">
+
+            <!-- CARD 1: TOTAL PENDAPATAN -->
+            <div class="bg-white border border-slate-100 rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-900/5">
                 <div>
-                    <span class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Total Pendapatan</span>
-                    <span id="stat-pendapatan" class="block text-sm font-black text-slate-900 mt-0.5">Rp 0</span>
+                    <span class="block text-[9px] font-black text-slate-400 uppercase tracking-wider">Total Pendapatan</span>
+                    <span id="card-total-rupiah" class="block text-base font-black text-slate-800 tracking-tight mt-1">Rp 0</span>
                 </div>
-                <div class="text-[9px] font-extrabold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">💰 INCOME</div>
+                <!-- Kotak Ikon Mengambang dengan Efek Bayangan Berwarna (Drop Shadow) -->
+                <div class="bg-blue-600 p-2.5 rounded-xl text-white flex items-center justify-center flex-shrink-0 filter drop-shadow-[0_4px_6px_rgba(37,99,235,0.4)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                </div>
             </div>
-            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex items-center justify-between">
+
+            <!-- CARD 2: MOBIL SELESAI -->
+            <div class="bg-white border border-slate-100 rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-900/5">
                 <div>
-                    <span class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Mobil Selesai</span>
-                    <span id="stat-selesai" class="block text-sm font-black text-slate-900 mt-0.5">0 Kendaraan</span>
+                    <span class="block text-[9px] font-black text-slate-400 uppercase tracking-wider">Mobil Selesai</span>
+                    <span id="card-qty-selesai" class="block text-base font-black text-slate-800 tracking-tight mt-1">0 Kendaraan</span>
                 </div>
-                <div class="text-[9px] font-extrabold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">✅ DONE</div>
+                <!-- Kotak Ikon Mengambang dengan Efek Bayangan Berwarna (Drop Shadow) -->
+                <div class="bg-emerald-600 p-2.5 rounded-xl text-white flex items-center justify-center flex-shrink-0 filter drop-shadow-[0_4px_6px_rgba(16,185,129,0.4)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
             </div>
-            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex items-center justify-between">
+
+            <!-- CARD 3: SERVIS DISETUJUI -->
+            <div class="bg-white border border-slate-100 rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-900/5">
                 <div>
-                    <span class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Servis Disetujui</span>
-                    <span id="stat-disetujui" class="block text-sm font-black text-slate-900 mt-0.5">0 Kendaraan</span>
+                    <span class="block text-[9px] font-black text-slate-400 uppercase tracking-wider">Servis Disetujui</span>
+                    <span id="card-qty-approved" class="block text-base font-black text-slate-800 tracking-tight mt-1">0 Kendaraan</span>
                 </div>
-                <div class="text-[9px] font-extrabold text-amber-600 bg-amber-50 px-2 py-1 rounded-md">📦 APPROVED</div>
+                <!-- Kotak Ikon Mengambang dengan Efek Bayangan Berwarna (Drop Shadow) -->
+                <div class="bg-amber-500 p-2.5 rounded-xl text-white flex items-center justify-center flex-shrink-0 filter drop-shadow-[0_4px_6px_rgba(245,158,11,0.4)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                </div>
             </div>
-            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex items-center justify-between">
+
+            <!-- CARD 4: RATA-RATA / PAKET -->
+            <div class="bg-white border border-slate-100 rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-900/5">
                 <div>
-                    <span class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Rata-rata / Paket</span>
-                    <span id="stat-rata" class="block text-sm font-black text-slate-900 mt-0.5">Rp 0</span>
+                    <span class="block text-[9px] font-black text-slate-400 uppercase tracking-wider">Rata-rata / Paket</span>
+                    <span id="card-total-average" class="block text-base font-black text-slate-800 tracking-tight mt-1">Rp 0</span>
                 </div>
-                <div class="text-[9px] font-extrabold text-purple-600 bg-purple-50 px-2 py-1 rounded-md">📊 AVERAGE</div>
+                <!-- Kotak Ikon Mengambang dengan Efek Bayangan Berwarna (Drop Shadow) -->
+                <div class="bg-purple-600 p-2.5 rounded-xl text-white flex items-center justify-center flex-shrink-0 filter drop-shadow-[0_4px_6px_rgba(147,51,234,0.4)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                </div>
             </div>
+
         </div>
 
-        <div class="w-full bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex flex-col sm:flex-row gap-4 justify-between items-center flex-shrink-0">
+        <!-- 📦 WADAH UTAMA FILTER & TABEL YANG MENYATU TOTAL -->
+        <div class="w-full flex-1 bg-white border border-slate-200 rounded-xl flex flex-col overflow-hidden shadow-sm">
 
-            <div class="flex items-center gap-2 w-full sm:w-1/4">
-                <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider flex-shrink-0">Cari:</span>
-                <input type="text" id="pencarian-live" onkeyup="jalankanFilterSistemKombinasi()" placeholder="Nopol atau Nama..."
-                    class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs font-bold text-slate-800 focus:outline-none focus:border-[#4338ca] focus:bg-white transition-all shadow-inner">
+            <!-- ACTION BAR INTERNAL -->
+            <div class="w-full px-4 py-3 border-b border-slate-100 bg-white flex flex-col lg:flex-row justify-between items-center gap-4 flex-shrink-0">
+
+                <!-- Kolom Pencarian Kaca Pembesar Minimalis Berkepanjangan -->
+                <div class="relative w-full sm:w-72">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </span>
+                    <input type="text" id="search-input" oninput="onFilterRiwayatEngineChange()" placeholder="Cari nomor polisi atau nama customer..." class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-[10px] pl-9 pr-3 py-2 rounded-xl focus:outline-none focus:border-blue-500 shadow-inner placeholder:text-slate-400/80">
+                </div>
+
+                <!-- Parameter Filter Waktu Real-Time -->
+                <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-end">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Tanggal:</span>
+                        <select id="filter-tanggal" onchange="onFilterRiwayatEngineChange()" class="bg-slate-50 border border-slate-200 text-slate-800 text-[9px] px-2 py-1.5 rounded-lg focus:outline-none cursor-pointer shadow-inner">
+                            <option value="ALL">Semua Tanggal</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Bulan:</span>
+                        <select id="filter-bulan" onchange="onFilterRiwayatEngineChange()" class="bg-slate-50 border border-slate-200 text-slate-800 text-[9px] px-2 py-1.5 rounded-lg focus:outline-none cursor-pointer shadow-inner">
+                            <option value="ALL">Semua Bulan</option>
+                            <option value="01">Januari</option>
+                            <option value="02">Februari</option>
+                            <option value="03">Maret</option>
+                            <option value="04">April</option>
+                            <option value="05">Mei</option>
+                            <option value="06">Juni</option>
+                            <option value="07">Juli</option>
+                            <option value="08">Agustus</option>
+                            <option value="09">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Tahun:</span>
+                        <select id="filter-tahun" onchange="onFilterRiwayatEngineChange()" class="bg-slate-50 border border-slate-200 text-slate-800 text-[9px] px-2 py-1.5 rounded-lg focus:outline-none cursor-pointer shadow-inner">
+                            <option value="ALL">Semua Tahun</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
-            <div class="flex items-center gap-3 flex-wrap sm:flex-nowrap">
-
-                <div class="flex items-center gap-1.5">
-                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Tanggal:</span>
-                    <select id="filter-tanggal" onchange="jalankanFilterSistemKombinasi()" class="bg-slate-50 border border-slate-200 text-slate-800 text-[9px] font-bold p-2 rounded-lg focus:outline-none cursor-pointer shadow-inner">
-                        <option value="ALL">Semua Tanggal</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
-                    </select>
-                </div>
-
-                <div class="flex items-center gap-1.5">
-                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Bulan:</span>
-                    <select id="filter-bulan" onchange="jalankanFilterSistemKombinasi()" class="bg-slate-50 border border-slate-200 text-slate-800 text-[9px] font-bold p-2 rounded-lg focus:outline-none cursor-pointer shadow-inner">
-                        <option value="ALL">Semua Bulan</option>
-                        <option value="05">Mei</option>
-                        <option value="06">Juni</option>
-                    </select>
-                </div>
-
-                <div class="flex items-center gap-1.5">
-                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Tahun:</span>
-                    <select id="filter-tahun" onchange="jalankanFilterSistemKombinasi()" class="bg-slate-50 border border-slate-200 text-slate-800 text-[9px] font-bold p-2 rounded-lg focus:outline-none cursor-pointer shadow-inner">
-                        <option value="ALL">Semua Tahun</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="w-full flex-1 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
-            <div class="w-full flex-1 overflow-y-auto table-scroll-clean">
-
-                <table class="w-full border-collapse text-left table-fixed">
-                    <thead class="sticky top-0 z-10 bg-[#1e40af] border-b border-blue-900 shadow-sm text-white text-[9px] font-black uppercase tracking-wider">
+            <!-- AREA DATA TABEL SCROLL DOWN COMPACT -->
+            <div class="flex-1 overflow-y-auto report-scroll-clean bg-white">
+                <table class="w-full border-collapse text-left table-fixed border-hidden">
+                    <thead class="sticky top-0 z-10 bg-blue-600 text-white text-[8.5px] font-black uppercase tracking-wider shadow-sm">
                         <tr>
-                            <th class="p-3 text-center w-[5%]">No</th>
-                            <th class="p-3 w-[15%]">Nomor Polisi</th>
-                            <th class="p-3 w-[22%]">Nama Customer</th>
-                            <th class="p-3 w-[20%]">Tipe / Model Mobil</th>
-                            <th class="p-3 w-[23%]">Paket & Detail Kerja Selesai</th>
-                            <th class="p-3 text-right w-[15%]">Total Biaya</th>
-                            <th class="p-3 text-center w-[12%]">Status Kerja</th>
+                            <th class="p-2.5 text-center w-[5%]">No.</th>
+                            <th class="p-2.5 text-center w-[12%]">Nomor Polisi</th>
+                            <th class="p-2.5 text-center w-[22%]">Nama Customer</th>
+                            <th class="p-2.5 text-center w-[22%]">Tipe / Model Mobil</th>
+                            <th class="p-2.5 text-center w-[17%]">Paket &amp; Detail Kerja</th>
+                            <th class="p-2.5 text-center w-[11%]">Total Biaya</th>
+                            <th class="p-2.5 text-center w-[11%]">Status Kerja</th>
                         </tr>
                     </thead>
-
-                    <tbody id="tabel-riwayat-body" class="divide-y divide-slate-100 text-[11px] font-bold text-slate-800">
-
-                        </tbody>
+                    <tbody id="tabel-riwayat-body" class="divide-y divide-slate-100 text-[8.5px] text-slate-700">
+                        <!-- Di-inject oleh Javascript secara realtime -->
+                    </tbody>
                 </table>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
 
+<!-- ==========================================
+     LOGIKA FILTER ENGINE & LIVE SYNC SCRIPT (JS)
+     ========================================== -->
 <script>
-    // 📝 MASTER DATABASE ARSIP: Data Pelanggan Baru Yang Otomatis Muncul Jika Tanggal & Bulan Sesuai
-    const arrayDatabaseRiwayat = [
-        { tgl: "22", bln: "05", thn: "2026", nopol: "B 1111 AAA", nama: "Doni Perdana Kusuma Atmaja", mobil: "Toyota Avanza Veloz Luxury", paket: "PREMIUM WAX", addons: ["Engine Detailing"], total: 216450, proses_kerja: "SELESAI WAX" },
-        { tgl: "22", bln: "05", thn: "2026", nopol: "B 8888 BOSS", nama: "Kevin Sanjaya", mobil: "Toyota Alphard G-Edition", paket: "ULTIMATE COATING", addons: ["Jamur Kaca Depan", "Fogging Interior"], total: 505050, proses_kerja: "SELESAI COATING" },
-        { tgl: "23", bln: "05", thn: "2026", nopol: "B 2026 RFV", nama: "Hendra Wijaya Sukses", mobil: "Mitsubishi Fortuner VRZ TRD", paket: "REGULER WASH", addons: [], total: 55500, proses_kerja: "SELESAI CUCI" },
-        { tgl: "24", bln: "05", thn: "2026", nopol: "D 1411 XYZ", nama: "Ibu Rina Mariana", mobil: "Honda Civic Turbo Dual-VTEC", paket: "PREMIUM WAX", addons: ["Ekstra Vacuum"], total: 160950, proses_kerja: "SELESAI WAX" }
-    ];
+    // Membaca database transaksi riel Laravel terikat dari controller
+    const arrayDatabaseKeuangan = @json($dataFinance) || [];
 
     function formatRupiah(angka) {
-        return "Rp " + angka.toLocaleString('id-ID');
+        if (angka === null || angka === undefined || isNaN(angka)) {
+            angka = 0;
+        }
+        return "Rp " + Number(angka).toLocaleString('id-ID');
     }
 
-    // 🔥 ENGINE HITUNG STATISTIK OTOMATIS: Mengubah isi kotak menjadi 0 jika data kosong
-    function kalkulasiKotakSainsRealtime(dataTerfilter) {
-        let totalPendapatan = 0;
-        let totalSelesai = dataTerfilter.length;
-        let totalDisetujui = dataTerfilter.length; // Menghitung track record terkonfirmasi kasir
-
-        dataTerfilter.forEach(row => {
-            totalPendapatan += row.total;
-        });
-
-        let rataRata = totalSelesai > 0 ? Math.round(totalPendapatan / totalSelesai) : 0;
-
-        // Render Angka ke Tampilan Grid Kotak Atas
-        document.getElementById('stat-pendapatan').innerText = formatRupiah(totalPendapatan);
-        document.getElementById('stat-selesai').innerText = totalSelesai + " Kendaraan";
-        document.getElementById('stat-disetujui').innerText = totalDisetujui + " Kendaraan";
-        document.getElementById('stat-rata').innerText = formatRupiah(rataRata);
+    function initTanggalDropdown() {
+        const selectTgl = document.getElementById('filter-tanggal');
+        if(!selectTgl) return;
+        for (let i = 1; i <= 31; i++) {
+            let val = i < 10 ? "0" + i : "" + i;
+            let opt = document.createElement('option');
+            opt.value = val;
+            opt.innerText = val;
+            selectTgl.appendChild(opt);
+        }
     }
 
-    function renderTabelRiwayat(dataToRender) {
-        const tbody = document.getElementById('tabel-riwayat-body');
-        tbody.innerHTML = "";
+    function resetCardStatistikKeNol() {
+        document.getElementById('live-counter-data').innerText = "0 Data";
+        document.getElementById('card-total-rupiah').innerText = "Rp 0";
+        document.getElementById('card-qty-selesai').innerText = "0 Kendaraan";
+        document.getElementById('card-qty-approved').innerText = "0 Kendaraan";
+        document.getElementById('card-total-average').innerText = "Rp 0";
+    }
 
-        // Update Badge Informasi Baris
-        document.getElementById('total-records-badge').innerText = dataToRender.length + " Data";
-
-        // Kondisi Pabrikasi Awal: Jika data 0, tampilkan layar kosong bersih seperti maumu!
-        if (dataToRender.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="7" class="p-10 text-center text-slate-400 font-medium italic">
-                        👋 Belum ada data riwayat servis terarsip pada periode tanggal ini, Chief.
-                    </td>
-                </tr>
-            `;
-            kalkulasiKotakSainsRealtime([]);
+    function updateCardStatistikRealtime(dataTerfilter) {
+        let totalServis = dataTerfilter.length;
+        if (totalServis === 0) {
+            resetCardStatistikKeNol();
             return;
         }
 
+        let totalRupiah = 0;
+        let qtySelesai = 0;
+        let qtyApproved = 0;
+
+        dataTerfilter.forEach(row => {
+            let nominalAman = row.nominal ? Number(row.nominal) : 0;
+            totalRupiah += nominalAman;
+            qtySelesai++;
+            qtyApproved++;
+        });
+
+        let rataRata = totalServis > 0 ? Math.round(totalRupiah / totalServis) : 0;
+
+        document.getElementById('live-counter-data').innerText = totalServis + " Data";
+        document.getElementById('card-total-rupiah').innerText = formatRupiah(totalRupiah);
+        document.getElementById('card-qty-selesai').innerText = qtySelesai + " Kendaraan";
+        document.getElementById('card-qty-approved').innerText = qtyApproved + " Kendaraan";
+        document.getElementById('card-total-average').innerText = formatRupiah(rataRata);
+    }
+
+    function renderTabelRiwayatServis(dataToRender) {
+        const tbody = document.getElementById('tabel-riwayat-body');
+        if (!tbody) return;
+        tbody.innerHTML = "";
+
+        // JIKA BELUM ADA DATA INPUTAN YANG MASUK SAMA SEKALI
+        if (!dataToRender || dataToRender.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="p-8 text-center text-slate-400 font-medium italic text-[8.5px]">
+                        👋 Belum ada arsip log riwayat servis terkonfirmasi dari sistem kasir/admin. Tampilan dashboard dikunci 0.
+                    </td>
+                </tr>
+            `;
+            resetCardStatistikKeNol();
+            return;
+        }
+
+        // JIKA ADMIN SUDAH MENGINPUT DATA TRANSAKSI CUSTOMER, MAKA OTOMATIS BERUBAH REALTIME
         dataToRender.forEach((row, index) => {
             let tr = document.createElement('tr');
-            tr.className = "row-hover-effect bg-white border-b border-slate-100 min-h-[50px]";
+            tr.className = "hover:bg-slate-50/70 transition-colors duration-150 h-[44px]";
 
-            // 1. Nomor
             let tdNo = document.createElement('td');
-            tdNo.className = "p-3 text-center text-slate-400 font-medium";
+            tdNo.className = "p-2 text-center text-slate-400 font-medium";
             tdNo.innerText = index + 1;
             tr.appendChild(tdNo);
 
-            // 2. Nomor Polisi
             let tdNopol = document.createElement('td');
-            tdNopol.className = "p-3 font-extrabold text-slate-900 uppercase tracking-wide";
+            tdNopol.className = "p-2 text-center text-slate-900 font-black tracking-wide uppercase";
             tdNopol.innerText = row.nopol;
             tr.appendChild(tdNopol);
 
-            // 3. Nama Customer (Anti-Himpit Kolom)
             let tdNama = document.createElement('td');
-            tdNama.className = "p-3 text-slate-700 whitespace-normal break-words leading-tight";
+            tdNama.className = "p-2 text-left text-slate-800 truncate pl-4";
             tdNama.innerText = row.nama;
             tr.appendChild(tdNama);
 
-            // 4. Model Mobil
-            let tdMobil = document.createElement('td');
-            tdMobil.className = "p-3 text-slate-600 font-medium whitespace-normal break-words leading-tight";
-            tdMobil.innerText = row.mobil;
-            tr.appendChild(tdMobil);
+            let tdJenis = document.createElement('td');
+            tdJenis.className = "p-2 text-left text-slate-600 uppercase truncate pl-4";
+            tdJenis.innerText = row.jenis || "KENDARAAN";
+            tr.appendChild(tdJenis);
 
-            // 5. Paket & Detail Kerja Selesai Sesuai Pilihan Admin Kasir
             let tdPaket = document.createElement('td');
-            tdPaket.className = "p-3 flex flex-col justify-center gap-0.5 whitespace-normal break-words";
-            let txtAddons = row.addons.length > 0 ? `<span class="text-[8px] text-slate-400 font-medium leading-tight">+ ${row.addons.join(', ')}</span>` : '';
-            tdPaket.innerHTML = `<span class="text-[9px] font-black text-blue-700 leading-none uppercase">${row.paket}</span>${txtAddons}`;
+            tdPaket.className = "p-2 text-left flex flex-col justify-center h-[44px] pl-4";
+            let subDetail = (row.kategori && row.kategori.toLowerCase().includes('coating')) ? "Glass & Inside Clean" : "Engine & Inside Vacuum";
+            tdPaket.innerHTML = `
+                <span class="text-blue-600 font-black uppercase text-[8px] tracking-wide leading-none">${row.kategori || 'STANDARD'}</span>
+                <span class="text-slate-400 font-medium text-[7px] mt-0.5 leading-none">+ ${subDetail}</span>
+            `;
             tr.appendChild(tdPaket);
 
-            // 6. Total Biaya
-            let tdTotal = document.createElement('td');
-            tdTotal.className = "p-3 text-right font-extrabold text-slate-900";
-            tdTotal.innerText = formatRupiah(row.total);
-            tr.appendChild(tdTotal);
+            let tdNominal = document.createElement('td');
+            tdNominal.className = "p-2 text-right text-slate-900 font-black pr-6";
+            tdNominal.innerText = formatRupiah(row.nominal);
+            tr.appendChild(tdNominal);
 
-            // 7. Status Kerja Nyata: Menampilkan Tahapan Selesai Kerja Workshop Dinamis
             let tdStatus = document.createElement('td');
-            tdStatus.className = "p-3 text-center";
-            tdStatus.innerHTML = `<span class="inline-block bg-indigo-50 border border-indigo-200 text-[#4338ca] text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">✨ ${row.proses_kerja}</span>`;
+            tdStatus.className = "p-2 text-center px-4";
+
+            let colorProgress = "bg-blue-600";
+            let widthProgress = "w-[75%]";
+            let textProgress = "Progres Cuci";
+
+            if (row.kategori && row.kategori.toLowerCase().includes('coating')) {
+                colorProgress = "bg-purple-600";
+                widthProgress = "w-[90%]";
+                textProgress = "Tahap Coating";
+            } else if (row.kategori && row.kategori.toLowerCase().includes('wax')) {
+                colorProgress = "bg-indigo-600";
+                widthProgress = "w-[85%]";
+                textProgress = "Finishing Wax";
+            }
+
+            tdStatus.innerHTML = `
+                <div class="w-full flex flex-col items-center gap-1">
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden border border-slate-200/50">
+                        <div class="h-full ${colorProgress} ${widthProgress} rounded-full"></div>
+                    </div>
+                    <span class="text-[6.5px] uppercase font-black tracking-wider text-slate-400 block">${textProgress}</span>
+                </div>
+            `;
             tr.appendChild(tdStatus);
 
             tbody.appendChild(tr);
         });
 
-        // Jalankan mesin hitung kotak atas
-        kalkulasiKotakSainsRealtime(dataToRender);
+        updateCardStatistikRealtime(dataToRender);
     }
 
-    // 🔥 CORE MULTI-FILTER COMBINATION ENGINE: Menyaring Nama, Tanggal, Bulan & Tahun Sekaligus Tanpa Reload!
-    function jalankanFilterSistemKombinasi() {
-        const keyword = document.getElementById('pencarian-live').value.toLowerCase();
+    // 🔥 SEARCH FILTER ENGINE NYATA: Mendeteksi kecocokan kode / teks nopol maupun nama customer secara langsung
+    function onFilterRiwayatEngineChange() {
         const tglFilter = document.getElementById('filter-tanggal').value;
         const blnFilter = document.getElementById('filter-bulan').value;
         const thnFilter = document.getElementById('filter-tahun').value;
+        const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
 
-        const hasilPenyaringanMatang = arrayDatabaseRiwayat.filter(item => {
-            const matchKeyword = item.nopol.toLowerCase().includes(keyword) || item.nama.toLowerCase().includes(keyword) || item.mobil.toLowerCase().includes(keyword);
+        const hasilPenyaringanRiwayat = arrayDatabaseKeuangan.filter(item => {
             const matchTanggal = (tglFilter === "ALL") || (item.tgl === tglFilter);
             const matchBulan = (blnFilter === "ALL") || (item.bln === blnFilter);
             const matchTahun = (thnFilter === "ALL") || (item.thn === thnFilter);
 
-            return matchKeyword && matchTanggal && matchBulan && matchTahun;
+            // Mencocokkan inputan admin ke kolom Nama, Nomor Polisi, maupun Jenis Mobil
+            const matchSearch = (searchVal === "") ||
+                                (item.nama && item.nama.toLowerCase().includes(searchVal)) ||
+                                (item.nopol && item.nopol.toLowerCase().includes(searchVal)) ||
+                                (item.jenis && item.jenis.toLowerCase().includes(searchVal));
+
+            return matchTanggal && matchBulan && matchTahun && matchSearch;
         });
 
-        renderTabelRiwayat(hasilPenyaringanMatang);
+        renderTabelRiwayatServis(hasilPenyaringanRiwayat);
     }
 
-    // 🚀 INIT RUN: Pertama kali dibuka website diset kosong (Atau panggil filter global)
     document.addEventListener("DOMContentLoaded", () => {
-        // Kita set filter default ke "ALL" agar kasir bisa melihat simulasi,
-        // ganti ke variabel tanggal kosong jika ingin murni 0 dari hari pertama rilis web.
-        renderTabelRiwayat(arrayDatabaseRiwayat);
+        initTanggalDropdown();
+        onFilterRiwayatEngineChange();
     });
 </script>
-
 @endsection

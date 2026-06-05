@@ -51,82 +51,237 @@
 
 <div class="w-full h-[calc(100vh-2px)] bg-[#f8fafc] flex flex-col overflow-hidden select-none antialiased text-slate-700">
 
-    <!-- HEADER ESTETIK: Sesuai Layout Foto Bawaanmu, Warna Diperhidup Gradasi Ungu Indigo Premium -->
-    <header class="bg-gradient-to-r from-[#1e40af] via-[#4338ca] to-[#6d28d9] border-b border-slate-200/20 px-8 py-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 flex-shrink-0 z-10 shadow-md">
-        <div>
-            <h2 class="text-white font-black text-xl tracking-tight uppercase">MANAJEMEN STOK BAHAN & INVENTARIS</h2>
-            <p class="text-indigo-200 text-[10px] font-bold uppercase tracking-widest mt-1">Sistem Logistik, Analisis Finansial Aset & Formula Dilusi Workshop</p>
+    <!-- HEADER STOK BAHAN -->
+    <header class="w-full bg-gradient-to-r from-[#1e40af] via-[#3730a3] to-[#4f46e5] px-6 py-3.5 flex items-center justify-between border-b border-slate-300/30 shadow-[0_2px_8px_rgba(148,163,184,0.18)] flex-shrink-0">
+
+        <!-- KIRI -->
+        <div class="flex flex-col">
+            <h1 class="text-white text-sm font-extrabold uppercase tracking-tight leading-none">
+                SISTEM STOK BAHAN CARWASH
+            </h1>
+
+            <p class="text-[9px] text-indigo-100 font-semibold uppercase tracking-wider mt-1">
+                Monitoring inventaris bahan aktif, logistik gudang & distribusi operasional realtime
+            </p>
         </div>
-        <div class="flex items-center space-x-4 flex-shrink-0">
-            <div class="flex items-center space-x-2 bg-white/10 text-white px-4 py-2 rounded-xl border border-white/20 shadow-inner">
-                <i data-lucide="calendar" class="w-4 h-4 text-indigo-200"></i>
-                <span id="realtime-date-badge" class="text-xs font-black tracking-tight">Memuat Tanggal...</span>
+
+        <!-- KANAN -->
+        <div class="flex items-center gap-3">
+
+            <!-- BADGE TANGGAL -->
+            <div class="bg-white/10 border border-white/15
+            px-3 py-1.5 rounded-lg flex items-center gap-2">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-3.5 h-3.5 text-indigo-100"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M8 7V3m8 4V3m-9 8h10m-11 9h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v11a2 2 0 002 2z"/>
+                </svg>
+
+                <span id="realtime-date-badge"
+                    class="text-[10px] font-bold text-white tracking-wide">
+                    Memuat...
+                </span>
             </div>
-            <div class="flex items-center space-x-3 border-l pl-4 border-white/20">
-                <div class="text-right">
-                    <p class="text-xs font-black text-white leading-none">Logistics Admin</p>
-                    <p class="text-[8px] text-indigo-200 font-bold uppercase tracking-wider mt-1">Central Warehouse</p>
+
+            <!-- USER -->
+            <div class="flex items-center gap-2 border-l border-white/20 pl-3">
+
+                <div class="text-right leading-none">
+                    <p class="text-[10px] font-bold text-white">
+                        Warehouse Admin
+                    </p>
+
+                    <p class="text-[8px] text-indigo-200 uppercase tracking-wider mt-1">
+                        Central Gudang
+                    </p>
                 </div>
-                <div class="w-9 h-9 bg-white text-blue-700 rounded-xl flex items-center justify-center font-black shadow-md">L</div>
+
+                <div class="w-8 h-8 bg-white text-blue-700
+                flex items-center justify-center
+                font-black text-xs rounded-lg">
+                    W
+                </div>
+
             </div>
+
         </div>
+
     </header>
 
-    <div class="w-full flex-1 flex flex-col p-5 gap-4 overflow-hidden">
+    <!-- WRAPPER 5 CARD -->
+<div class="w-full px-2 mt-5 mb-5">
 
-        <!-- 5 KOTAK STATISTIK SIKU: Kotak siku biasa, ukuran sedang, warna hidup menyala, otomatis sinkron murni -->
-        <div class="grid grid-cols-5 gap-4 flex-shrink-0">
-            <!-- Kotak 1: Total Nilai Aset -->
-            <div class="bg-white p-4.5 rounded-none border-l-4 border-l-blue-600 border-y border-r border-slate-200 shadow-sm flex items-center space-x-3.5">
-                <div class="w-10 h-10 bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 shadow-inner">
-                    <i data-lucide="wallet" class="w-5 h-5"></i>
-                </div>
-                <div>
-                    <p class="text-[8.5px] text-slate-400 font-black uppercase tracking-wider">Total Nilai Aset Stok</p>
-                    <h4 id="stat-total-value" class="text-xs font-black text-slate-900 mt-0.5">Rp 0</h4>
-                </div>
+    <!-- GRID CARD -->
+    <div class="grid grid-cols-5 gap-3">
+
+        <!-- CARD 1 -->
+        <div class="bg-blue-50 border border-blue-100 rounded-2xl px-4 py-4
+                    shadow-[0_3px_10px_rgba(0,0,0,0.06)]
+                    flex items-center gap-3 min-h-[95px]">
+
+            <div class="w-11 h-11 rounded-xl bg-blue-100
+                        flex items-center justify-center shrink-0">
+                <i data-lucide="wallet"
+                   class="w-5 h-5 text-blue-600"></i>
             </div>
-            <!-- Kotak 2: Total Sisa Stok -->
-            <div class="bg-white p-4.5 rounded-none border-l-4 border-l-sky-500 border-y border-r border-slate-200 shadow-sm flex items-center space-x-3.5">
-                <div class="w-10 h-10 bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 shadow-inner">
-                    <i data-lucide="boxes" class="w-5 h-5"></i>
-                </div>
-                <div>
-                    <p class="text-[8.5px] text-slate-400 font-black uppercase tracking-wider">Total Sisa Stok</p>
-                    <h4 id="stat-total-stock" class="text-xs font-black text-slate-900 mt-0.5">0 Unit</h4>
-                </div>
-            </div>
-            <!-- Kotak 3: Stok Habis -->
-            <div class="bg-white p-4.5 rounded-none border-l-4 border-l-rose-600 border-y border-r border-slate-200 shadow-sm flex items-center space-x-3.5">
-                <div class="w-10 h-10 bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 shadow-inner">
-                    <i data-lucide="package-x" class="w-5 h-5"></i>
-                </div>
-                <div>
-                    <p class="text-[8.5px] text-slate-400 font-black uppercase tracking-wider">Stok Habis</p>
-                    <h4 id="stat-empty-items" class="text-xs font-black text-rose-600 mt-0.5">0 Item</h4>
-                </div>
-            </div>
-            <!-- Kotak 4: Stok Menipis -->
-            <div class="bg-white p-4.5 rounded-none border-l-4 border-l-amber-500 border-y border-r border-slate-200 shadow-sm flex items-center space-x-3.5">
-                <div class="w-10 h-10 bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 shadow-inner">
-                    <i data-lucide="alert-triangle" class="w-5 h-5"></i>
-                </div>
-                <div>
-                    <p class="text-[8.5px] text-slate-400 font-black uppercase tracking-wider">Stok Menipis</p>
-                    <h4 id="stat-low-items" class="text-xs font-black text-amber-600 mt-0.5">0 Item</h4>
-                </div>
-            </div>
-            <!-- Kotak 5: Total Jumlah Bahan -->
-            <div class="bg-white p-4.5 rounded-none border-l-4 border-l-emerald-500 border-y border-r border-slate-200 shadow-sm flex items-center space-x-3.5">
-                <div class="w-10 h-10 bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 shadow-inner">
-                    <i data-lucide="beaker" class="w-5 h-5"></i>
-                </div>
-                <div>
-                    <p class="text-[8.5px] text-slate-400 font-black uppercase tracking-wider">Total Jumlah Bahan</p>
-                    <h4 id="stat-jenis-count" class="text-xs font-black text-slate-900 mt-0.5">0 Jenis</h4>
-                </div>
+
+            <div class="flex-1">
+
+                <p class="text-[9px] uppercase tracking-wide
+                          font-bold text-blue-500">
+                    Total Nilai Aset
+                </p>
+
+                <h4 id="stat-total-value"
+                    class="text-[16px] font-extrabold
+                           text-slate-800 mt-2">
+                    Rp 0
+                </h4>
+
+                <span class="text-[8px]
+                             text-slate-500 font-semibold block mt-2">
+                    Monitoring aset gudang
+                </span>
+
             </div>
         </div>
+
+        <!-- CARD 2 -->
+        <div class="bg-cyan-50 border border-cyan-100 rounded-2xl px-4 py-4
+                    shadow-[0_3px_10px_rgba(0,0,0,0.06)]
+                    flex items-center gap-3 min-h-[95px]">
+
+            <div class="w-11 h-11 rounded-xl bg-cyan-100
+                        flex items-center justify-center shrink-0">
+                <i data-lucide="boxes"
+                   class="w-5 h-5 text-cyan-600"></i>
+            </div>
+
+            <div class="flex-1">
+
+                <p class="text-[9px] uppercase tracking-wide
+                          font-bold text-cyan-600">
+                    Total Sisa Stok
+                </p>
+
+                <h4 id="stat-total-stock"
+                    class="text-[16px] font-extrabold
+                           text-slate-800 mt-2">
+                    0 Unit
+                </h4>
+
+                <span class="text-[8px]
+                             text-slate-500 font-semibold block mt-2">
+                    Persediaan bahan aktif
+                </span>
+
+            </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="bg-rose-50 border border-rose-100 rounded-2xl px-4 py-4
+                    shadow-[0_3px_10px_rgba(0,0,0,0.06)]
+                    flex items-center gap-3 min-h-[95px]">
+
+            <div class="w-11 h-11 rounded-xl bg-rose-100
+                        flex items-center justify-center shrink-0">
+                <i data-lucide="package-x"
+                   class="w-5 h-5 text-rose-600"></i>
+            </div>
+
+            <div class="flex-1">
+
+                <p class="text-[9px] uppercase tracking-wide
+                          font-bold text-rose-600">
+                    Stok Habis
+                </p>
+
+                <h4 id="stat-empty-items"
+                    class="text-[16px] font-extrabold
+                           text-slate-800 mt-2">
+                    0 Item
+                </h4>
+
+                <span class="text-[8px]
+                             text-slate-500 font-semibold block mt-2">
+                    Membutuhkan restock
+                </span>
+
+            </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="bg-amber-50 border border-amber-100 rounded-2xl px-4 py-4
+                    shadow-[0_3px_10px_rgba(0,0,0,0.06)]
+                    flex items-center gap-3 min-h-[95px]">
+
+            <div class="w-11 h-11 rounded-xl bg-amber-100
+                        flex items-center justify-center shrink-0">
+                <i data-lucide="alert-triangle"
+                   class="w-5 h-5 text-amber-600"></i>
+            </div>
+
+            <div class="flex-1">
+
+                <p class="text-[9px] uppercase tracking-wide
+                          font-bold text-amber-600">
+                    Stok Menipis
+                </p>
+
+                <h4 id="stat-low-items"
+                    class="text-[16px] font-extrabold
+                           text-slate-800 mt-2">
+                    0 Item
+                </h4>
+
+                <span class="text-[8px]
+                             text-slate-500 font-semibold block mt-2">
+                    Perlu pengecekan
+                </span>
+
+            </div>
+        </div>
+
+        <!-- CARD 5 -->
+        <div class="bg-emerald-50 border border-emerald-100 rounded-2xl px-4 py-4
+                    shadow-[0_3px_10px_rgba(0,0,0,0.06)]
+                    flex items-center gap-3 min-h-[95px]">
+
+            <div class="w-11 h-11 rounded-xl bg-emerald-100
+                        flex items-center justify-center shrink-0">
+                <i data-lucide="flask-conical"
+                   class="w-5 h-5 text-emerald-600"></i>
+            </div>
+
+            <div class="flex-1">
+
+                <p class="text-[9px] uppercase tracking-wide
+                          font-bold text-emerald-600">
+                    Total Jenis Bahan
+                </p>
+
+                <h4 id="stat-jenis-count"
+                    class="text-[16px] font-extrabold
+                           text-slate-800 mt-2">
+                    0 Jenis
+                </h4>
+
+                <span class="text-[8px]
+                             text-slate-500 font-semibold block mt-2">
+                    Data gudang aktif
+                </span>
+
+            </div>
+        </div>
+
+    </div>
+</div>
 
         <!-- FILTER ACTION BAR -->
         <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex-shrink-0">
@@ -614,4 +769,24 @@
 
     document.addEventListener("DOMContentLoaded", initSistemGudangUtama);
 </script>
+
+<script>
+    function realtimeTanggalGudang() {
+        const waktu = new Date();
+
+        const format = {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        };
+
+        document.getElementById('realtime-date-badge').innerHTML =
+            waktu.toLocaleDateString('id-ID', format);
+    }
+
+    realtimeTanggalGudang();
+    setInterval(realtimeTanggalGudang, 1000);
+</script>
+
 @endsection
