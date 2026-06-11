@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController; // BARU: Memanggil jembatan Dashboard Controller
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\StatusProgressController;
+use App\Http\Controllers\ReservationController;
 
 // Rute Halaman Depan Awalan Website
 Route::get('/', function () { return view('welcome'); });
@@ -17,8 +18,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Semua Rute Menu Utama & Transaksi Dashboard Carwash
-    Route::get('/dashboard', function () { return view('dashboard', ['layananSelesai' => 0,'totalPelanggan' => 0,'antreanAktif' => collect([]),]);})->name('dashboard');
+    // ==========================================================================
+    // PERBAIKAN UTAMA: Jalur Menu Dashboard Dialihkan ke DashboardController@index
+    // ==========================================================================
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Semua Rute Menu Utama & Transaksi Dashboard Carwash Nyata
     Route::get('/status-progres', function () { return view('status-progress'); })->name('status-progress.index');
     Route::get('/booking-calendar', function () { return view('booking-calendar'); })->name('booking.calendar');
     Route::get('/input-transaksi', function () { return view('transaksi.input-transaksi'); })->name('input.transaksi');

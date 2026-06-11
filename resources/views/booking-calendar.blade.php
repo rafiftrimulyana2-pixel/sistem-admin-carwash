@@ -6,16 +6,19 @@
 
 <style>
     /* ==========================================================================
-       1. ANTIDOTE SAKTI: Memulihkan Scroll Bar Sidebar & Menyamakan dengan Dashboard
+       1. ANTIDOTE SAKTI: Mengunci Font & Memulihkan Layout Sidebar Workspace
        ========================================================================== */
-    /* Mengembalikan izin tampil scrollbar asli untuk menu navigasi admin di sisi kiri */
-    html, body, main, #app, .content-wrapper {
-        overflow: auto !important;
-        height: auto !important;
-        scrollbar-width: auto !important; /* Untuk browser Firefox */
+    /* Kita kunci font Inter secara merata agar area sidebar luar ikut rapi & serasi */
+    * {
+        font-family: 'Inter', sans-serif;
     }
-    html::-webkit-scrollbar, body::-webkit-scrollbar {
-        display: block !important; /* Untuk Google Chrome & Windows 11 */
+
+    /* Membatasi aturan scrollbar ini agar hanya bekerja di area konten kanan, tidak meluber merusak sidebar */
+    .kalender-right-panel, .kalender-right-panel * {
+        scrollbar-width: auto !important;
+    }
+    .kalender-right-panel::-webkit-scrollbar {
+        display: block !important;
         width: 8px !important;
     }
 

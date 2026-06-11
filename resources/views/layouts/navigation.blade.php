@@ -1,19 +1,16 @@
-<aside class="w-64 bg-white border-r border-slate-100 h-screen flex flex-col shadow-sm fixed left-0 top-0 font-sans">
+<aside class="w-64 bg-white border-r border-slate-100 h-screen flex flex-col shadow-sm fixed left-0 top-0 font-sans z-50">
 
-    <!-- Logo Section - Jarak teks ADMIN disesuaikan agar elegan & berjarak pas -->
     <div class="px-8 pt-8 pb-3 border-b border-slate-50 flex items-center justify-center shrink-0">
         <div class="font-black text-blue-600 text-lg tracking-widest uppercase flex items-center gap-3">
             <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-blue-200 shadow-lg">
-                <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+                <i data-lucide="shield-check" class="w-5 h-5 text-white" style="width: 20px; height: 20px;"></i>
             </div>
             <span class="text-slate-800 font-extrabold">ADMIN</span>
         </div>
     </div>
 
-    <!-- Container Menu - Scrollable tapi tanpa scrollbar -->
     <div class="flex-1 px-2 py-3 space-y-4 overflow-y-auto no-scrollbar">
 
-        <!-- KATEGORI MENU -->
         <div>
             <p class="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-slate-300 mb-3">Menu Utama</p>
             <div class="space-y-1">
@@ -22,15 +19,16 @@
                     ['route' => 'status-progress.index', 'label' => 'Status Progress', 'icon' => 'loader-2'],
                     ['route' => 'booking.calendar', 'label' => 'Booking Calendar', 'icon' => 'calendar-days']
                 ] as $menu)
-                <a href="{{ route($menu['route']) }}" class="{{ request()->routeIs($menu['route']) ? 'bg-blue-600 text-white shadow-lg shadow-blue-200 font-bold' : 'text-slate-500 hover:bg-blue-50 font-semibold' }} flex items-center px-4 py-3 rounded-xl transition-all duration-200">
-                    <i data-lucide="{{ $menu['icon'] }}" class="w-5 h-5 mr-3"></i>
+                {{-- Menghapus durasi transisi berlebih pada background link saat reload halaman --}}
+                <a href="{{ route($menu['route']) }}" class="{{ request()->routeIs($menu['route']) ? 'bg-blue-600 text-white shadow-lg shadow-blue-200 font-bold' : 'text-slate-500 hover:bg-blue-50 font-semibold' }} flex items-center px-4 py-3 rounded-xl transition-colors duration-100">
+                    {{-- Mengunci ukuran wadah SVG luar agar tidak melompat sebelum Lucide terbuat --}}
+                    <i data-lucide="{{ $menu['icon'] }}" class="w-5 h-5 mr-3 shrink-0" style="width: 20px; height: 20px; display: inline-block;"></i>
                     <span class="text-xs">{{ $menu['label'] }}</span>
                 </a>
                 @endforeach
             </div>
         </div>
 
-        <!-- TRANSAKSI -->
         <div>
             <p class="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-slate-300 mb-3">Transaksi</p>
             <div class="space-y-1">
@@ -39,15 +37,14 @@
                     ['route' => 'riwayat.servis', 'label' => 'Riwayat Servis', 'icon' => 'history'],
                     ['route' => 'laporan.pendapatan', 'label' => 'Laporan Pendapatan', 'icon' => 'pie-chart']
                 ] as $menu)
-                <a href="{{ route($menu['route']) }}" class="{{ request()->routeIs($menu['route']) ? 'bg-blue-600 text-white shadow-lg shadow-blue-200 font-bold' : 'text-slate-500 hover:bg-blue-50 font-semibold' }} flex items-center px-4 py-3 rounded-xl transition-all duration-200">
-                    <i data-lucide="{{ $menu['icon'] }}" class="w-5 h-5 mr-3"></i>
+                <a href="{{ route($menu['route']) }}" class="{{ request()->routeIs($menu['route']) ? 'bg-blue-600 text-white shadow-lg shadow-blue-200 font-bold' : 'text-slate-500 hover:bg-blue-50 font-semibold' }} flex items-center px-4 py-3 rounded-xl transition-colors duration-100">
+                    <i data-lucide="{{ $menu['icon'] }}" class="w-5 h-5 mr-3 shrink-0" style="width: 20px; height: 20px; display: inline-block;"></i>
                     <span class="text-xs">{{ $menu['label'] }}</span>
                 </a>
                 @endforeach
             </div>
         </div>
 
-        <!-- MANAJEMEN -->
         <div>
             <p class="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-slate-300 mb-3">Manajemen</p>
             <div class="space-y-1">
@@ -55,8 +52,8 @@
                     ['route' => 'jadwal.mekanik', 'label' => 'Jadwal Mekanik', 'icon' => 'users'],
                     ['route' => 'stok.bahan', 'label' => 'Stok Bahan', 'icon' => 'package']
                 ] as $menu)
-                <a href="{{ route($menu['route']) }}" class="{{ request()->routeIs($menu['route']) ? 'bg-blue-600 text-white shadow-lg shadow-blue-200 font-bold' : 'text-slate-500 hover:bg-blue-50 font-semibold' }} flex items-center px-4 py-3 rounded-xl transition-all duration-200">
-                    <i data-lucide="{{ $menu['icon'] }}" class="w-5 h-5 mr-3"></i>
+                <a href="{{ route($menu['route']) }}" class="{{ request()->routeIs($menu['route']) ? 'bg-blue-600 text-white shadow-lg shadow-blue-200 font-bold' : 'text-slate-500 hover:bg-blue-50 font-semibold' }} flex items-center px-4 py-3 rounded-xl transition-colors duration-100">
+                    <i data-lucide="{{ $menu['icon'] }}" class="w-5 h-5 mr-3 shrink-0" style="width: 20px; height: 20px; display: inline-block;"></i>
                     <span class="text-xs">{{ $menu['label'] }}</span>
                 </a>
                 @endforeach
@@ -65,12 +62,11 @@
 
     </div>
 
-    <!-- KATEGORI LOGOUT - Ditempatkan presisi di bawah container menu utama -->
     <div class="p-2 border-t border-slate-50 shrink-0">
         <form method="POST" action="{{ route('logout') }}" class="m-0">
             @csrf
-            <button type="submit" class="w-full text-rose-500 hover:bg-rose-50 flex items-center px-4 py-3 rounded-xl transition-all duration-200 font-bold">
-                <i data-lucide="log-out" class="w-5 h-5 mr-3"></i>
+            <button type="submit" class="w-full text-rose-500 hover:bg-rose-50 flex items-center px-4 py-3 rounded-xl transition-all duration-100 font-bold">
+                <i data-lucide="log-out" class="w-5 h-5 mr-3 shrink-0" style="width: 20px; height: 20px;"></i>
                 <span class="text-xs">Keluar Sistem</span>
             </button>
         </form>
@@ -86,7 +82,7 @@
         display: none !important;
     }
 
-    /* Kunci layar utama agar tidak ada scrollbar browser */
+    /* Kunci layar utama agar tidak ada jepretan scrollbar browser */
     html, body {
         overflow: hidden !important;
         height: 100vh !important;
@@ -95,5 +91,6 @@
 
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
+    /* Mengaktifkan ikon secara instan sebelum browser memproses rendering layout berat */
     lucide.createIcons();
 </script>

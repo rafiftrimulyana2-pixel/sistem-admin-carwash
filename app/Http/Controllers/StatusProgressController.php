@@ -3,28 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Transaksi; // Menembak ke database yang sama
 
 class StatusProgressController extends Controller
 {
     public function index()
     {
-        // Data contoh agar tampilan tidak kosong
-        $antreanAktif = [
-            (object)[
-                'nama_pelanggan' => 'Budi Santoso',
-                'plat_nomor' => 'B 1234 ABC',
-                'jenis_paket' => 'Premium Wash',
-                'progres' => 75,
-                'status' => 'Sedang Dikerjakan'
-            ],
-            (object)[
-                'nama_pelanggan' => 'Andi Wijaya',
-                'plat_nomor' => 'D 8899 XYZ',
-                'jenis_paket' => 'Regular Wash',
-                'progres' => 30,
-                'status' => 'Menunggu Antrean'
-            ]
-        ];
+        // Ambil data kendaraan yang statusnya masih antri atau sedang dicuci
+        // Dimulai dari kosong (0) sebelum kasir menginput data
+        $antreanAktif = Transaksi::where('status', '!=', 'READY')
+            ->where('status', '!=', 'FINISH')
+            ->orderBy('created_at', 'asc')
+            ->get();
 
         return view('status-progress', compact('antreanAktif'));
     }

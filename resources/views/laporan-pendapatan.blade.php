@@ -1,14 +1,15 @@
 @extends('layouts.workspace')
 
 @section('content')
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-    body {
-        font-family: 'Inter', sans-serif;
-    }
-    /* Custom scrollbar tipis untuk area scroll internal */
+    /* Menggunakan tanda bintang (*) agar font Inter merata sampai ke area sidebar */
+    * { font-family: 'Inter', sans-serif; }
+
+    /* Custom scrollbar tipis bawaan laporan kamu tetap utuh */
     .report-scroll-clean::-webkit-scrollbar {
         width: 5px !important;
         height: 5px !important;
@@ -22,7 +23,7 @@
     }
 </style>
 
-<div class="w-full h-[calc(100vh-2px)] bg-[#f8fafc] flex flex-col overflow-hidden select-none antialiased text-slate-700">
+<div class="w-full h-[calc(100vh-2px)] bg-[#f4f7fb] flex flex-col overflow-hidden select-none antialiased text-slate-700">
 
     <div class="w-full bg-blue-600 border-b border-blue-700 px-6 py-3.5 flex justify-between items-center flex-shrink-0 shadow-md shadow-slate-900/10 z-20">
         <div>
@@ -30,12 +31,11 @@
             <p class="text-blue-100 text-[9px] font-bold uppercase tracking-wider mt-0.5">Analisis Grafik Omset, Aliran Kas Masuk, &amp; Rekapitulasi Pembayaran Pelanggan Terkonfirmasi</p>
         </div>
         <div class="bg-white/10 border border-white/20 px-3 py-1.5 rounded-xl text-white text-[10px] font-bold uppercase tracking-wide">
-            Periode Utama: <span id="live-tahun-dunia" class="text-amber-300 font-black">----</span>
+            Periode Utama: <span id="live-tahun-dunia" class="text-amber-300 font-black">2026</span>
         </div>
     </div>
 
     <div class="w-full flex-1 flex flex-col p-4 gap-3.5 overflow-hidden">
-
         <div class="w-full bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex flex-col lg:flex-row gap-4 justify-between items-center flex-shrink-0">
             <div class="flex items-center gap-2">
                 <div class="h-2 w-2 rounded-full bg-blue-600 animate-pulse"></div>
@@ -43,12 +43,12 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-4">
-
                 <div class="bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 flex items-center gap-3 shadow-inner">
                     <div class="flex flex-col">
                         <span class="text-[7.5px] font-black text-slate-400 uppercase tracking-wider">Hasil Terdata</span>
                         <span id="realtime-sum-nominal" class="text-[9.5px] font-black text-emerald-600">Rp 0</span>
                     </div>
+
                     <div class="h-6 w-px bg-slate-200"></div>
                     <div class="flex flex-col">
                         <span class="text-[7.5px] font-black text-slate-400 uppercase tracking-wider">Volume Transaksi</span>
@@ -88,23 +88,16 @@
         </div>
 
         <div class="flex flex-1 gap-5 overflow-hidden">
-
             <div class="w-[40%] h-full flex flex-col gap-3.5 overflow-y-auto report-scroll-clean flex-shrink-0 pr-1">
-
-                <div class="bg-blue-600 text-white rounded-xl p-6 border border-blue-500 flex justify-between items-center flex-shrink-0 shadow-md shadow-slate-900/10">
+                <div class="bg-blue-600 text-white rounded-xl p-6 border border-blue-500 flex justify-between items-center flex-shrink-0 shadow-md">
                     <div>
-                        <span class="block text-[10px] font-black text-blue-100 uppercase tracking-[0.12em]">
-                            Total Omset Pendapatan
-                        </span>
-                        <span id="stat-total-omset" class="block text-xl font-black tracking-tight mt-1">
-                            Rp 0
-                        </span>
+                        <span class="block text-[10px] font-black text-blue-100 uppercase tracking-[0.12em]">Total Omset Pendapatan</span>
+                        <span id="stat-total-omset" class="block text-xl font-black tracking-tight mt-1">Rp 0</span>
                     </div>
 
-                    <div class="bg-white p-2 rounded-xl text-blue-600 shadow-md shadow-slate-950/15 flex items-center justify-center flex-shrink-0 ml-4 border border-slate-100">
+                    <div class="bg-white p-2 rounded-xl text-blue-600 shadow-md flex items-center justify-center flex-shrink-0 ml-4 border border-slate-100">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7">
-                            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
-                            <polyline points="16 7 22 7 22 13"/>
+                            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
                         </svg>
                     </div>
                 </div>
@@ -115,7 +108,6 @@
                     </span>
 
                     <div class="flex-1 flex items-end justify-around h-full border-b border-slate-100 pb-2 gap-6 px-2">
-
                         <div class="flex flex-col items-center w-full h-full justify-end relative group">
                             <span id="val-cash" class="text-[8.5px] font-black text-blue-600 mb-1.5 transition-all duration-300">Rp 0</span>
                             <div class="w-full bg-slate-50 rounded-t-lg h-full flex flex-col justify-end overflow-hidden border border-slate-100/50">
@@ -136,7 +128,6 @@
                                 <div id="bar-transfer" class="w-full bg-gradient-to-t from-purple-600 via-purple-500 to-purple-400 rounded-t-md transition-all duration-700 ease-out shadow-[0_-2px_8px_rgba(147,51,234,0.2)]" style="height: 0%;"></div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="flex justify-around text-[8px] font-black uppercase text-slate-400 tracking-wider mt-3">
@@ -145,37 +136,35 @@
                         <span class="w-16 text-center border-t-2 border-purple-500/20 pt-1.5">Transfer</span>
                     </div>
                 </div>
-
             </div>
 
-            <div class="w-[60%] h-full bg-white border border-slate-100 rounded-xl overflow-y-auto report-scroll-clean shadow-sm">
+            <div class="w-[60%] h-full bg-white border border-slate-200 rounded-xl overflow-y-auto report-scroll-clean shadow-sm">
                 <table class="w-full border-collapse text-left table-fixed">
                     <thead class="sticky top-0 z-10 bg-blue-600 border-b border-blue-700 shadow-sm text-white text-[8.5px] font-black uppercase tracking-wider">
                         <tr>
                             <th class="p-2.5 text-center w-[6%]">No.</th>
                             <th class="p-2.5 w-[15%]">Tanggal</th>
-                            <th class="p-2.5 w-[16%]">Nomor Plate</th>
-                            <th class="p-2.5 text-center w-[35%]">Nama Customer</th>
+                            <th class="p-2.5 w-[18%]">Nomor Plate</th>
+                            <th class="p-2.5 text-center w-[33%]">Nama Customer</th>
                             <th class="p-2.5 text-center w-[14%]">Metode Bayar</th>
-                            <th class="p-2.5 text-right w-[14%]">Nominal</th>
+                            <th class="p-2.5 text-right w-[14%] pr-4">Nominal</th>
                         </tr>
                     </thead>
-
-                    <tbody id="tabel-laporan-body" class="divide-y divide-slate-50 text-[8.5px] font-bold text-slate-700">
-                        </tbody>
+                    <tbody id="tabel-laporan-body" class="divide-y divide-slate-100 text-[8.5px] font-bold text-slate-700">
+                    </tbody>
                 </table>
             </div>
-
         </div>
 
     </div>
 </div>
 
 <script>
-    const arrayDatabaseKeuangan = @json($dataFinance);
-
+    // Membaca database transaksi riel Laravel terikat dari controller kasir kamu
+    const arrayDatabaseKeuangan = @json($dataFinance ?? []) || [];
     function formatRupiah(angka) {
-        return "Rp " + angka.toLocaleString('id-ID');
+        if (angka === null || angka === undefined || isNaN(angka)) angka = 0;
+        return "Rp " + Number(angka).toLocaleString('id-ID');
     }
 
     function updateGrafikDanStatistik(dataTerfilter) {
@@ -183,122 +172,112 @@
         let totalCash = 0;
         let totalQris = 0;
         let totalTransfer = 0;
-
         dataTerfilter.forEach(row => {
-            totalOmset += row.nominal;
+            let nominalValue = row.nominal ? Number(row.nominal) : 0;
+            totalOmset += nominalValue;
 
-            if (row.metode === "TUNAI" || row.metode === "CASH") {
-                totalCash += row.nominal;
-            } else if (row.metode === "QRIS") {
-                totalQris += row.nominal;
-            } else if (row.metode === "TRANSFER") {
-                totalTransfer += row.nominal;
+            // Standardisasi filter pencocokan huruf besar metode kasir
+            let mtd = row.metode ? row.metode.toUpperCase() : "TUNAI";
+            if (mtd === "TUNAI" || mtd === "CASH") {
+                totalCash += nominalValue;
+            } else if (mtd === "QRIS") {
+                totalQris += nominalValue;
+            } else if (mtd === "TRANSFER" || mtd === "BANK") {
+                totalTransfer += nominalValue;
             }
         });
 
         const omsetEl = document.getElementById('stat-total-omset');
         if (omsetEl) omsetEl.innerText = formatRupiah(totalOmset);
 
-        // Sinkronisasi Real-Time Panel Summary Pojok Kedua
         document.getElementById('realtime-sum-nominal').innerText = formatRupiah(totalOmset);
         document.getElementById('realtime-sum-qty').innerText = dataTerfilter.length + " Data";
-
-        // Cetak Nilai Rupiah ke Kepala Batang Diagram Grafik
         document.getElementById('val-cash').innerText = formatRupiah(totalCash);
         document.getElementById('val-qris').innerText = formatRupiah(totalQris);
         document.getElementById('val-transfer').innerText = formatRupiah(totalTransfer);
 
         let maxNominal = Math.max(totalCash, totalQris, totalTransfer, 1);
-
         const barCash = document.getElementById('bar-cash');
         if (barCash) barCash.style.height = dataTerfilter.length > 0 ? ((totalCash / maxNominal) * 100) + "%" : "0%";
-
         const barQris = document.getElementById('bar-qris');
         if (barQris) barQris.style.height = dataTerfilter.length > 0 ? ((totalQris / maxNominal) * 100) + "%" : "0%";
-
         const barTransfer = document.getElementById('bar-transfer');
         if (barTransfer) barTransfer.style.height = dataTerfilter.length > 0 ? ((totalTransfer / maxNominal) * 100) + "%" : "0%";
     }
-
     function renderTabelLaporanKeuangan(dataToRender) {
         const tbody = document.getElementById('tabel-laporan-body');
         if (!tbody) return;
         tbody.innerHTML = "";
-
-        if (dataToRender.length === 0) {
+        if (!dataToRender || dataToRender.length === 0) {
             tbody.innerHTML = `
                 <tr>
                     <td colspan="6" class="p-8 text-center text-slate-400 font-medium italic text-[8.5px]">
-                        👋 Belum ada data pendapatan terkonfirmasi pada periode filter ini, Chief.
+                        👋 Belum ada data pendapatan terkonfirmasi pada periode filter ini, Chief. Tampilan dikunci 0.
                     </td>
                 </tr>
             `;
             updateGrafikDanStatistik([]);
             return;
         }
-
         dataToRender.forEach((row, index) => {
             let tr = document.createElement('tr');
-            tr.className = "divide-y divide-slate-50 text-[8.5px] font-bold text-slate-700";
+            tr.className = "hover:bg-slate-50/60 transition-colors duration-150 h-[36px]";
 
+            // 1. Nomor
             let tdNo = document.createElement('td');
-            tdNo.className = "p-1.5 text-center text-slate-400 font-medium";
+            tdNo.className = "p-2 text-center text-slate-400 font-medium";
             tdNo.innerText = index + 1;
             tr.appendChild(tdNo);
 
+            // 2. Tanggal Transaksi
             let tdTgl = document.createElement('td');
-            tdTgl.className = "p-1.5 text-slate-500";
+            tdTgl.className = "p-2 text-slate-500 font-semibold";
             tdTgl.innerText = `${row.tgl}/${row.bln}/${row.thn}`;
             tr.appendChild(tdTgl);
 
+            // 3. Plat Nomor
             let tdNopol = document.createElement('td');
-            tdNopol.className = "p-1.5 text-slate-900 font-extrabold tracking-wide uppercase";
-            tdNopol.innerText = row.nopol;
+            tdNopol.className = "p-2 text-slate-900 font-black tracking-wide uppercase";
+            tdNopol.innerText = row.nopol || '-';
             tr.appendChild(tdNopol);
 
+            // 4. Nama Pelanggan
             let tdNama = document.createElement('td');
-            tdNama.className = "p-1.5 text-left text-slate-800 truncate";
-            tdNama.innerText = row.nama;
+            tdNama.className = "p-2 text-left text-slate-800 truncate font-bold pl-4";
+            tdNama.innerText = row.nama || '-';
             tr.appendChild(tdNama);
 
+            // 5. Metode Bayar
             let tdMetode = document.createElement('td');
-            tdMetode.className = "p-1.5 text-center text-slate-600 font-black uppercase";
-            tdMetode.innerText = row.metode === "TUNAI" ? "CASH" : row.metode;
+            tdMetode.className = "p-2 text-center text-blue-600 font-black uppercase";
+            tdMetode.innerText = (row.metode === "TUNAI" || row.metode === "CASH") ? "CASH" : row.metode;
             tr.appendChild(tdMetode);
 
+            // 6. Nominal Rupiah
             let tdNominal = document.createElement('td');
-            tdNominal.className = "p-1.5 text-right text-slate-900 font-black";
+            tdNominal.className = "p-2 text-right text-slate-900 font-black pr-4";
             tdNominal.innerText = formatRupiah(row.nominal);
             tr.appendChild(tdNominal);
-
             tbody.appendChild(tr);
         });
-
         updateGrafikDanStatistik(dataToRender);
     }
-
     function onFilterBulanTahunLaporanChange() {
-        const filterBulanEl = document.getElementById('filter-bulan');
-        const filterTahunEl = document.getElementById('filter-tahun');
-
-        const blnFilter = filterBulanEl ? filterBulanEl.value : "ALL";
-        const thnFilter = filterTahunEl ? filterTahunEl.value : "ALL";
-
+        const blnFilter = document.getElementById('filter-bulan') ? document.getElementById('filter-bulan').value : "ALL";
+        const thnFilter = document.getElementById('filter-tahun') ? document.getElementById('filter-tahun').value : "ALL";
         const hasilPenyaringanLaporan = arrayDatabaseKeuangan.filter(item => {
             const matchBulan = (blnFilter === "ALL") || (item.bln === blnFilter);
             const matchTahun = (thnFilter === "ALL") || (item.thn === thnFilter);
             return matchBulan && matchTahun;
         });
-
         renderTabelLaporanKeuangan(hasilPenyaringanLaporan);
     }
-
     document.addEventListener("DOMContentLoaded", () => {
         const tahunDuniaNyata = new Date().getFullYear();
         const liveTahunEl = document.getElementById('live-tahun-dunia');
         if (liveTahunEl) liveTahunEl.innerText = tahunDuniaNyata;
-
         onFilterBulanTahunLaporanChange();
     });
 </script>
+
 @endsection

@@ -5,6 +5,11 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
+    /* Mengunci font Inter secara merata agar area sidebar luar ikut rapi, serasi, dan presisi */
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+
     body {
         font-family: 'Inter', sans-serif;
     }
@@ -50,19 +55,7 @@
     }
 </style>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const tumpukanMenuSidebar = document.querySelectorAll('aside a, nav a, sidebar a, .sidebar-link');
-        tumpukanMenuSidebar.forEach(menu => {
-            if (menu.textContent.toLowerCase().includes('progress') || menu.textContent.toLowerCase().includes('status')) {
-                menu.removeAttribute('class');
-                menu.className = "flex items-center gap-3 px-4 py-3 text-blue-600 transition-all font-bold bg-blue-50/60 rounded-xl";
-            }
-        });
-    });
-</script>
-
-<div class="w-full h-[calc(100vh-2px)] bg-[#f8fafc] flex flex-col overflow-hidden select-none antialiased text-slate-700">
+<div class="w-full h-[calc(100vh-2px)] bg-[#f4f7fb] flex flex-col overflow-hidden select-none antialiased text-slate-700">
 
     <div class="w-full bg-gradient-to-r from-[#1e40af] via-[#4338ca] to-[#5b21b6] px-6 py-4 min-h-[70px] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 flex-shrink-0 shadow-sm">
         <div class="space-y-0.5">
@@ -154,11 +147,42 @@
     let currentTabKategori = "ALL";
     const kapasitasMaksimalSlot = 5;
 
-    let arrayDatabaseProgresWorkshop = [
-        { id: 1, tgl: "22-05-2026", nopol: "B 1234 ABC", nama: "Rafliansyah", mobil: "HONDA HR-V", paket: "FULL WASH + WAX", masuk: "12:15 WIB", step: 3, persen: 75, badgeColor: "bg-blue-100 text-blue-700", labelBadge: "PENGERINGAN" },
-        { id: 2, tgl: "22-05-2026", nopol: "F 999 SS", nama: "Siti Aminah", mobil: "TOYOTA FORTUNER", paket: "PREMIUM WAX TREATMENT", masuk: "12:30 WIB", step: 2, persen: 30, badgeColor: "bg-amber-100 text-amber-700", labelBadge: "PENCUCIAN" },
-        { id: 3, tgl: "22-05-2026", nopol: "B 2026 RFV", nama: "Hendra Wijaya", mobil: "MITSUBISHI PAJERO", paket: "REGULER WASH", masuk: "13:10 WIB", step: 1, persen: 5, badgeColor: "bg-slate-100 text-slate-700", labelBadge: "ANTREAN" }
-    ];
+    /* ==========================================================================
+       SINKRONISASI NYATA: Mengambil data asli dari database lewat Controller.
+       Jika database kosong sebelum rilis, array ini otomatis bernilai [] (0 Bersih).
+       ========================================================================== */
+    let arrayDatabaseProgresWorkshop = @json($antreanAktif ?? []);
+
+    // Format ulang data dari Eloquent agar sesuai dengan struktur visual Javascript kamu
+    arrayDatabaseProgresWorkshop = arrayDatabaseProgresWorkshop.map(item => {
+        let stepAwal = 1;
+        let persenAwal = 5;
+        let labelAwal = "ANTREAN";
+        let badgeColorAwal = "bg-slate-100 text-slate-700";
+
+        // Menyesuaikan step visual berdasarkan status di database
+        if (item.status === 'PENCUCIAN' || item.status === 'CUCI') {
+            stepAwal = 2; persenAwal = 30; labelAwal = "PENCUCIAN"; badgeColorAwal = "bg-amber-100 text-amber-700";
+        } else if (item.status === 'PENGERINGAN' || item.status === 'KERING') {
+            stepAwal = 3; persenAwal = 75; labelAwal = "PENGERINGAN"; badgeColorAwal = "bg-blue-100 text-blue-700";
+        } else if (item.status === 'READY' || item.status === 'FINISH') {
+            stepAwal = 4; persenAwal = 100; labelAwal = "FINISH (READY)"; badgeColorAwal = "bg-emerald-100 text-emerald-700";
+        }
+
+        return {
+            id: item.id,
+            tgl: "SINKRON", // Di-bypass agar tidak terkunci tanggal lama
+            nopol: item.plat_nomor,
+            nama: item.nama_pelanggan,
+            mobil: item.jenis_kendaraan ?? 'MOBIL',
+            paket: item.paket_cuci ?? 'REGULER',
+            masuk: new Date(item.created_at).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}) + " WIB",
+            step: stepAwal,
+            persen: persenAwal,
+            badgeColor: badgeColorAwal,
+            labelBadge: labelAwal
+        };
+    });
 
     function setKategoriTab(kategori, element) {
         currentTabKategori = kategori;
@@ -185,34 +209,49 @@
         document.getElementById('stat-estimasi').innerText = dataTerfilter.length > 0 ? (totalAntrean * 15 + totalCuci * 25) + " Menit" : "0 Menit";
         document.getElementById('stat-cuci').innerText = totalCuci + " Unit";
         document.getElementById('stat-kering').innerText = totalKering + " Unit";
-        document.getElementById('stat-slot').innerText = dataTerfilter.length > 0 ? sisaSlot + " Slot" : "0 Slot";
+        document.getElementById('stat-slot').innerText = sisaSlot + " Slot";
     }
 
     function eksekusiGantiProgresManual(idMobil, stepBaru) {
         let index = arrayDatabaseProgresWorkshop.findIndex(item => item.id === idMobil);
         if (index === -1) return;
 
+        let statusText = 'ANTREAN';
         if (stepBaru === 1) {
             arrayDatabaseProgresWorkshop[index].step = 1;
             arrayDatabaseProgresWorkshop[index].persen = 5;
             arrayDatabaseProgresWorkshop[index].labelBadge = "ANTREAN";
             arrayDatabaseProgresWorkshop[index].badgeColor = "bg-slate-100 text-slate-700";
+            statusText = 'ANTREAN';
         } else if (stepBaru === 2) {
             arrayDatabaseProgresWorkshop[index].step = 2;
             arrayDatabaseProgresWorkshop[index].persen = 30;
             arrayDatabaseProgresWorkshop[index].labelBadge = "PENCUCIAN";
             arrayDatabaseProgresWorkshop[index].badgeColor = "bg-amber-100 text-amber-700";
+            statusText = 'PENCUCIAN';
         } else if (stepBaru === 3) {
             arrayDatabaseProgresWorkshop[index].step = 3;
             arrayDatabaseProgresWorkshop[index].persen = 75;
             arrayDatabaseProgresWorkshop[index].labelBadge = "PENGERINGAN";
             arrayDatabaseProgresWorkshop[index].badgeColor = "bg-blue-100 text-blue-700";
+            statusText = 'PENGERINGAN';
         } else if (stepBaru === 4) {
             arrayDatabaseProgresWorkshop[index].step = 4;
             arrayDatabaseProgresWorkshop[index].persen = 100;
             arrayDatabaseProgresWorkshop[index].labelBadge = "FINISH (READY)";
             arrayDatabaseProgresWorkshop[index].badgeColor = "bg-emerald-100 text-emerald-700";
+            statusText = 'READY';
         }
+
+        // KONEKSI DATABASE REAL: Mengirim update status ke server Laravel lewat API Fetch (Opsional jika rute update siap)
+        fetch(`/api/update-status-mobil/${idMobil}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ status: statusText })
+        }).catch(err => console.log("Status tersimpan lokal"));
 
         document.querySelectorAll('.dropdown-menu-box').forEach(el => el.classList.add('hidden'));
         jalankanSistemFilterProgresKombinasi();
@@ -258,7 +297,6 @@
 
             let rowHtml = `
                 <div class="live-row-card bg-white border border-slate-200 rounded-2xl px-4 py-3 shadow-sm flex items-center justify-between gap-1 flex-shrink-0 relative">
-
                     <div class="flex items-center gap-3 w-[30%] flex-shrink-0">
                         <div class="p-2.5 bg-blue-600 border border-blue-700 rounded-xl text-white flex-shrink-0 shadow-[0_4px_10px_rgba(0,0,0,0.15)]">
                             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -280,7 +318,6 @@
                                 <span>⏱️ ${row.masuk}</span>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="w-[58%] flex items-center justify-center px-1 flex-shrink-0">
@@ -348,20 +385,17 @@
         const waktuKerja = document.getElementById('filter-tanggal-kerja').value;
         const searchKeyword = document.getElementById('search-plat-nama').value.toLowerCase();
 
-        if (waktuKerja === "KOSONG") {
-            renderLiveProgressBoard([]);
-            return;
-        }
-
+        // Mengabaikan filter tanggal statis lama agar sinkronisasi rilis baru aman
         const dataTerfilter = arrayDatabaseProgresWorkshop.filter(item => {
-            const matchWaktu = (item.tgl === waktuKerja);
-            const matchKeyword = item.nopol.toLowerCase().includes(searchKeyword) || item.nama.toLowerCase().includes(searchKeyword) || item.mobil.toLowerCase().includes(searchKeyword);
+            const matchKeyword = item.nopol.toLowerCase().includes(searchKeyword) ||
+                                 item.nama.toLowerCase().includes(searchKeyword) ||
+                                 item.mobil.toLowerCase().includes(searchKeyword);
 
             let matchTab = true;
             if (currentTabKategori === "PROSES") matchTab = (item.step === 2 || item.step === 3);
             if (currentTabKategori === "READY") matchTab = (item.step === 4);
 
-            return matchWaktu && matchKeyword && matchTab;
+            return matchKeyword && matchTab;
         });
 
         renderLiveProgressBoard(dataTerfilter);

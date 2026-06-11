@@ -9,13 +9,12 @@ class TransaksiController extends Controller
 {
     public function create()
     {
-        // Memanggil file resources/views/transaksi/create.blade.php
         return view('transaksi.create');
     }
 
     public function store(Request $request)
     {
-        // Validasi data yang masuk
+        // 1. Validasi data input kasir
         $request->validate([
             'nama_pelanggan'    => 'required',
             'plat_nomor'        => 'required',
@@ -23,42 +22,39 @@ class TransaksiController extends Controller
             'paket_cuci'        => 'required',
         ]);
 
-        // 2. Simpan ke Database menggunakan Model Transaksi
-        \App\Models\Transaksi::create([
+        // 2. Simpan ke database nyata
+        Transaksi::create([
             'nama_pelanggan'  => $request->nama_pelanggan,
             'plat_nomor'      => $request->plat_nomor,
             'jenis_kendaraan' => $request->jenis_kendaraan,
             'paket_cuci'      => $request->paket_cuci,
-            'total_bayar'     => 45000, // Sementara dipatok dulu harganya
-            'status'          => 'antri',
+            'total_bayar'     => $request->paket_cuci == 'Premium Wash' ? 60000 : 45000, // Harga dinamis berdasarkan paket
+            'status'          => 'ANTRIAN', // Default status awal saat masuk kasir
         ]);
 
-        // 3. Balikkan ke halaman form dengan notifikasi sukses
-        return redirect()->back()->with('success', 'Transaksi berhasil tersimpan!');
+        // 3. Kembali dengan pesan sukses
+        return redirect()->back()->with('success', 'Transaksi berhasil tersimpan! Data berelasi otomatis ke seluruh sistem.');
     }
 
-    // 🔥 TAMBAHKAN FUNGSI INI DI BAGIAN BAWAH CONTROLLER KAMU 🔥
     public function laporan()
     {
-        // 1. Ambil data transaksi dari database yang statusnya sudah selesai/terkonfirmasi
-        // (Atau bisa pakai Transaksi::all() jika ingin menampilkan semua status)
+        // Mengambil seluruh data transaksi untuk laporan pendapatan
         $semuaTransaksi = Transaksi::orderBy('created_at', 'desc')->get();
 
-        // 2. Selaraskan nama kolom database kamu dengan variabel yang diminta oleh JavaScript Laporan
+        // Mapping data agar terbaca sempurna oleh grafik Javascript Laporan Pendapatan kamu
         $dataFinance = $semuaTransaksi->map(function($item) {
             return [
                 'tgl'      => date('d', strtotime($item->created_at)),
                 'bln'      => date('m', strtotime($item->created_at)),
                 'thn'      => date('Y', strtotime($item->created_at)),
-                'nopol'    => $item->plat_nomor,       // Menyesuaikan kolom 'plat_nomor' milikmu
-                'nama'     => $item->nama_pelanggan,   // Menyesuaikan kolom 'nama_pelanggan' milikmu
-                'metode'   => $item->metode_bayar ?? 'TUNAI', // Jika belum ada kolom metode di form, default ke TUNAI dulu
-                'nominal'  => (int)$item->total_bayar, // Menyesuaikan kolom 'total_bayar' milikmu (Rp 45.000)
-                'kategori' => $item->paket_cuci        // Menyesuaikan kolom 'paket_cuci' (reguler/premium/coating) untuk grafik
+                'nopol'    => $item->plat_nomor,
+                'nama'     => $item->nama_pelanggan,
+                'metode'   => $item->metode_bayar ?? 'TUNAI',
+                'nominal'  => (int)$item->total_bayar,
+                'kategori' => $item->paket_cuci
             ];
         });
 
-        // 3. Panggil file blade laporan pendapatan sambil melempar data asli ($dataFinance)
         return view('laporan-pendapatan', compact('dataFinance'));
     }
 }
