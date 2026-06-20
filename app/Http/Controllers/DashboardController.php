@@ -12,8 +12,7 @@ class DashboardController extends Controller
     public function index()
     {
         // 1. KOTAK 1 & TABEL BAWAH: Ambil antrean unit dari database yang belum selesai
-        $antreanAktif = Transaksi::where('status', '!=', 'READY')
-            ->where('status', '!=', 'FINISH')
+        $antreanAktif = Transaksi::whereNotIn('status', ['READY', 'FINISH'])
             ->orderBy('created_at', 'asc')
             ->get();
 

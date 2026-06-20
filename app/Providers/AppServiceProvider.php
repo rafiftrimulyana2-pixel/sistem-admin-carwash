@@ -23,10 +23,10 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function ($view) {
             if (auth()->check()) {
 
-        $stokKritis = collect([
-            (object)['nama_bahan' => 'Sabun Wax (Contoh)', 'stok' => 2],
-            (object)['nama_bahan' => 'Semir Ban (Contoh)', 'stok' => 4]
-        ]);
+        // Jika model Stok belum ada, gunakan ini agar sistem tetap aman
+        $stokKritis = class_exists('\App\Models\Stok')
+            ? \App\Models\Stok::where('stok', '<=', 5)->get()
+            : collect([]);
         $view->with('stokKritis', $stokKritis);
             }
         });

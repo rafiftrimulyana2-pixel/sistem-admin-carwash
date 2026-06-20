@@ -11,8 +11,7 @@ class StatusProgressController extends Controller
     {
         // Ambil data kendaraan yang statusnya masih antri atau sedang dicuci
         // Dimulai dari kosong (0) sebelum kasir menginput data
-        $antreanAktif = Transaksi::where('status', '!=', 'READY')
-            ->where('status', '!=', 'FINISH')
+        $antreanAktif = Transaksi::whereNotIn('status', ['READY', 'FINISH'])
             ->orderBy('created_at', 'asc')
             ->get();
 
