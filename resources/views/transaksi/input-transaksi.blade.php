@@ -381,54 +381,73 @@
        tanpa merusak halaman / tanpa stuck loading putih.
        ========================================================================== */
     function eksekusiSimpanTransaksi() {
-        const form = document.getElementById('main-form-transaksi');
+    const form = document.getElementById('main-form-transaksi');
 
-        if (!document.getElementById('input-nopol').value || !document.getElementById('input-mobil').value || !document.getElementById('input-nama').value || !document.getElementById('input-wa').value) {
-            alert("Harap isi semua informasi Identitas Pelanggan terlebih dahulu, Chief!"); return;
-        }
-        if (paketTerpilihNama === "") { alert("Pilih salah satu Paket Cuci Utama terlebih dahulu, Chief!"); return; }
-        if (metodeTerpilih === 'TUNAI' && (parseInt(document.getElementById('cash-input-bayar').value) || 0) < globalTotalAkhir) {
-            alert("Nominal uang cash kurang dari total biaya transaksi, Chief!"); return;
-        }
+    // 1. Validasi Total Akhir
+    if (globalTotalAkhir <= 0) {
+        alert("Total transaksi masih Rp 0. Pilih paket terlebih dahulu, Chief!");
+        return;
+    }
 
-        // Tampilkan pop-up sukses
+    // 2. Validasi Identitas Pelanggan (Semua kolom wajib diisi)
+    const nopol = document.getElementById('input-nopol').value;
+    const mobil = document.getElementById('input-mobil').value;
+    const nama = document.getElementById('input-nama').value;
+    const wa = document.getElementById('input-wa').value;
+
+    if (!nopol || !mobil || !nama || !wa) {
+        alert("Mohon lengkapi semua data identitas pelanggan, Chief!");
+        return;
+    }
+
+    // 3. Validasi Pembayaran Tunai
+    const uangBayar = parseInt(document.getElementById('cash-input-bayar').value) || 0;
+    if (metodeTerpilih === 'TUNAI' && uangBayar < globalTotalAkhir) {
+        alert("Nominal uang cash (" + formatRupiah(uangBayar) + ") kurang dari total biaya (" + formatRupiah(globalTotalAkhir) + ")!");
+        return;
+    }
+
+    // 4. Proses Pengiriman Data
+    document.getElementById('popup-sukses').classList.remove('hidden');
+    document.getElementById('popup-overlay').classList.remove('hidden');
+
+    let dataFormulir = new FormData(form);
+
+    fetch("{{ route('input.transaksi') }}", {
+    method: 'POST',
+    body: dataFormulir,
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+    }
+})
+.then(response => response.json()) // Langsung ambil JSON
+.then(data => {
+    if (data.success) {
+        // BERHASIL: Jalankan logika reset form kamu di sini
         document.getElementById('popup-sukses').classList.remove('hidden');
         document.getElementById('popup-overlay').classList.remove('hidden');
 
-        // Kirim data secara senyap ke database backend Laravel
-        let dataFormulir = new FormData(form);
+        setTimeout(() => {
+            document.getElementById('popup-sukses').classList.add('hidden');
+            document.getElementById('popup-overlay').classList.add('hidden');
 
-        fetch("{{ route('input.transaksi') }}", {
-            method: 'POST',
-            body: dataFormulir,
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-        .then(response => {
-            setTimeout(() => {
-                // Sembunyikan kembali pop-up setelah 1.5 detik
-                document.getElementById('popup-sukses').classList.add('hidden');
-                document.getElementById('popup-overlay').classList.add('hidden');
-
-                // 🌟 KUNCI TOTAL: Reset form otomatis jadi kosongan bersih,
-                // Kasir langsung bisa ketik mobil customer ke-2, ke-3, dst secara instan!
-                form.reset();
-                paketTerpilihNama = "";
-                paketTerpilihHarga = 0;
-                globalTotalAkhir = 0;
-                resetCardStyle('card-reguler', 'text-blue-600', 'text-slate-400', 'text-slate-800');
-                resetCardStyle('card-premium', 'text-purple-600', 'text-slate-400', 'text-slate-800');
-                resetCardStyle('card-coating', 'text-amber-600', 'text-slate-400', 'text-slate-800');
-                hitungTransaksiRealtime();
-
-                // Memicu mesin Lucide merender ulang icon agar tidak hilang
-                if(typeof lucide !== 'undefined') lucide.createIcons();
-            }, 1500);
-        })
-        .catch(error => {
-            alert("Terjadi kendala jaringan server, silakan coba lagi.");
-        });
+            // Reset form...
+            form.reset();
+            // ... (lanjutkan reset variabel lainnya)
+            hitungTransaksiRealtime();
+        }, 1500);
+    } else {
+        // GAGAL VALIDASI: Tampilkan pesan dari server
+        alert("Gagal: " + data.message);
     }
-
+})
+.catch(error => {
+    // Hanya muncul jika koneksi putus atau server mati
+    console.error('Error:', error);
+    alert("Koneksi ke server terputus. Pastikan server Laravel aktif.");
+});
+}
     document.addEventListener("DOMContentLoaded", () => {
         hitungShiftKerjaPerusahaan();
         if(typeof lucide !== 'undefined') lucide.createIcons();

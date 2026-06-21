@@ -9,31 +9,44 @@ class TransaksiController extends Controller
 {
     public function create()
     {
-        return view('transaksi.create');
+        $transaksiTerbaru = \App\Models\Transaksi::latest()->paginate(5);
+        // Sesuaikan path view dengan lokasi file kamu
+        return view('transaksi.input-transaksi', compact('transaksiTerbaru'));
     }
 
     public function store(Request $request)
     {
-        // 1. Validasi data input kasir
-        $request->validate([
-            'nama_pelanggan'    => 'required',
-            'plat_nomor'        => 'required',
-            'jenis_kendaraan'   => 'required',
-            'paket_cuci'        => 'required',
-        ]);
+        try {
+    // 1. Validasi data input kasir
+    // Pastikan total_bayar juga divalidasi agar tidak kosong/0
+    $validator = \Validator::make($request->all(), [
+        'nama_pelanggan'  => 'required|string|max:255',
+        'plat_nomor'      => 'required|string|max:20',
+        'jenis_kendaraan' => 'required|string|max:100',
+        'paket_cuci'      => 'required|string',
+        'total_bayar'     => 'required|numeric|min:1',
+    ]);
 
-        // 2. Simpan ke database nyata
-        Transaksi::create([
-            'nama_pelanggan'  => $request->nama_pelanggan,
-            'plat_nomor'      => $request->plat_nomor,
-            'jenis_kendaraan' => $request->jenis_kendaraan,
-            'paket_cuci'      => $request->paket_cuci,
-            'total_bayar'     => $request->paket_cuci == 'Premium Wash' ? 60000 : 45000, // Harga dinamis berdasarkan paket
-            'status'          => 'ANTRIAN', // Default status awal saat masuk kasir
-        ]);
+    if ($validator->fails()) {
+        return response()->json(['success' => false, 'message' => 'Data tidak lengkap!'], 422);
+    }
 
-        // 3. Kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Transaksi berhasil tersimpan! Data berelasi otomatis ke seluruh sistem.');
+    // 2. Simpan ke database nyata
+    // Kita langsung menggunakan $request->total_bayar yang sudah dihitung oleh JS
+    Transaksi::create([
+        'nama_pelanggan'  => $request->nama_pelanggan,
+        'plat_nomor'      => $request->plat_nomor,
+        'jenis_kendaraan' => $request->jenis_kendaraan,
+        'paket_cuci'      => $request->paket_cuci,
+        'total_bayar'     => $request->total_bayar,
+        'status'          => 'ANTRIAN',
+    ]);
+
+    // 3. Memberikan respon JSON agar bisa ditangkap oleh fetch() di JavaScript
+    return response()->json(['success' => true, 'message' => 'Transaksi berhasil tersimpan!']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Server Error: ' . $e->getMessage()], 500);
+        }
     }
 
     public function laporan()
