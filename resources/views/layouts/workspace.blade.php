@@ -7,28 +7,18 @@
 
     <title>Carwash Central System</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,600,700,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,600,700,800,900&display=swap" rel="stylesheet" />
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <style>
-        /* ==========================================================================
-           BENTENG PERTAHANAN: Mengunci Ruang Layar Agar Tidak Ada Gerakan Kedip/Refres
-           ========================================================================== */
-        html {
-            scrollbar-gutter: stable border-box !important;
-            overflow-y: scroll !important; /* Memaksa area scrollbar tetap terkunci sejak awal */
-        }
-        body {
-            overflow: hidden !important;
-            height: 100vh !important;
-        }
-
-        .font-inter-black { font-family: 'Inter', sans-serif; font-weight: 900; }
-        .font-inter-bold { font-family: 'Inter', sans-serif; font-weight: 700; }
+        html { scrollbar-gutter: stable border-box !important; overflow-y: scroll !important; }
+        body { overflow: hidden !important; height: 100vh !important; font-family: 'Inter', sans-serif; }
+        .font-inter-black { font-weight: 900; }
+        .font-inter-bold { font-weight: 700; }
     </style>
 
-    {{-- Alpine.js dibersihkan agar dipanggil 1 kali saja --}}
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
@@ -44,8 +34,9 @@
                 @yield('content')
             </div>
         </main>
-
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         function openProfileModal() {

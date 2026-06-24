@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController; // BARU: Memanggil jembatan Dashbo
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\StatusProgressController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\BookingController;
 
 // Rute Halaman Depan Awalan Website
 Route::get('/', function () { return view('welcome'); });
@@ -24,10 +25,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Semua Rute Menu Utama & Transaksi Dashboard Carwash Nyata
-    Route::get('/status-progres', function () { return view('status-progress'); })->name('status-progress.index');
-    Route::get('/booking-calendar', function () { return view('booking-calendar'); })->name('booking.calendar');
+    Route::get('/status-progres', [StatusProgressController::class, 'index'])->name('status-progress.index');
+
+    Route::get('/booking-calendar', [BookingController::class, 'index'])->name('booking.calendar');
+    Route::post('/booking/verify/{id}', [BookingController::class, 'verify']);
     Route::get('/jadwal-mekanik', function () { return view('jadwal-mekanik'); })->name('jadwal.mekanik');
+
     Route::get('/stok-bahan', function () { return view('stok-bahan'); })->name('stok.bahan');
+
+    // Tambahkan baris ini di dalam group middleware 'auth'
+    Route::post('/api/update-status-mobil/{id}', [StatusProgressController::class, 'updateStatus'])->name('status.update');
 
     // 1. Rute untuk menampilkan halaman (Tetap GET)
     Route::get('/input-transaksi', [TransaksiController::class, 'create'])->name('input.transaksi.view');

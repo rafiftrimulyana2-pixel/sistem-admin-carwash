@@ -3,18 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Transaksi; // Menembak ke database yang sama
+use App\Models\Booking; // Gunakan model Booking agar sinkron dengan kalender
 
 class StatusProgressController extends Controller
 {
     public function index()
     {
-        // Ambil data kendaraan yang statusnya masih antri atau sedang dicuci
-        // Dimulai dari kosong (0) sebelum kasir menginput data
-        $antreanAktif = Transaksi::whereNotIn('status', ['READY', 'FINISH'])
+        // Mengambil booking yang sudah diverifikasi ('confirmed')
+        // atau sedang dalam proses (PENCUCIAN, PENGERINGAN, dll)
+        $antreanAktif = Booking::whereIn('status', ['confirmed', 'PENCUCIAN', 'PENGERINGAN', 'READY'])
             ->orderBy('created_at', 'asc')
             ->get();
 
         return view('status-progress', compact('antreanAktif'));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|string',
+        ]);
+
+        $booking = Booking::findOrFail($id);
+        $booking->status = $request->status;
+        $booking->save();
+
+        return response()->json(['success' => true, 'message' => 'Status berhasil diupdate']);
     }
 }

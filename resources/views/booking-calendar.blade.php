@@ -2,217 +2,145 @@
 
 @section('content')
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
-    /* ==========================================================================
-       1. ANTIDOTE SAKTI: Mengunci Font & Memulihkan Layout Sidebar Workspace
-       ========================================================================== */
-    /* Kita kunci font Inter secara merata agar area sidebar luar ikut rapi & serasi */
-    * {
-        font-family: 'Inter', sans-serif;
-    }
+    * { font-family: 'Inter', sans-serif; }
+    table { width: 100%; min-width: 1800px; border-collapse: collapse; table-layout: fixed; }
+    td, th { border: 1px solid #e2e8f0; padding: 12px; }
 
-    /* Membatasi aturan scrollbar ini agar hanya bekerja di area konten kanan, tidak meluber merusak sidebar */
-    .kalender-right-panel, .kalender-right-panel * {
-        scrollbar-width: auto !important;
+    .btn-istirahat {
+        transition: all 0.3s ease;
+        background: #ef4444; color: white;
+        padding: 6px 10px; font-weight: 800; font-size: 8px;
+        box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
+        display: block; width: 100%;
     }
-    .kalender-right-panel::-webkit-scrollbar {
-        display: block !important;
-        width: 8px !important;
-    }
+    .btn-istirahat:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(220, 38, 38, 0.5); }
 
-    /* 2. PEMBERSIHAN BANNER: Memotong card putih besar bawaan template master di atas */
-    .dashboard-container > div:first-child:not(.w-full),
-    header, div:has(p:contains("PUSAT KENDALI")) {
-        display: none !important;
-    }
-
-    /* 3. LAYOUT MENYATU: Menghapus padding pembungkus agar tabel mepet mentok ke tepi */
-    .dashboard-container {
-        padding: 0px !important;
-        margin: 0px !important;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-
-    /* ==========================================================================
-       4. WORKSPACE MATRIX CONTROL: Mengunci scrollbar agar hanya ada di bawah tabel
-       ========================================================================== */
-    /* Mengunci halaman kanan agar diam tegak, melimpahkan scrollbar hanya ke area horizontal */
-    .kalender-right-panel {
-        width: 100% !important;
-        overflow-x: hidden !important;
-        overflow-y: hidden !important;
-    }
-
-    /* Custom Scrollbar horizontal (geser kanan) super tipis di bawah tabel */
-    .table-horizontal-scroll::-webkit-scrollbar {
-        height: 6px !important;
-        display: block !important;
-    }
-    .table-horizontal-scroll::-webkit-scrollbar-track {
-        background: #f1f5f9 !important;
-    }
-    .table-horizontal-scroll::-webkit-scrollbar-thumb {
-        background: #1e40af !important; /* Biru Safir Solid */
-        border-radius: 10px !important;
-    }
-
-    /* FIGMA HOVER MOTION: Gerakan Pop-up micro pada kartu booking dengan warna super hidup */
-    .live-booking-card {
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .live-booking-card:hover {
-        transform: translateY(-3px) scale(1.015);
-        cursor: pointer;
-        filter: brightness(1.1) contrast(1.02);
-        box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.1);
-    }
+    /* Ikon yang terlihat menyatu (bukan stiker) */
+    .icon-natural { stroke-width: 1.5; opacity: 0.9; }
+    .rotate-180 { transform: rotate(180deg); }
 </style>
 
-<div class="kalender-right-panel bg-[#f8fafc] text-slate-700 antialiased select-none flex flex-col">
+<div class="h-screen flex flex-col bg-slate-50">
+    <div class="bg-blue-600 px-6 py-4 flex justify-between items-center shadow-md shrink-0">
+        <h1 class="text-white text-sm font-black uppercase tracking-widest">JADWAL OPERASIONAL</h1>
 
-    <div class="w-full bg-white border-b border-slate-200 px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 flex-shrink-0">
-        <div>
-            <h1 class="text-slate-900 text-sm font-extrabold uppercase tracking-tight" style="font-family: 'Inter', sans-serif;">WORKSPACE ORDER CALENDAR</h1>
-            <p class="text-slate-400 text-[9px] font-bold uppercase tracking-wider" style="font-family: 'Inter', sans-serif;">Sistem Pemesanan & Alokasi Antrean Customer</p>
-        </div>
+        <div id="filter-wrapper" class="relative flex items-center bg-white/10 border border-white/20 rounded hover:bg-white/20 transition-all cursor-pointer">
+            <div class="flex items-center gap-2 px-3 py-1.5" onclick="toggleFilter()">
+                <i data-lucide="calendar" class="icon-natural w-3 h-3 text-amber-300"></i>
 
-        <div class="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+                <span id="filter-text" class="text-[9px] font-bold text-white uppercase tracking-wider">JUNI 2026</span>
 
-            <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-800 px-3.5 py-2 rounded-xl shadow-sm">
-                <span class="flex h-1.5 w-1.5 relative">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
-                </span>
-                <span class="text-[9px] font-bold tracking-wide uppercase" style="font-family: 'Inter', sans-serif;">🔔 Pengingat: 2 Booking Baru Menunggu Verifikasi Kasir</span>
+                <i id="chevron-icon" data-lucide="chevron-down" class="icon-natural w-3 h-3 text-white transition-transform duration-300"></i>
             </div>
-
-            <div class="flex items-center bg-slate-100 rounded-lg border border-slate-200 p-0.5 shadow-inner">
-                <select id="select-bulan-tahun" onchange="filterBulanTahunSistem()" class="bg-transparent text-slate-800 text-[10px] font-bold px-2 py-1.5 focus:outline-none cursor-pointer" style="font-family: 'Inter', sans-serif;">
-                    <option value="05-2026">Mei 2026</option>
-                    <option value="06-2026">Juni 2026</option>
-                    <option value="07-2026">Juli 2026</option>
-                </select>
-            </div>
+            <select id="filter-bulan" onchange="updateFilter(this)" class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer">
+            </select>
         </div>
     </div>
 
-        <div class="w-full overflow-x-auto table-horizontal-scroll bg-white">
-
-            <table class="w-full border-collapse table-fixed min-w-[1700px]">
-
-                <thead class="sticky top-0 z-20 bg-[#1e40af] border-b border-blue-900 shadow-md">
+    <div class="flex-grow overflow-auto p-0">
+        <div class="bg-white border border-slate-200">
+            <table>
+                <thead class="bg-slate-100 sticky top-0 z-10">
                     <tr>
-                        <th class="sticky left-0 z-30 bg-[#172554] p-3.5 text-center text-[10px] font-black text-blue-200 uppercase tracking-wider w-[140px]" style="font-family: 'Inter', sans-serif;">
-                            Hari / Tanggal
-                        </th>
-                        <th class="p-3.5 border-r border-blue-800/40 text-center text-[10px] font-bold text-white tracking-wider" style="font-family: 'Inter', sans-serif;">08:00 WIB</th>
-                        <th class="p-3.5 border-r border-blue-800/40 text-center text-[10px] font-bold text-white tracking-wider" style="font-family: 'Inter', sans-serif;">09:00 WIB</th>
-                        <th class="p-3.5 border-r border-blue-800/40 text-center text-[10px] font-bold text-white tracking-wider" style="font-family: 'Inter', sans-serif;">10:00 WIB</th>
-                        <th class="p-3.5 border-r border-blue-800/40 text-center text-[10px] font-bold text-white tracking-wider" style="font-family: 'Inter', sans-serif;">11:00 WIB</th>
-                        <th class="p-3.5 border-r border-red-900/40 text-center text-[10px] font-bold text-red-100 bg-[#b91c1c]" style="font-family: 'Inter', sans-serif;">12:00 WIB <span class="text-[8px] font-normal block text-red-200">(Istirahat)</span></th>
-                        <th class="p-3.5 border-r border-blue-800/40 text-center text-[10px] font-bold text-white tracking-wider" style="font-family: 'Inter', sans-serif;">13:00 WIB</th>
-                        <th class="p-3.5 border-r border-blue-800/40 text-center text-[10px] font-bold text-white tracking-wider" style="font-family: 'Inter', sans-serif;">14:00 WIB</th>
-                        <th class="p-3.5 border-r border-blue-800/40 text-center text-[10px] font-bold text-white tracking-wider" style="font-family: 'Inter', sans-serif;">15:00 WIB</th>
-                        <th class="p-3.5 border-r border-blue-800/40 text-center text-[10px] font-bold text-white tracking-wider" style="font-family: 'Inter', sans-serif;">16:00 WIB</th>
-                        <th class="p-3.5 border-r border-blue-800/40 text-center text-[10px] font-bold text-white tracking-wider" style="font-family: 'Inter', sans-serif;">17:00 WIB</th>
+                        <th class="p-4 text-[10px] font-black uppercase text-center w-[120px] border-r">HARI / TGL</th>
+                        @foreach(range(8, 23) as $jam)
+                            <th class="p-4 text-[10px] font-black uppercase text-center w-[90px] border-r">{{ sprintf('%02d', $jam) }}:00</th>
+                        @endforeach
                     </tr>
                 </thead>
-
-                <tbody id="tabel-operasional-body" class="divide-y divide-slate-100">
-
-                    </tbody>
+                <tbody id="tabel-jadwal" class="divide-y divide-slate-100"></tbody>
             </table>
         </div>
     </div>
 </div>
 
 <script>
+    /* --- KONFIGURASI FILTER --- */
+    const chevron = document.getElementById('chevron-icon');
+    const filterText = document.getElementById('filter-text');
+    let isOpen = false;
 
-    // 📝 DATA SOURCE: Pemilik perusahaan bebas mengubah, menambah, atau menghapus jadwal, jam, hari libur nyata di sini nanti!
-    const arrayJadwalCarwash = [
-        { hari: "Senin", tanggal: "18 Mei 2026", tipe: "buka", slots: {
-            "08:00": { nopol: "B 1111 AAA", nama: "Doni", mobil: "Avanza", status: "QUEUE", gradient: "from-[#2563eb] to-[#1d4ed8]" },
-            "10:00": { nopol: "B 8888 BOSS", nama: "Kevin", mobil: "Alphard", status: "COATING", gradient: "from-[#7c3aed] to-[#6d28d9]" }
-        }},
-        { hari: "Selasa", tanggal: "19 Mei 2026", tipe: "buka", slots: {
-            "09:00": { nopol: "B 2026 RFV", nama: "Hendra", mobil: "Fortuner", status: "PROGRESS", gradient: "from-[#059669] to-[#047857]" }
-        }},
-        { hari: "Rabu", tanggal: "20 Mei 2026", tipe: "libur", pesan: "🛑 WORKSHOP TUTUP — LIBUR NASIONAL / MAINTENANCE COMPRESSOR PUSAT" }, // Merah Menyala Terang Sesuai Dunia Nyata
-        { hari: "Kamis", tanggal: "21 Mei 2026", tipe: "buka", slots: {
-            "10:00": { nopol: "D 1411 XYZ", nama: "Ibu Rina", mobil: "Civic", status: "QUEUE", gradient: "from-[#2563eb] to-[#1d4ed8]" }
-        }},
-        { hari: "Jumat", tanggal: "22 Mei 2026", tipe: "buka", slots: {} },
-        { hari: "Sabtu", tanggal: "23 Mei 2026", tipe: "buka", slots: {} },
-        { hari: "Minggu", tanggal: "24 Mei 2026", tipe: "libur", pesan: "🛑 WORKSHOP TUTUP — LIBUR OPERASIONAL AKHIR PEKAN" } // Merah Menyala Terang Sesuai Dunia Nyata
-    ];
+    function toggleFilter() {
+        isOpen = !isOpen;
+        // Rotasi ikon panah
+        if (chevron) chevron.classList.toggle('rotate-180', isOpen);
+    }
 
-    function prosesRenderMatrix() {
-        const tbody = document.getElementById('tabel-operasional-body');
-        tbody.innerHTML = "";
+    function updateFilter(select) {
+        filterText.innerText = select.options[select.selectedIndex].text;
+        toggleFilter();
+        renderMatrix();
+    }
 
-        arrayJadwalCarwash.forEach(row => {
-            let tr = document.createElement('tr');
-            tr.className = "h-[75px]";
-
-            // 1. Render Kolom Sisi Kiri Hari & Tanggal (Sticky di kiri saat tabel digeser ke kanan)
-            let tdHari = document.createElement('td');
-            tdHari.className = `sticky left-0 z-10 p-2 text-center border-r border-slate-200 flex flex-col justify-center h-[75px] ${row.tipe === 'libur' ? 'bg-red-600 text-white font-black shadow-md' : 'bg-slate-50 text-slate-900 font-bold'}`;
-            tdHari.innerHTML = `<span class="text-[11px] tracking-tight" style="font-family: 'Inter', sans-serif; font-weight: 700;">${row.hari}</span><span class="text-[8px] ${row.tipe === 'libur' ? 'text-red-100' : 'text-slate-400'} font-bold mt-0.5" style="font-family: 'Inter', sans-serif;">${row.tanggal}</span>`;
-            tr.appendChild(tdHari);
-
-            // Kondisi Khusus Hari Libur Nyata (Warna Dipermerah Pekat Mengunci ke Sisi Tepi Sesuai Request Dunia Nyata)
-            if (row.tipe === "libur") {
-                let tdLibur = document.createElement('td');
-                tdLibur.colSpan = 10;
-                tdLibur.className = "p-2 text-center bg-red-600 text-white border-b border-red-700 font-extrabold";
-                tdLibur.innerHTML = `<div class="text-[10px] tracking-widest uppercase" style="font-family: 'Inter', sans-serif;">${row.pesan}</div>`;
-                tr.appendChild(tdLibur);
-                tbody.appendChild(tr);
-                return;
-            }
-
-            // 2. Render Lajur Kolom Waktu Jam Berjejer ke Kanan
-            const jamKerja = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
-            jamKerja.forEach(jam => {
-                let tdSlot = document.createElement('td');
-                tdSlot.className = `p-1 border-r border-slate-100 text-center text-[9px] font-bold relative ${jam === "12:00" ? "bg-red-600/20 border-l border-r border-red-200" : ""}`;
-
-                if (jam === "12:00") {
-                    // Penanda Waktu Istirahat Merah Pekat Tegas Sesuai Dunia Nyata
-                    tdSlot.innerHTML = `<span class="text-red-700 text-[8px] tracking-wider font-black uppercase" style="font-family: 'Inter', sans-serif;">❌ ISTIRAHAT</span>`;
-                } else if (row.slots[jam]) {
-                    // Kotak Bookingan Pelanggan: Teks Lebih Kecil (Sedang-Kecil Pas), Warna Gradasi Super Hidup Menyala
-                    let data = row.slots[jam];
-                    tdSlot.innerHTML = `
-                        <div class="live-booking-card bg-gradient-to-r ${data.gradient} text-white rounded-lg p-1.5 text-left h-full flex flex-col justify-between shadow-sm">
-                            <div class="flex justify-between items-center">
-                                <span class="text-[9px] font-bold tracking-tight" style="font-family: 'Inter', sans-serif;">${data.nopol}</span>
-                                <span class="text-[7px] bg-white/25 px-1 py-0.2 rounded font-black tracking-wide" style="font-family: 'Inter', sans-serif;">${data.status}</span>
-                            </div>
-                            <div class="text-[8px] font-medium opacity-95 truncate mt-0.5" style="font-family: 'Inter', sans-serif;">${data.nama} — ${data.mobil}</div>
-                        </div>
-                    `;
-                } else {
-                    tdSlot.innerHTML = `<span class="text-slate-200 font-normal">-</span>`;
-                }
-                tr.appendChild(tdSlot);
-            });
-
-            tbody.appendChild(tr);
+    function initFilter() {
+        const select = document.getElementById('filter-bulan');
+        const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        months.forEach((m, i) => {
+            select.innerHTML += `<option value="${i+1}">${m.toUpperCase()} 2026</option>`;
         });
     }
 
-    // Penanganan Filter Sistem Kalender Mengikuti Tahun Aktif
-    function filterBulanTahunSistem() {
-        const valuePilihan = document.getElementById('select-bulan-tahun').value;
-        console.log("Sistem memuat matriks data kalender untuk tahun aktif periode: " + valuePilihan);
-        prosesRenderMatrix();
+    /* --- FUNGSI RENDER JADWAL --- */
+    function renderMatrix() {
+        const tbody = document.getElementById('tabel-jadwal');
+        tbody.innerHTML = "";
+        const jamKerja = Array.from({length: 16}, (_, i) => i + 8);
+
+        for(let i=0; i<30; i++) {
+            let d = new Date(2026, 5, i + 1);
+            let row = document.createElement('tr');
+            row.innerHTML = `<td class="p-4 font-black text-[10px] text-slate-800 bg-white border-r text-center uppercase">${d.toLocaleDateString('id-ID', { weekday: 'short' })}, ${d.getDate()}</td>`;
+
+            jamKerja.forEach(jam => {
+                let cell = document.createElement('td');
+                cell.className = "border-r border-slate-100 p-2 text-center";
+                // Contoh logika: jika ada booking, panggil fungsi verifikasi saat diklik
+                cell.innerHTML = (jam === 12) ? `<button class="btn-istirahat">ISTIRAHAT</button>` : `<div class="h-9 w-full hover:bg-blue-50 cursor-pointer" onclick="verifikasiBooking(1, 'Contoh Customer', 'B 1234 ABC')"></div>`;
+                row.appendChild(cell);
+            });
+            tbody.appendChild(row);
+        }
     }
 
-    document.addEventListener("DOMContentLoaded", prosesRenderMatrix);
-</script>
+    /* --- FUNGSI VERIFIKASI (SWEETALERT2) --- */
+    function verifikasiBooking(id, nama, nopol) {
+        Swal.fire({
+            title: 'Verifikasi Booking',
+            html: `Terima booking dari <b>${nama}</b><br>Plat: <b>${nopol}</b>?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#2563eb',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Terima & Masukkan Antrean'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Pastikan route ini sesuai dengan routes/web.php Anda
+                fetch(`/booking/verify/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    Swal.fire('Berhasil!', 'Data sudah masuk ke Status Progress.', 'success');
+                    renderMatrix();
+                })
+                .catch(err => {
+                    Swal.fire('Error', 'Gagal memproses verifikasi.', 'error');
+                });
+            }
+        });
+    }
 
+    /* --- INITIALIZATION --- */
+    document.addEventListener("DOMContentLoaded", () => {
+        initFilter();
+        renderMatrix();
+        lucide.createIcons();
+    });
+</script>
 @endsection
