@@ -33,7 +33,7 @@
             <p class="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-slate-300 mb-3">Transaksi</p>
             <div class="space-y-1">
                 @foreach([
-                    ['route' => 'input.transaksi', 'label' => 'Input Transaksi', 'icon' => 'credit-card'],
+                    ['route' => 'input.transaksi.view', 'label' => 'Input Transaksi', 'icon' => 'credit-card'],
                     ['route' => 'riwayat.servis', 'label' => 'Riwayat Servis', 'icon' => 'history'],
                     ['route' => 'laporan.pendapatan', 'label' => 'Laporan Pendapatan', 'icon' => 'pie-chart']
                 ] as $menu)
