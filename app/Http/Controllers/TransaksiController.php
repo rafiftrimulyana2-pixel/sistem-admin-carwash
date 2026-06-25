@@ -16,7 +16,7 @@ class TransaksiController extends Controller
         'nama_pelanggan'  => 'required',
         'plat_nomor'      => 'required',
         'jenis_kendaraan' => 'required',
-        'total_bayar'     => 'required|numeric',
+        'total_bayar'     => 'required|integer',
     ]);
 
     // Tambahkan default agar tidak kosong
@@ -29,13 +29,16 @@ class TransaksiController extends Controller
 
     // Update fungsi riwayat() di TransaksiController.php
     public function riwayat() {
-    $dataFinance = Transaksi::orderBy('created_at', 'desc')->get()->map(function($item) {
+    $dataFinance = \App\Models\Transaksi::orderBy('created_at', 'desc')->get()->map(function($item) {
         return [
-            'nopol'   => $item->plat_nomor, // Pastikan ini sesuai
-            'nama'    => $item->nama_pelanggan,
-            'kategori'=> $item->paket_cuci,
-            'nominal' => $item->total_bayar,
-            'metode'  => 'TUNAI'
+            'tgl' => date('d', strtotime($item->created_at)), // e.g., "01"
+            'bln' => date('m', strtotime($item->created_at)), // e.g., "06"
+            'thn' => date('Y', strtotime($item->created_at)), // e.g., "2026"
+            'nopol'    => $item->plat_nomor,
+            'nama'     => $item->nama_pelanggan,
+            'kategori' => $item->paket_cuci, // Harus ada agar tidak undefined
+            'metode'   => 'TUNAI',          // Harus ada agar tidak undefined
+            'nominal'  => (int)$item->total_bayar, // INI YANG DIBACA JS
         ];
     });
     return view('riwayat-servis', compact('dataFinance'));

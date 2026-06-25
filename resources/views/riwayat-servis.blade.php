@@ -194,27 +194,41 @@
     }
 
     function updateCardStatistikRealtime(dataTerfilter) {
-        let totalServis = dataTerfilter.length;
-        if (totalServis === 0) {
-            resetCardStatistikKeNol(); return;
+    let totalServis = dataTerfilter.length;
+    let totalRupiah = 0;
+    let qtyTunai = 0;
+
+    dataTerfilter.forEach(row => {
+        // Bersihkan data nominal agar selalu menjadi angka murni
+        let rawNominal = row.nominal;
+        let nominalValue = 0;
+
+        if (typeof rawNominal === 'string') {
+            // Menghapus semua karakter selain angka
+            nominalValue = parseFloat(rawNominal.replace(/[^0-9]/g, '')) || 0;
+        } else {
+            nominalValue = parseFloat(rawNominal) || 0;
         }
 
-        let totalRupiah = 0;
-        let qtyTunai = 0;
+        totalRupiah += nominalValue;
 
-        dataTerfilter.forEach(row => {
-            let nominalAman = row.nominal ? Number(row.nominal) : 0;
-            totalRupiah += nominalAman;
-            if (row.metode === 'TUNAI' || row.metode === 'CASH') qtyTunai++;
-        });
+        // Cek metode pembayaran
+        let mtd = row.metode ? row.metode.toUpperCase() : "TUNAI";
+        if (mtd === 'TUNAI' || mtd === 'CASH') {
+            qtyTunai++;
+        }
+    });
 
-        let rataRata = totalServis > 0 ? Math.round(totalRupiah / totalServis) : 0;
+    console.log("Total Terhitung:", totalRupiah);
 
-        document.getElementById('live-counter-data').innerText = totalServis + " Data";
-        document.getElementById('card-total-rupiah').innerText = formatRupiah(totalRupiah);
-        document.getElementById('card-qty-selesai').innerText = totalServis + " Kendaraan";
-        document.getElementById('card-qty-approved').innerText = qtyTunai + " Transaksi";
-        document.getElementById('card-total-average').innerText = formatRupiah(rataRata);
+    // Update elemen HTML
+    document.getElementById('card-total-rupiah').innerText = formatRupiah(totalRupiah);
+    document.getElementById('live-counter-data').innerText = totalServis + " Data";
+    document.getElementById('card-qty-selesai').innerText = totalServis + " Kendaraan";
+    document.getElementById('card-qty-approved').innerText = qtyTunai + " Transaksi";
+
+    let rataRata = totalServis > 0 ? (totalRupiah / totalServis) : 0;
+    document.getElementById('card-total-average').innerText = formatRupiah(rataRata);
     }
 
     function renderTabelRiwayatServis(dataToRender) {

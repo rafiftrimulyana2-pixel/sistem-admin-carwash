@@ -86,67 +86,97 @@
     </form>
 </div>
 
-{{-- POP-UP SUKSES MODERN --}}
-<div id="popup-sukses" class="fixed inset-0 hidden items-center justify-center z-[100] backdrop-blur-sm bg-slate-900/40 transition-all duration-300">
-    <div class="bg-white p-8 rounded-[2rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)] border border-slate-100 animate-in zoom-in-95 fade-in duration-300 text-center max-w-xs w-full">
+<div id="popup-sukses" class="fixed inset-0 hidden items-center justify-center z-[100] p-4">
+    {{-- Overlay --}}
+    <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-sm transition-opacity duration-500"></div>
 
-        {{-- Ikon Animasi --}}
-        <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-[bounce_1s_ease-in-out]">
-            <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-            </svg>
+    {{-- Konten Pop-up --}}
+    <div class="relative bg-white p-8 rounded-[2.5rem] shadow-[0_25px_50px_-12px_rgba(16,185,129,0.3)] w-full max-w-[320px] transform transition-all duration-500 scale-95 opacity-0 border border-emerald-50" id="popup-content">
+
+        {{-- Ikon Animasi Hijau Hidup --}}
+        <div class="relative w-20 h-20 mx-auto mb-6">
+            <div class="absolute inset-0 bg-emerald-500/20 rounded-full animate-ping"></div>
+            <div class="w-full h-full bg-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/40">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
         </div>
 
-        <h2 class="text-lg font-black uppercase tracking-widest text-slate-800 mb-2">Transaksi Selesai!</h2>
-        <p class="text-[11px] font-bold text-slate-400 mb-8 uppercase tracking-wider">Data telah terarsip ke sistem pusat.</p>
+        <div class="text-center">
+            {{-- Teks Berhasil Hijau --}}
+            <h2 class="text-2xl font-black text-emerald-600 uppercase tracking-[0.2em] mb-2">Success!</h2>
 
-        <button onclick="tutupPopup()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-600/20 transition-all active:scale-95">
-            Lanjutkan Input
-        </button>
+            {{-- Teks Bawah yang lebih friendly --}}
+            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.1em] mb-8 leading-relaxed">
+                Data pembayaran telah berhasil tersimpan <br> ke dalam sistem pusat.
+            </p>
+
+            {{-- Tombol Biru Hidup dengan Shadow Glow --}}
+            <button onclick="tutupPopup()" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:shadow-[0_10px_20px_-5px_rgba(37,99,235,0.6)] active:scale-95">
+                Lanjutkan Input
+            </button>
+        </div>
     </div>
 </div>
 
 <script>
     function hitungKembalian() {
-        let tagihan = document.getElementById('total-tagihan').value;
-        let diterima = document.getElementById('uang-diterima').value;
-        let kembali = diterima - tagihan;
-        document.getElementById('uang-kembali').value = kembali >= 0 ? kembali : 0;
+    let tagihan = document.getElementById('total-tagihan').value;
+    let diterima = document.getElementById('uang-diterima').value;
+    let kembali = diterima - tagihan;
+
+    // Menampilkan angka dengan format Rupiah di input kembalian
+    let nilaiKembali = kembali >= 0 ? kembali : 0;
+    document.getElementById('uang-kembali').value = "Rp " + Number(nilaiKembali).toLocaleString('id-ID');
     }
 
+    // GABUNGKAN SEMUA LOGIKA DI SINI
     async function prosesTransaksi() {
         // 1. Ambil data dari form
         const form = document.getElementById('main-form-transaksi');
         const formData = new FormData(form);
 
-        // 2. Kirim data ke Controller menggunakan fetch
         try {
+            // 2. Kirim ke Server
             const response = await fetch("{{ route('input.transaksi.store') }}", {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
             });
 
             const result = await response.json();
 
-            // 3. Hanya munculkan popup JIKA server berhasil menyimpan data
+            // 3. Jika berhasil, jalankan animasi pop-up
             if (result.success) {
-                document.getElementById('popup-sukses').classList.remove('hidden');
-                document.getElementById('popup-sukses').classList.add('flex');
+                const popup = document.getElementById('popup-sukses');
+                const content = document.getElementById('popup-content');
+
+                popup.classList.remove('hidden');
+                popup.classList.add('flex');
+
+                // Trigger animasi halus
+                setTimeout(() => {
+                    content.classList.replace('scale-95', 'scale-100');
+                    content.classList.replace('opacity-0', 'opacity-100');
+                }, 50);
             } else {
-                alert("Gagal menyimpan data: " + (result.message || "Terjadi kesalahan"));
+                alert("Gagal: " + (result.message || "Data tidak lengkap"));
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Terjadi kesalahan sistem, pastikan koneksi database aman.");
+            alert("Terjadi kesalahan sistem, periksa database.");
         }
     }
 
     function tutupPopup() {
-        // Reload agar data baru langsung masuk ke Dashboard/Riwayat
-        window.location.reload();
+        const content = document.getElementById('popup-content');
+        content.classList.replace('scale-100', 'scale-95');
+        content.classList.replace('opacity-100', 'opacity-0');
+
+        setTimeout(() => {
+            window.location.reload();
+        }, 300);
     }
 </script>
 @endsection
