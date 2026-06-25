@@ -125,7 +125,7 @@
                     🔄 Update Data
                 </button>
                 {{-- REVISI REAL: Tombol + Unit Baru mengarah langsung ke Halaman Kasir input transaksi --}}
-                <a href="{{ route('input.transaksi') }}" class="bg-white text-[#624bff] px-6 py-2 rounded-xl font-inter-bold text-[10px] shadow-xl hover:scale-105 transition-all uppercase tracking-widest flex items-center justify-center">
+                <a href="{{ route('input.transaksi.view') }}" class="bg-white text-[#624bff] px-6 py-2 rounded-xl font-inter-bold text-[10px] shadow-xl hover:scale-105 transition-all uppercase tracking-widest flex items-center justify-center">
                     + Unit Baru
                 </a>
             </div>

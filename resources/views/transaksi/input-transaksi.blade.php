@@ -44,12 +44,16 @@
 
             <div class="grid grid-cols-2 gap-4">
                 @foreach(['plat_nomor' => 'Nomor Polisi Kendaraan', 'jenis_kendaraan' => 'Tipe / Model Mobil', 'nama_pelanggan' => 'Nama Pelanggan', 'no_hp' => 'Nomor WhatsApp'] as $name => $label)
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">{{ $label }} *</label>
-                        <input type="{{ $name == 'no_hp' ? 'number' : 'text' }}" name="{{ $name }}" required placeholder="Contoh input..."
-                            class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 shadow-inner transition-all">
-                    </div>
-                @endforeach
+    <div class="flex flex-col gap-1.5">
+        <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">{{ $label }} *</label>
+        {{-- Atribut name di sini menggunakan $name dari array di atas --}}
+        <input type="{{ $name == 'no_hp' ? 'number' : 'text' }}"
+               name="{{ $name }}"
+               required
+               placeholder="Contoh input..."
+               class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 shadow-inner transition-all">
+    </div>
+@endforeach
             </div>
         </div>
 
@@ -61,34 +65,44 @@
             </div>
 
             <div class="grid grid-cols-3 gap-4">
-                <div>
-                    <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Total Tagihan (Rp)</label>
-                    <input type="number" id="total-tagihan" oninput="hitungKembalian()" class="w-full h-10 bg-slate-50 border border-slate-200 rounded-lg px-3 text-[10px] font-black text-blue-600 outline-none shadow-inner">
-                </div>
-                <div>
-                    <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Uang Diterima (Rp)</label>
-                    <input type="number" id="uang-diterima" oninput="hitungKembalian()" class="w-full h-10 bg-white border-2 border-blue-600 rounded-lg px-3 text-[10px] font-black text-slate-900 outline-none shadow-inner">
-                </div>
-                <div>
-                    <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Kembalian (Rp)</label>
-                    <input type="text" id="uang-kembali" readonly class="w-full h-10 bg-emerald-50 border border-emerald-100 rounded-lg px-3 text-[10px] font-black text-emerald-700 shadow-inner">
-                </div>
-            </div>
+    <div>
+        <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Total Tagihan (Rp)</label>
+        {{-- Tambahkan name="total_bayar" agar terbaca controller --}}
+        <input type="number" name="total_bayar" id="total-tagihan" oninput="hitungKembalian()" class="w-full h-10 bg-slate-50 border border-slate-200 rounded-lg px-3 text-[10px] font-black text-blue-600 outline-none shadow-inner">
+    </div>
+    <div>
+        <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Uang Diterima (Rp)</label>
+        <input type="number" id="uang-diterima" oninput="hitungKembalian()" class="w-full h-10 bg-white border-2 border-blue-600 rounded-lg px-3 text-[10px] font-black text-slate-900 outline-none shadow-inner">
+    </div>
+    <div>
+        <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Kembalian (Rp)</label>
+        <input type="text" id="uang-kembali" readonly class="w-full h-10 bg-emerald-50 border border-emerald-100 rounded-lg px-3 text-[10px] font-black text-emerald-700 shadow-inner">
+    </div>
+</div>
 
-            <button type="button" onclick="prosesTransaksi()" class="w-full mt-5 h-10 bg-blue-600 text-white font-black rounded-lg hover:bg-blue-700 transition-all text-[9px] uppercase tracking-widest shadow-lg">
-                PROSES TRANSAKSI
-            </button>
-        </div>
+<button type="button" onclick="prosesTransaksi()" class="w-full mt-5 h-10 bg-blue-600 text-white font-black rounded-lg hover:bg-blue-700 transition-all text-[9px] uppercase tracking-widest shadow-lg">
+    PROSES TRANSAKSI
+</button>
     </form>
 </div>
 
-{{-- POP-UP SUKSES --}}
-<div id="popup-sukses" class="fixed inset-0 bg-slate-900/50 hidden items-center justify-center z-50">
-    <div class="bg-white p-10 rounded-3xl animate-popup text-center shadow-2xl">
-        <div class="text-6xl mb-4">✅</div>
-        <h2 class="text-xl font-black uppercase text-slate-800">Transaksi Berhasil!</h2>
-        <p class="text-xs font-bold text-slate-400 mb-8">Data sudah tersimpan ke sistem.</p>
-        <button onclick="tutupPopup()" class="w-full py-4 bg-blue-600 text-white rounded-xl font-black text-xs uppercase">LANJUTKAN INPUT</button>
+{{-- POP-UP SUKSES MODERN --}}
+<div id="popup-sukses" class="fixed inset-0 hidden items-center justify-center z-[100] backdrop-blur-sm bg-slate-900/40 transition-all duration-300">
+    <div class="bg-white p-8 rounded-[2rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)] border border-slate-100 animate-in zoom-in-95 fade-in duration-300 text-center max-w-xs w-full">
+
+        {{-- Ikon Animasi --}}
+        <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-[bounce_1s_ease-in-out]">
+            <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+
+        <h2 class="text-lg font-black uppercase tracking-widest text-slate-800 mb-2">Transaksi Selesai!</h2>
+        <p class="text-[11px] font-bold text-slate-400 mb-8 uppercase tracking-wider">Data telah terarsip ke sistem pusat.</p>
+
+        <button onclick="tutupPopup()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-600/20 transition-all active:scale-95">
+            Lanjutkan Input
+        </button>
     </div>
 </div>
 
@@ -99,14 +113,40 @@
         let kembali = diterima - tagihan;
         document.getElementById('uang-kembali').value = kembali >= 0 ? kembali : 0;
     }
-    function prosesTransaksi() {
-        document.getElementById('popup-sukses').classList.remove('hidden');
-        document.getElementById('popup-sukses').classList.add('flex');
+
+    async function prosesTransaksi() {
+        // 1. Ambil data dari form
+        const form = document.getElementById('main-form-transaksi');
+        const formData = new FormData(form);
+
+        // 2. Kirim data ke Controller menggunakan fetch
+        try {
+            const response = await fetch("{{ route('input.transaksi.store') }}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+
+            const result = await response.json();
+
+            // 3. Hanya munculkan popup JIKA server berhasil menyimpan data
+            if (result.success) {
+                document.getElementById('popup-sukses').classList.remove('hidden');
+                document.getElementById('popup-sukses').classList.add('flex');
+            } else {
+                alert("Gagal menyimpan data: " + (result.message || "Terjadi kesalahan"));
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Terjadi kesalahan sistem, pastikan koneksi database aman.");
+        }
     }
+
     function tutupPopup() {
-        document.getElementById('popup-sukses').classList.add('hidden');
-        document.getElementById('main-form-transaksi').reset();
-        document.getElementById('uang-kembali').value = "";
+        // Reload agar data baru langsung masuk ke Dashboard/Riwayat
+        window.location.reload();
     }
 </script>
 @endsection

@@ -40,15 +40,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/input-transaksi', [TransaksiController::class, 'create'])->name('input.transaksi.view');
 
     // 2. Rute untuk memproses data dari form (Harus POST)
-    Route::post('/input-transaksi', [TransaksiController::class, 'store'])->name('input.transaksi');
+    Route::post('/input-transaksi', [TransaksiController::class, 'store'])->name('input.transaksi.store');
 
     // 🌟 KHUSUS RIWAYAT SERVIS AWAL RILIS: Mengambil data riel kosong dari database transaksi kasir
-    Route::get('/riwayat-servis', function () {
-        // Mengambil semua data dari database dan mengurutkannya dari yang terbaru
-        $dataFinance = \App\Models\Transaksi::orderBy('created_at', 'desc')->get();
-
-        return view('riwayat-servis', compact('dataFinance'));
-    })->name('riwayat.servis');
+    Route::get('/riwayat-servis', [TransaksiController::class, 'riwayat'])->name('riwayat.servis');
 
     // 🔥 JALUR LAPORAN PENDAPATAN: Mengarah ke fungsi laporan() di TransaksiController
     Route::get('/laporan-pendapatan', [TransaksiController::class, 'laporan'])->name('laporan.pendapatan');

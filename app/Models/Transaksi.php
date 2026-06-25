@@ -13,8 +13,8 @@ class Transaksi extends Model
         'nama_pelanggan',
         'plat_nomor',
         'jenis_kendaraan',
-        'paket_cuci',
         'total_bayar',
-        'status'
+        'status',
+        'paket_cuci',
     ];
 }
