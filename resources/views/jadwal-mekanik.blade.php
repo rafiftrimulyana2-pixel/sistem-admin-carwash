@@ -163,7 +163,7 @@
         <div class="col-span-3 space-y-5">
 
             {{-- KALENDER BOX --}}
-            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-xl shadow-slate-900/10 ring-1 ring-black/5">
                 <div class="bg-blue-600 px-4 py-3 flex justify-between items-center border-b border-blue-700">
                     <div>
                         <h2 class="text-white text-[10px] font-black uppercase tracking-wider">Kalender Internal</h2>
