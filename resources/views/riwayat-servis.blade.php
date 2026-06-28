@@ -30,7 +30,6 @@
 </style>
 
 <div class="riwayat-scope w-full h-[calc(100vh-2px)] bg-[#f4f7fb] flex flex-col overflow-hidden select-none antialiased text-slate-700">
-
     <div class="w-full bg-blue-600 border-b border-blue-700 px-6 py-3.5 flex justify-between items-center flex-shrink-0 shadow-md shadow-slate-900/10 z-20">
         <div>
             <h1 class="text-white text-sm font-black uppercase tracking-tight">DATA ARSIP RIWAYAT SERVIS CARWASH</h1>

@@ -60,7 +60,7 @@
         {{-- BAGIAN 2: KALKULATOR (Ditambahkan mt-6 agar berjarak dengan bagian 1) --}}
         <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm mt-6">
             <div class="flex items-center gap-2 mb-5 border-b border-slate-100 pb-3">
-                <div class="p-1.5 rounded-lg bg-emerald-600 text-white font-black text-[9px] px-2">02</div>
+                <div class="p-1.5 rounded-lg bg-blue-600 text-white font-black text-[9px] px-2">02</div>
                 <h3 class="text-[10px] font-black text-slate-800 uppercase tracking-widest">Kalkulator Pembayaran</h3>
             </div>
 
