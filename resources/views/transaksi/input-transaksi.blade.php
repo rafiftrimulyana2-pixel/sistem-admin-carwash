@@ -3,14 +3,61 @@
 @section('content')
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
+    /* 1. Pengaturan Dasar */
     * { font-family: 'Inter', sans-serif; }
     .kasir-scope { font-weight: 700 !important; }
-    .form-scroll-clean::-webkit-scrollbar { display: none !important; }
+
+    /* 2. Pengaturan Pop-up (Tetap ada) */
     .animate-popup { animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+    /* 3. Pengaturan Scrollbar (Diringkas agar efisien) */
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* 4. Pengaturan "Jebol" Scroll (PENTING)
+       Kita gunakan ini agar halaman bisa geser tanpa terikat tinggi layar */
+    html, body, main, .flex-1 {
+        overflow: auto !important;
+        height: auto !important;
+        max-height: none !important;
+
+        /* Paksa agar layout master tidak memotong konten */
+        .overflow-hidden { overflow: visible !important; }
+    }
+    /* Tambahkan ini untuk sinkronisasi scrollbar */
+    .custom-scroll::-webkit-scrollbar {
+        width: 5px !important;
+        height: 5px !important;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+        background: #f1f5f9 !important;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+        background: #c7d2fe !important; /* Biru muda keabu-abuan agar serasi */
+        border-radius: 10px !important;
+    }
+
+    /* Menghilangkan efek warna merah/pink saat ada error validasi */
+    input:invalid,
+    input:focus:invalid {
+        border-color: #e2e8f0; /* Kembali ke warna border slate-200 */
+        box-shadow: none;      /* Menghilangkan shadow merah/pink */
+    }
+
+    /* Opsional: Menghilangkan ikon error default di browser */
+    input::-webkit-credentials-auto-fill-button {
+        visibility: hidden;
+        display: none !important;
+    }
 </style>
+
+<div class="w-full min-h-screen bg-[#f4f7fb] pb-16 flex-col items-center">
 
 {{-- HEADER DENGAN GAYA PERSIS RIWAYAT SERVIS --}}
 <div class="w-full bg-blue-600 border-b border-blue-700 shadow-md shadow-slate-900/10 z-20 mb-1">
@@ -31,8 +78,9 @@
     </div>
 </div>
 
-<div class="flex-1 overflow-y-auto p-4 form-scroll-clean bg-[#f4f7fb]">
-    <form id="main-form-transaksi" class="max-w-5xl mx-auto">
+{{-- AREA KONTEN UTAMA --}}
+<div class="w-full pb-16 px-4">
+    <div class="max-w-5xl mx-auto"><form id="main-form-transaksi" class="mt-4">
         @csrf
 
         {{-- BAGIAN 1: IDENTITAS --}}
@@ -52,8 +100,8 @@
                required
                placeholder="Contoh input..."
                class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 shadow-inner transition-all">
-    </div>
-@endforeach
+                    </div>
+                @endforeach
             </div>
         </div>
 
@@ -84,7 +132,44 @@
     PROSES TRANSAKSI
 </button>
     </form>
-</div>
+
+{{-- BAGIAN 3: TABEL TRANSAKSI (Sesuai permintaan Anda) --}}
+<div class="bg-white border border-slate-200 rounded-xl shadow-sm mt-8 overflow-hidden">
+    {{-- Header Tabel --}}
+    <div class="px-6 py-4 border-b border-slate-100 flex items-center gap-2">
+        <div class="p-1.5 rounded-lg bg-blue-600 text-white font-black text-[9px] px-2">03</div>
+        <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-700">Daftar Transaksi Hari Ini</h3>
+    </div>
+
+    <table class="w-full text-left border-collapse text-[10px]">
+        <thead class="bg-blue-600 text-white font-black">
+            <tr>
+                <th class="p-3 text-center">No</th>
+                <th class="p-3 text-center">Nama</th> <th class="p-3 text-center">Plat</th>
+                <th class="p-3 text-center">Metode</th>
+                <th class="p-3 text-right">Nominal</th>
+                <th class="p-3 text-center">Status</th>
+            </tr>
+        </thead>
+        <tbody id="tabel-transaksi-input" class="divide-y divide-slate-100 font-bold text-slate-700">
+            @forelse(($transaksiHariIni ?? []) as $index => $t)
+            <tr>
+                <td class="p-3 text-center">{{ $index + 1 }}</td>
+                <td class="p-3 text-center">{{ $t->nama_pelanggan }}</td> <td class="p-3 text-center uppercase tracking-wider">{{ $t->plat_nomor }}</td>
+                <td class="p-3 text-center text-blue-600 uppercase">{{ $t->metode_bayar ?? 'CASH' }}</td>
+                <td class="p-3 text-right">Rp {{ number_format($t->total_bayar) }}</td>
+                <td class="p-3 text-center">
+                    {{-- DESAIN STATUS: Hijau solid dengan bayangan abu-abu tipis --}}
+                    <span class="inline-block px-3 py-1 bg-emerald-400 text-white rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)] font-black text-[8px] uppercase tracking-widest">
+                        SELESAI
+                    </span>
+                </td>
+            </tr>
+            @empty
+            <tr id="empty-row"><td colspan="6" class="p-8 text-center text-slate-400 italic">Belum ada transaksi</td></tr>
+            @endforelse
+        </tbody>
+    </table>
 
 <div id="popup-sukses" class="fixed inset-0 hidden items-center justify-center z-[100] p-4">
     {{-- Overlay --}}
@@ -122,16 +207,12 @@
 
 <script>
     function hitungKembalian() {
-    let tagihan = document.getElementById('total-tagihan').value;
-    let diterima = document.getElementById('uang-diterima').value;
-    let kembali = diterima - tagihan;
-
-    // Menampilkan angka dengan format Rupiah di input kembalian
-    let nilaiKembali = kembali >= 0 ? kembali : 0;
-    document.getElementById('uang-kembali').value = "Rp " + Number(nilaiKembali).toLocaleString('id-ID');
+        let tagihan = document.getElementById('total-tagihan').value;
+        let diterima = document.getElementById('uang-diterima').value;
+        let kembali = diterima - tagihan;
+        let nilaiKembali = kembali >= 0 ? kembali : 0;
+        document.getElementById('uang-kembali').value = "Rp " + Number(nilaiKembali).toLocaleString('id-ID');
     }
-
-    // GABUNGKAN SEMUA LOGIKA DI SINI
     async function prosesTransaksi() {
         // 1. Ambil data dari form
         const form = document.getElementById('main-form-transaksi');
@@ -147,19 +228,40 @@
 
             const result = await response.json();
 
-            // 3. Jika berhasil, jalankan animasi pop-up
+            // 3. Jika berhasil, update tabel DAN jalankan animasi pop-up
             if (result.success) {
+                // A. Update Tabel
+                console.log("Data berhasil diterima:", formData.get('nama_pelanggan'));
+                const emptyRow = document.getElementById('empty-row');
+                if (emptyRow) emptyRow.remove();
+
+                const tbody = document.getElementById('tabel-transaksi-input');
+                newRow.innerHTML = `
+                    <td class="p-3 text-center">-</td>
+                    <td class="p-3 text-center">${formData.get('nama_pelanggan')}</td>
+                    <td class="p-3 text-center uppercase tracking-wider">${formData.get('plat_nomor')}</td>
+                    <td class="p-3 text-center text-blue-600 uppercase">CASH</td>
+                    <td class="p-3 text-right">Rp ${Number(formData.get('total_bayar')).toLocaleString('id-ID')}</td>
+                    <td class="p-3 text-center">
+                        <span class="inline-block px-3 py-1 bg-emerald-400 text-white rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)] font-black text-[8px] uppercase tracking-widest">
+                            SELESAI
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(newRow);
+
+                // B. Jalankan Pop-up
                 const popup = document.getElementById('popup-sukses');
                 const content = document.getElementById('popup-content');
 
                 popup.classList.remove('hidden');
                 popup.classList.add('flex');
-
-                // Trigger animasi halus
                 setTimeout(() => {
                     content.classList.replace('scale-95', 'scale-100');
                     content.classList.replace('opacity-0', 'opacity-100');
                 }, 50);
+
+                form.reset();
             } else {
                 alert("Gagal: " + (result.message || "Data tidak lengkap"));
             }
@@ -173,10 +275,7 @@
         const content = document.getElementById('popup-content');
         content.classList.replace('scale-100', 'scale-95');
         content.classList.replace('opacity-100', 'opacity-0');
-
-        setTimeout(() => {
-            window.location.reload();
-        }, 300);
+        setTimeout(() => { window.location.reload(); }, 300);
     }
 </script>
 @endsection

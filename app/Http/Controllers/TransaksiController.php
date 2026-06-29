@@ -7,9 +7,15 @@ use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
-    // Halaman Input
-    public function create() { return view('transaksi.input-transaksi'); }
+    // Update fungsi create di TransaksiController.php
+    public function create() {
+    // Ambil transaksi hari ini dari database
+    $transaksiHariIni = Transaksi::whereDate('created_at', today())->get();
 
+    // Kirim data ke view
+    return view('transaksi.input-transaksi', compact('transaksiHariIni'));
+    }
+    
     // Proses Simpan
     public function store(Request $request) {
     $data = $request->validate([
