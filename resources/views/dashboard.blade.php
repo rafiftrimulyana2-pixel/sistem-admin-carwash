@@ -236,83 +236,74 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 pb-10 items-stretch">
+                <div class="lg:col-span-2 flex flex-col h-full">
+                    <div class="bg-white border border-slate-200 flex flex-col h-full overflow-hidden rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
 
-                <div class="lg:col-span-2 flex flex-col">
-                    <div class="bg-white border-2 border-slate-100 flex flex-col h-full overflow-hidden rounded-xl shadow-sm">
-
+                        {{-- HEADER TABLE --}}
                         <div class="px-7 py-6 border-b border-slate-100 flex justify-between items-center bg-white">
                             <div class="flex items-center gap-4">
-                                <div class="w-1.5 h-9 bg-blue-600 rounded-full"></div>
-                                <div class="flex flex-col justify-center gap-0.5">
-                                    <h4 class="text-slate-800 font-bold uppercase tracking-widest text-[12px] leading-none">Daftar Antrean Unit</h4>
-                                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider leading-none mt-1">Monitoring Antrean Pelanggan Real-time</p>
+                                <div class="w-1.5 h-9 bg-blue-600 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.4)]"></div>
+                                <div>
+                                    <h4 class="text-slate-800 font-black uppercase tracking-widest text-[12px]">Daftar Antrean Unit</h4>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Monitoring Antrean Pelanggan Real-time</p>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-3 px-5 py-2 rounded-lg transition-all duration-500 {{ count($antreanAktif) > 0 ? 'bg-emerald-500' : 'bg-blue-600' }}">
-                                <div class="relative flex h-2.5 w-2.5">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-white"></span>
-                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+
+                            {{-- INDIKATOR UNIT --}}
+                            <div class="flex items-center gap-2.5 px-4 py-2 rounded-xl border border-slate-100 bg-slate-50 shadow-inner">
+                                <div class="relative flex h-3 w-3">
+                                    <span class="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                                 </div>
-                                <span class="text-[10px] font-black uppercase tracking-wider text-white">
-                                    {{ count($antreanAktif) }} UNIT TERPANTAU
+                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-700">
+                                    {{ count($antreanAktif) }} <span class="text-slate-400">Unit Terpantau</span>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-[2fr_1.2fr_1.5fr_1fr] gap-4 px-8 py-3 bg-blue-600">
-                            <div class="text-[10px] font-bold text-white uppercase tracking-widest">Pelanggan</div>
-                            <div class="text-[10px] font-bold text-white uppercase tracking-widest text-center border-l border-blue-400/50">Kendaraan</div>
-                            <div class="text-[10px] font-bold text-white uppercase tracking-widest text-center border-l border-blue-400/50">Kategori Layanan</div>
-                            <div class="text-[10px] font-bold text-white uppercase tracking-widest text-right border-l border-blue-400/50">Status</div>
+                        {{-- TABEL (Menggunakan Table agar benar-benar sejajar) --}}
+                        <div class="overflow-x-auto flex-1 custom-scroll">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-blue-600 text-white font-black uppercase tracking-widest text-[9px]">
+                                    <tr>
+                                        <th class="p-4 text-center">No</th>
+                                        <th class="p-4 text-center">Nama Pelanggan</th>
+                                        <th class="p-4 text-center">Plat Nomor</th>
+                                        <th class="p-4 text-center">Layanan</th>
+                                        <th class="p-4 text-center">Waktu Masuk</th>
+                                        <th class="p-4 text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    @forelse($antreanAktif as $index => $row)
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="p-4 text-center text-[11px] font-black text-slate-400">{{ $index + 1 }}</td>
+                                        <td class="p-4 text-center text-[12px] font-bold text-slate-700">{{ $row->nama_pelanggan }}</td>
+                                        <td class="p-4 text-center">
+                                            <span class="px-3 py-1 bg-slate-100 text-blue-700 font-black text-[11px] rounded-lg italic border border-slate-200 shadow-sm">
+                                                {{ $row->plat_nomor }}
+                                            </span>
+                                        </td>
+                                        <td class="p-4 text-center text-[11px] font-bold text-slate-600 uppercase">{{ $row->jenis_paket }}</td>
+                                        <td class="p-4 text-center text-[11px] font-black text-slate-500 tracking-widest">
+                                            {{ \Carbon\Carbon::parse($row->created_at)->format('H:i') }}
+                                        </td>
+                                        <td class="p-4 text-center">
+                                            <span class="inline-block px-4 py-1.5 bg-emerald-500 text-white font-black text-[9px] uppercase tracking-widest rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
+                                                {{ $row->status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr><td colspan="6" class="p-10 text-center text-slate-400 font-bold italic">Belum ada antrean aktif</td></tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
 
-                        <div class="flex-1 bg-white min-h-[450px]">
-                            {{-- INJEKSI DATA NYATA: Memanggil baris tabel sesuai input data admin --}}
-                            @forelse($antreanAktif as $row)
-                                <div class="grid grid-cols-[2fr_1.2fr_1.5fr_1fr] gap-4 px-8 py-5 border-b border-slate-50 hover:bg-slate-50 transition-colors duration-300 items-center table-layout-fixed">
-
-                                    <div class="flex flex-col gap-0.5 truncate max-w-[180px]">
-                                        <span class="text-[12px] font-bold text-slate-700 leading-tight truncate">{{ $row->nama_pelanggan }}</span>
-                                        <span class="text-[9px] text-slate-400 font-medium uppercase">{{ $row->no_hp ?? '-' }}</span>
-                                    </div>
-
-                                    <div class="flex justify-center items-center">
-                                        <span class="text-[11px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-md italic tracking-wider border border-blue-100 whitespace-nowrap">
-                                            {{ $row->plat_nomor }}
-                                        </span>
-                                    </div>
-
-                                    <div class="flex flex-col items-center justify-center truncate max-w-[140px]">
-                                        <span class="text-[11px] text-slate-600 font-bold uppercase leading-tight truncate">
-                                            {{ $row->jenis_paket }}
-                                        </span>
-                                        <span class="text-[8px] text-blue-500 font-black uppercase italic tracking-tighter">Active Service</span>
-                                    </div>
-
-                                    <div class="flex justify-end items-center">
-                                        @php
-                                            $color = 'bg-slate-500';
-                                            if($row->status == 'PENCUCIAN') $color = 'bg-amber-500';
-                                            if($row->status == 'PENGERINGAN') $color = 'bg-blue-600';
-                                        @endphp
-                                        <span class="px-3 py-1 {{ $color }} text-white text-[9px] font-black uppercase rounded-md italic tracking-widest whitespace-nowrap">
-                                            {{ $row->status }}
-                                        </span>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="h-full flex flex-col items-center justify-center py-24 px-10">
-                                    <div class="mb-6 text-slate-200">
-                                        <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                                    </div>
-                                    <h2 class="text-xl font-bold text-slate-700 uppercase tracking-tight mb-2 italic">Belum Ada Pelanggan</h2>
-                                    <p class="text-[11px] font-medium text-slate-400 uppercase tracking-widest text-center max-w-xs leading-relaxed">Sistem sedang stand-by menunggu data pelanggan baru dari admin untuk ditampilkan di monitor.</p>
-                                </div>
-                            @endforelse
-                        </div>
-
+                        {{-- FOOTER TOMBOL --}}
                         <div class="px-7 py-6 bg-white border-t border-slate-50 mt-auto">
-                            <a href="{{ route('status-progress.index') }}" class="flex items-center justify-center w-full py-4 bg-blue-600 rounded-xl transition-all duration-500 hover:bg-blue-700 hover:-translate-y-1 shadow-lg shadow-blue-200/50">
+                            <a href="{{ route('status-progress.index') }}" class="flex items-center justify-center w-full py-4 bg-blue-600 rounded-xl hover:bg-blue-700 shadow-lg transition-all">
                                 <span class="text-white text-[12px] font-bold uppercase tracking-widest">Kelola Seluruh Antrean →</span>
                             </a>
                         </div>
@@ -438,6 +429,19 @@
 
 {{-- SCRIPT SINKRONISASI JAM REAL-TIME --}}
 <script>
+    // Memperbarui halaman secara otomatis setiap 30 detik
+    // sehingga waktu masuk terbaru akan langsung muncul di daftar
+    setInterval(() => {
+        window.location.reload();
+    }, 30000);
+
+    // Skrip ini akan otomatis update jika ada data baru
+    function refreshData() {
+        // Anda bisa menggunakan AJAX/Fetch di sini untuk memperbarui tabel setiap 30 detik
+        // tanpa harus me-reload halaman
+    }
+    setInterval(refreshData, 30000);
+
     function openProfileModal() { document.getElementById('profileModal').classList.remove('hidden'); }
     function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
 

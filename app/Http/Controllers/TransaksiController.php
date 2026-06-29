@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
+use App\Models\Antrean;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
@@ -15,7 +16,7 @@ class TransaksiController extends Controller
     // Kirim data ke view
     return view('transaksi.input-transaksi', compact('transaksiHariIni'));
     }
-    
+
     // Proses Simpan
     public function store(Request $request) {
     $data = $request->validate([
@@ -25,11 +26,20 @@ class TransaksiController extends Controller
         'total_bayar'     => 'required|integer',
     ]);
 
-    // Tambahkan default agar tidak kosong
+    // Data untuk Transaksi
     $data['paket_cuci'] = 'REGULER WASH';
-    $data['status'] = 'LUNAS'; // Sesuaikan statusnya
-
+    $data['status'] = 'SELESAI';
     Transaksi::create($data);
+
+    // Data untuk Antrean (Gunakan field yang sesuai di model Antrean Anda)
+    Antrean::create([
+        'nama_pelanggan'  => $data['nama_pelanggan'],
+        'plat_nomor'      => $data['plat_nomor'],
+        'jenis_paket'     => $data['paket_cuci'], // Pastikan kolom ini ada di tabel antrean
+        'status'          => $data['status'],
+        'created_at'     => now() // Ini yang akan jadi "Waktu Masuk"      
+    ]);
+
     return response()->json(['success' => true]);
     }
 

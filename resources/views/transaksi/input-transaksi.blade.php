@@ -145,28 +145,34 @@
         <thead class="bg-blue-600 text-white font-black">
             <tr>
                 <th class="p-3 text-center">No</th>
-                <th class="p-3 text-center">Nama</th> <th class="p-3 text-center">Plat</th>
+                <th class="p-3 text-center">Nama</th>
+                <th class="p-3 text-center">Plat</th>
                 <th class="p-3 text-center">Metode</th>
-                <th class="p-3 text-right">Nominal</th>
+                <th class="p-3 text-center">Waktu Masuk</th> <th class="p-3 text-right">Nominal</th>
                 <th class="p-3 text-center">Status</th>
             </tr>
         </thead>
         <tbody id="tabel-transaksi-input" class="divide-y divide-slate-100 font-bold text-slate-700">
             @forelse(($transaksiHariIni ?? []) as $index => $t)
-            <tr>
-                <td class="p-3 text-center">{{ $index + 1 }}</td>
-                <td class="p-3 text-center">{{ $t->nama_pelanggan }}</td> <td class="p-3 text-center uppercase tracking-wider">{{ $t->plat_nomor }}</td>
-                <td class="p-3 text-center text-blue-600 uppercase">{{ $t->metode_bayar ?? 'CASH' }}</td>
-                <td class="p-3 text-right">Rp {{ number_format($t->total_bayar) }}</td>
-                <td class="p-3 text-center">
-                    {{-- DESAIN STATUS: Hijau solid dengan bayangan abu-abu tipis --}}
-                    <span class="inline-block px-3 py-1 bg-emerald-400 text-white rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)] font-black text-[8px] uppercase tracking-widest">
-                        SELESAI
-                    </span>
-                </td>
-            </tr>
+                <tr class="hover:bg-slate-50 transition-all">
+                    <td class="p-3 text-center">{{ $index + 1 }}</td>
+                    <td class="p-3 text-center">{{ $t->nama_pelanggan }}</td>
+                    <td class="p-3 text-center uppercase">{{ $t->plat_nomor }}</td>
+                    <td class="p-3 text-center text-blue-600 uppercase">{{ $t->metode_bayar ?? 'CASH' }}</td>
+                    <td class="p-3 text-center font-bold text-slate-500">
+                        {{ \Carbon\Carbon::parse($t->created_at)->format('H:i') }}
+                    </td>
+                    <td class="p-3 text-right">Rp {{ number_format($t->total_bayar) }}</td>
+                    <td class="p-3 text-center">
+                        <span class="inline-block px-3 py-1 bg-emerald-500 text-white font-black text-[9px] uppercase rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
+                            SELESAI
+                        </span>
+                    </td>
+                </tr>
             @empty
-            <tr id="empty-row"><td colspan="6" class="p-8 text-center text-slate-400 italic">Belum ada transaksi</td></tr>
+                <tr id="empty-row">
+                    <td colspan="7" class="p-8 text-center text-slate-400 italic">Belum ada transaksi</td>
+                </tr>
             @endforelse
         </tbody>
     </table>
@@ -236,14 +242,16 @@
                 if (emptyRow) emptyRow.remove();
 
                 const tbody = document.getElementById('tabel-transaksi-input');
+                const newRow = document.createElement('tr'); // Tambahkan baris ini!
                 newRow.innerHTML = `
                     <td class="p-3 text-center">-</td>
                     <td class="p-3 text-center">${formData.get('nama_pelanggan')}</td>
-                    <td class="p-3 text-center uppercase tracking-wider">${formData.get('plat_nomor')}</td>
-                    <td class="p-3 text-center text-blue-600 uppercase">CASH</td>
+                    <td class="p-3 text-center uppercase">${formData.get('plat_nomor')}</td>
+                    <td class="p-3 text-center text-blue-600">CASH</td>
+                    <td class="p-3 text-center font-bold text-slate-500">${new Date().getHours()}:${new Date().getMinutes()}</td>
                     <td class="p-3 text-right">Rp ${Number(formData.get('total_bayar')).toLocaleString('id-ID')}</td>
                     <td class="p-3 text-center">
-                        <span class="inline-block px-3 py-1 bg-emerald-400 text-white rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)] font-black text-[8px] uppercase tracking-widest">
+                        <span class="inline-block px-3 py-1 bg-emerald-400 text-white rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)] font-black text-[8px] uppercase">
                             SELESAI
                         </span>
                     </td>
