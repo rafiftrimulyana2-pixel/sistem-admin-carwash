@@ -12,7 +12,7 @@ class ReservationController extends Controller
     public function index()
     {
         // 1. Ambil DATA LENGKAP untuk Tabel (Bukan cuma angka)
-        $antreanAktif = Reservation::where('status', 'proses')->get(); // Gunakan get() agar data orangnya muncul
+        $antreanAktif = Reservation::where('status', 'PENCUCIAN')->orderBy('created_at', 'asc')->get();
 
         // 2. Hitung jumlah untuk angka di Kotak Statistik (Opsional, tapi bagus untuk tampilan)
         $jumlahAntrean = $antreanAktif->count();
@@ -36,11 +36,26 @@ class ReservationController extends Controller
             'omzetHariIni'
         ));
     }
+
     public function statusProgress()
     {
         // Mengambil semua transaksi untuk dikelola di halaman progres
         $semuaTransaksi = \App\Models\Transaksi::latest()->get();
 
         return view('status_progress.index', compact('semuaTransaksi'));
+    }
+
+    // Tambahkan fungsi ini untuk menerima booking dari HP/Web Customer
+    public function storeCustomerBooking(Request $request) {
+        $data = $request->validate([
+            'nama_pelanggan' => 'required',
+            'plat_nomor'     => 'required',
+            'total_bayar'    => 'required'
+        ]);
+
+        $data['status'] = 'PENDING'; // Status baru agar masuk list booking admin
+        Reservation::create($data);
+
+        return response()->json(['message' => 'Booking diterima!']);
     }
 }

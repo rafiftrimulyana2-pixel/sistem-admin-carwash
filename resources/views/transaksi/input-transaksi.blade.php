@@ -91,15 +91,17 @@
             </div>
 
             <div class="grid grid-cols-2 gap-4">
-                @foreach(['plat_nomor' => 'Nomor Polisi Kendaraan', 'jenis_kendaraan' => 'Tipe / Model Mobil', 'nama_pelanggan' => 'Nama Pelanggan', 'no_hp' => 'Nomor WhatsApp'] as $name => $label)
-    <div class="flex flex-col gap-1.5">
-        <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">{{ $label }} *</label>
-        {{-- Atribut name di sini menggunakan $name dari array di atas --}}
-        <input type="{{ $name == 'no_hp' ? 'number' : 'text' }}"
-               name="{{ $name }}"
-               required
-               placeholder="Contoh input..."
-               class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 shadow-inner transition-all">
+                <div class="grid grid-cols-2 gap-4">
+                @foreach([
+                    'plat_nomor' => 'Nomor Polisi Kendaraan',
+                    'nama_pelanggan' => 'Nama Pelanggan',
+                    'jenis_kendaraan' => 'Tipe / Model Mobil'
+                ] as $name => $label)
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">{{ $label }} *</label>
+                        <input type="text" name="{{ $name }}" required
+                            value="{{ old($name, $booking->$name ?? '') }}"
+                            class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 shadow-inner transition-all">
                     </div>
                 @endforeach
             </div>
@@ -142,19 +144,20 @@
     </div>
 
     <table class="w-full text-left border-collapse text-[10px]">
-        <thead class="bg-blue-600 text-white font-black">
+        <thead class="bg-blue-600 text-white font-black uppercase tracking-widest">
             <tr>
                 <th class="p-3 text-center">No</th>
                 <th class="p-3 text-center">Nama</th>
                 <th class="p-3 text-center">Plat</th>
                 <th class="p-3 text-center">Metode</th>
-                <th class="p-3 text-center">Waktu Masuk</th> <th class="p-3 text-right">Nominal</th>
+                <th class="p-3 text-center">Waktu Masuk</th>
+                <th class="p-3 text-center">Nominal</th>
                 <th class="p-3 text-center">Status</th>
             </tr>
         </thead>
         <tbody id="tabel-transaksi-input" class="divide-y divide-slate-100 font-bold text-slate-700">
             @forelse(($transaksiHariIni ?? []) as $index => $t)
-                <tr class="hover:bg-slate-50 transition-all">
+                <tr>
                     <td class="p-3 text-center">{{ $index + 1 }}</td>
                     <td class="p-3 text-center">{{ $t->nama_pelanggan }}</td>
                     <td class="p-3 text-center uppercase">{{ $t->plat_nomor }}</td>
@@ -162,14 +165,14 @@
                     <td class="p-3 text-center font-bold text-slate-500">
                         {{ \Carbon\Carbon::parse($t->created_at)->format('H:i') }}
                     </td>
-                    <td class="p-3 text-right">Rp {{ number_format($t->total_bayar) }}</td>
+                    <td class="p-3 text-center">Rp {{ number_format($t->total_bayar) }}</td>
                     <td class="p-3 text-center">
                         <span class="inline-block px-3 py-1 bg-emerald-500 text-white font-black text-[9px] uppercase rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
                             SELESAI
                         </span>
                     </td>
                 </tr>
-            @empty
+                @empty
                 <tr id="empty-row">
                     <td colspan="7" class="p-8 text-center text-slate-400 italic">Belum ada transaksi</td>
                 </tr>
@@ -248,10 +251,10 @@
                     <td class="p-3 text-center">${formData.get('nama_pelanggan')}</td>
                     <td class="p-3 text-center uppercase">${formData.get('plat_nomor')}</td>
                     <td class="p-3 text-center text-blue-600">CASH</td>
-                    <td class="p-3 text-center font-bold text-slate-500">${new Date().getHours()}:${new Date().getMinutes()}</td>
-                    <td class="p-3 text-right">Rp ${Number(formData.get('total_bayar')).toLocaleString('id-ID')}</td>
+                    <td class="p-3 text-center font-bold text-slate-500">${new Date().getHours().toString().padStart(2, '0')}:${new Date().getMinutes().toString().padStart(2, '0')}</td>
+                    <td class="p-3 text-center">Rp ${Number(formData.get('total_bayar')).toLocaleString('id-ID')}</td>
                     <td class="p-3 text-center">
-                        <span class="inline-block px-3 py-1 bg-emerald-400 text-white rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)] font-black text-[8px] uppercase">
+                        <span class="inline-block px-3 py-1 bg-emerald-500 text-white font-black text-[9px] uppercase rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
                             SELESAI
                         </span>
                     </td>
@@ -275,7 +278,7 @@
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Terjadi kesalahan sistem, periksa database.");
+            alert("Terjadi kesalahan: " + error.message);
         }
     }
 

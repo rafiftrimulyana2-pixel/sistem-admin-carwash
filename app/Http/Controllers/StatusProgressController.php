@@ -11,7 +11,7 @@ class StatusProgressController extends Controller
     {
         // Mengambil booking yang sudah diverifikasi ('confirmed')
         // atau sedang dalam proses (PENCUCIAN, PENGERINGAN, dll)
-        $antreanAktif = Booking::whereIn('status', ['confirmed', 'PENCUCIAN', 'PENGERINGAN', 'READY'])
+        $antreanAktif = \App\Models\Reservation::whereNotIn('status', ['READY', 'FINISH'])
             ->orderBy('created_at', 'asc')
             ->get();
 

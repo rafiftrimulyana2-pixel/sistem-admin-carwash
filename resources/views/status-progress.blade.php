@@ -80,11 +80,33 @@
 </div>
 
 <script>
+    // Di status-progress.blade.php
+    setInterval(() => {
+        fetch('/api/get-antrean-update') // Buat route ini untuk ambil JSON data terbaru
+        .then(response => response.json())
+        .then(data => {
+            // Update DOM tabel antrean di sini secara otomatis
+        });
+    }, 5000); // Cek setiap 5 detik
+
     let currentTabKategori = "ALL";
     const kapasitasMaksimalSlot = 5;
     let arrayDatabaseProgresWorkshop = @json($antreanAktif ?? []).map(item => {
         let step = item.status === 'READY' ? 4 : (item.status === 'PENGERINGAN' ? 3 : (item.status === 'PENCUCIAN' ? 2 : 1));
-        return { id: item.id, nopol: item.plat_nomor, nama: item.nama_pelanggan, mobil: item.jenis_kendaraan ?? 'MOBIL', step, persen: step * 25 };
+
+        // AMBIL WAKTU DARI DATABASE
+        let waktu = new Date(item.created_at);
+        let jamMasuk = waktu.getHours().toString().padStart(2, '0') + ':' + waktu.getMinutes().toString().padStart(2, '0');
+
+        return {
+        id: item.id,
+        nopol: item.plat_nomor,
+        nama: item.nama_pelanggan,
+        mobil: item.jenis_kendaraan ?? 'MOBIL',
+        step,
+        persen: step * 25,
+        waktu: jamMasuk
+    };
     });
 
     function setKategoriTab(k, el) {
@@ -108,7 +130,16 @@
     const wrapper = document.getElementById('progress-list-wrapper');
     wrapper.innerHTML = "";
 
-    // ... (kode loop render kartu mobil Anda) ...
+    dataToRender.forEach(i => {
+            wrapper.innerHTML += `
+                <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center shadow-sm">
+                    <div>
+                        <h3 class="font-black text-slate-800">${i.nama}</h3>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase">Masuk: ${i.waktu}</p>
+                    </div>
+                    </div>
+            `;
+        });
 
     // TARUH KODE STATISTIK DI SINI:
     let unitAktif = arrayDatabaseProgresWorkshop.filter(i => i.step < 4).length;

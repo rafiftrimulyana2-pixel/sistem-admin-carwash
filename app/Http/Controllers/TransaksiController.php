@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
-use App\Models\Antrean;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
@@ -19,6 +19,8 @@ class TransaksiController extends Controller
 
     // Proses Simpan
     public function store(Request $request) {
+
+    // 1. Validasi
     $data = $request->validate([
         'nama_pelanggan'  => 'required',
         'plat_nomor'      => 'required',
@@ -26,18 +28,17 @@ class TransaksiController extends Controller
         'total_bayar'     => 'required|integer',
     ]);
 
-    // Data untuk Transaksi
-    $data['paket_cuci'] = 'REGULER WASH';
-    $data['status'] = 'SELESAI';
+    // 2. Simpan ke tabel TRANSAKSIS (Hanya simpan data yang valid)
     Transaksi::create($data);
 
-    // Data untuk Antrean (Gunakan field yang sesuai di model Antrean Anda)
-    Antrean::create([
+    // 3. Simpan ke tabel RESERVATIONS (Gunakan data yang tadi divalidasi)
+    \App\Models\Reservation::create([
         'nama_pelanggan'  => $data['nama_pelanggan'],
         'plat_nomor'      => $data['plat_nomor'],
-        'jenis_paket'     => $data['paket_cuci'], // Pastikan kolom ini ada di tabel antrean
-        'status'          => $data['status'],
-        'created_at'     => now() // Ini yang akan jadi "Waktu Masuk"      
+        'jenis_paket'     => 'REGULER WASH',
+        'status'          => 'PENCUCIAN',
+        'total_bayar'     => $data['total_bayar'],
+        'created_at'      => now() // Ini yang akan jadi "Waktu Masuk"
     ]);
 
     return response()->json(['success' => true]);
@@ -78,5 +79,28 @@ class TransaksiController extends Controller
     });
 
     return view('laporan-pendapatan', compact('dataFinance'));
+    }
+
+    public function createFromBooking($id) {
+    $booking = Reservation::findOrFail($id);
+    // Kirim data booking ke view agar form terisi otomatis
+    return view('transaksi.input-transaksi', compact('booking'));
+    }
+
+    public function konfirmasiBooking(Request $request, $id) {
+    $booking = \App\Models\Reservation::findOrFail($id);
+
+    if ($request->action == 'terima') {
+        // 1. Update status booking menjadi PENCUCIAN (agar masuk ke Progress)
+        $booking->update(['status' => 'PENCUCIAN']);
+
+        // 2. Data ini nantinya ditarik oleh sistem input transaksi
+        return response()->json(['success' => true, 'message' => 'Booking diterima!']);
+    } else {
+        // Logika Tolak
+        $booking->update(['status' => 'DITOLAK']);
+        // Kirim notifikasi ke customer (bisa via WA API atau catatan di sistem)
+        return response()->json(['success' => true, 'message' => 'Booking ditolak.']);
+        }
     }
 }

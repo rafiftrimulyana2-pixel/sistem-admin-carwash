@@ -126,10 +126,17 @@
 </div>
 
 <script>
-    // Contoh Data dengan Field Lengkap
-    let bookings = [
-        { id: 1, name: "Budi Santoso", car: "Toyota Avanza", date: "29 Juni 2026", time: "09:00", location: "Jl. Merdeka No. 12", service: "Cuci Salju + Wax", initials: "BS", color: "bg-blue-600" }
-    ];
+    // Mengambil data dari Laravel langsung ke JS
+    let bookings = @json($bookings);
+
+    function renderList() {
+        const listContainer = document.getElementById('booking-list');
+        listContainer.innerHTML = bookings.map(b => `
+            <div class="p-4 bg-white ...">
+                <p>${b.nama_pelanggan}</p> <button onclick="bukaModal(${b.id})">Verifikasi</button>
+            </div>
+        `).join('');
+    }
 
     function renderList() {
         const listContainer = document.getElementById('booking-list');
@@ -250,5 +257,4 @@
         lucide.createIcons(); // Inisialisasi ikon
     });
 </script>
-
 @endsection

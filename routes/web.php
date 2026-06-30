@@ -8,11 +8,11 @@ use App\Http\Controllers\StatusProgressController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\BookingController;
 
-// Rute Halaman Depan Awalan Website
-Route::get('/', function () { return view('welcome'); });
+    // Rute Halaman Depan Awalan Website
+    Route::get('/', function () { return view('welcome'); });
 
-// Semua Rute yang Terproteksi Login (Middleware Auth)
-Route::middleware(['auth', 'verified'])->group(function () {
+    // Semua Rute yang Terproteksi Login (Middleware Auth)
+    Route::middleware(['auth', 'verified'])->group(function () {
 
     // Rute Manajemen Profil User Admin
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -29,9 +29,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/booking-calendar', [BookingController::class, 'index'])->name('booking.calendar');
     Route::post('/booking/verify/{id}', [BookingController::class, 'verify']);
+
     Route::get('/jadwal-mekanik', function () { return view('jadwal-mekanik'); })->name('jadwal.mekanik');
 
     Route::get('/stok-bahan', function () { return view('stok-bahan'); })->name('stok.bahan');
+
+    // Tambahkan di dalam route group middleware auth
+    Route::post('/submit-booking', [ReservationController::class, 'storeCustomerBooking'])->name('api.booking.store');
 
     // Tambahkan baris ini di dalam group middleware 'auth'
     Route::post('/api/update-status-mobil/{id}', [StatusProgressController::class, 'updateStatus'])->name('status.update');
@@ -47,6 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // 🔥 JALUR LAPORAN PENDAPATAN: Mengarah ke fungsi laporan() di TransaksiController
     Route::get('/laporan-pendapatan', [TransaksiController::class, 'laporan'])->name('laporan.pendapatan');
+
+    // Ini adalah "pintu" baru untuk membawa data dari kalender ke form transaksi
+    Route::get('/input-transaksi/{id}', [TransaksiController::class, 'createFromBooking'])->name('input.transaksi.booking');
 
     // Rute Tambahan untuk Tombol Export Excel
     Route::get('/laporan-pendapatan/export', function () {

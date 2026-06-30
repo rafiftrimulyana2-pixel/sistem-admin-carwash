@@ -9,25 +9,33 @@ class BookingController extends Controller
 {
     public function index()
     {
-        // Ambil semua data dari tabel bookings
-        $bookings = Booking::all();
+        // Ambil semua booking yang statusnya masih PENDING
+        $bookings = \App\Models\Reservation::where('status', 'PENDING')->get();
 
         // Kirim data ke view 'booking-calendar'
         return view('booking-calendar', compact('bookings'));
     }
+
     public function verify($id)
     {
-    $booking = Booking::find($id);
-    $booking->status = 'confirmed'; // Booking diterima
-    $booking->progress_status = 'sedang_dikerjakan'; // Masuk ke tabel Status Progress
+    // Gunakan Reservation
+    $booking = \App\Models\Reservation::findOrFail($id);
+
+    // Ubah status ke PENCUCIAN agar otomatis muncul di Dashboard
+    $booking->status = 'PENCUCIAN';
     $booking->save();
+
     return response()->json(['success' => true]);
     }
+
     public function updateStatus(Request $request, $id) {
-    $booking = Booking::findOrFail($id);
-    $booking->status = 'confirmed'; // Booking diterima
-    $booking->progress_status = 'antrean'; // Masuk ke antrean progres
-    $booking->save();
+    // Gunakan model Reservation
+    $reservation = \App\Models\Reservation::findOrFail($id);
+
+    // Cukup update kolom status saja
+    $reservation->status = $request->status;
+    $reservation->save();
+
     return response()->json(['success' => true]);
     }
 }
