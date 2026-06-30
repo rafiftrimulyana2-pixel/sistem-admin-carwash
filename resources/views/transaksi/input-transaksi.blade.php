@@ -91,17 +91,20 @@
             </div>
 
             <div class="grid grid-cols-2 gap-4">
-                <div class="grid grid-cols-2 gap-4">
                 @foreach([
                     'plat_nomor' => 'Nomor Polisi Kendaraan',
                     'nama_pelanggan' => 'Nama Pelanggan',
-                    'jenis_kendaraan' => 'Tipe / Model Mobil'
+                    'jenis_kendaraan' => 'Tipe / Model Mobil',
+                    'no_hp' => 'Nomor WhatsApp'
                 ] as $name => $label)
                     <div class="flex flex-col gap-1.5">
                         <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">{{ $label }} *</label>
-                        <input type="text" name="{{ $name }}" required
+                        <input type="{{ $name == 'no_hp' ? 'number' : 'text' }}"
+                            name="{{ $name }}"
                             value="{{ old($name, $booking->$name ?? '') }}"
-                            class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 shadow-inner transition-all">
+                            required
+                            placeholder="Masukkan {{ $label }}..."
+                            class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-600 shadow-inner transition-all">
                     </div>
                 @endforeach
             </div>

@@ -26,15 +26,19 @@ class TransaksiController extends Controller
         'plat_nomor'      => 'required',
         'jenis_kendaraan' => 'required',
         'total_bayar'     => 'required|integer',
+        'no_hp'           => 'required'
     ]);
 
     // 2. Simpan ke tabel TRANSAKSIS (Hanya simpan data yang valid)
+    $data['paket_cuci'] = 'REGULER WASH';
+    $data['status'] = 'SELESAI';
     Transaksi::create($data);
 
     // 3. Simpan ke tabel RESERVATIONS (Gunakan data yang tadi divalidasi)
     \App\Models\Reservation::create([
         'nama_pelanggan'  => $data['nama_pelanggan'],
         'plat_nomor'      => $data['plat_nomor'],
+        'no_hp'           => $data['no_hp'],
         'jenis_paket'     => 'REGULER WASH',
         'status'          => 'PENCUCIAN',
         'total_bayar'     => $data['total_bayar'],

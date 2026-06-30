@@ -141,16 +141,16 @@
             <div class="w-[60%] h-full bg-white border border-slate-200 rounded-xl overflow-y-auto report-scroll-clean shadow-sm">
                 <table class="w-full border-collapse text-left table-fixed">
                     <thead class="sticky top-0 z-10 bg-blue-600 border-b border-blue-700 shadow-sm text-white text-[8.5px] font-black uppercase tracking-wider">
-                        <tr>
-                            <th class="p-2.5 text-center w-[6%]">No.</th>
-                            <th class="p-2.5 w-[15%]">Tanggal</th>
-                            <th class="p-2.5 w-[18%]">Nomor Plate</th>
-                            <th class="p-2.5 text-center w-[33%]">Nama Customer</th>
-                            <th class="p-2.5 text-center w-[14%]">Metode Bayar</th>
-                            <th class="p-2.5 text-right w-[14%] pr-4">Nominal</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabel-laporan-body" class="divide-y divide-slate-100 text-[8.5px] font-bold text-slate-700">
+                                <tr>
+                                    <th class="p-2.5 text-center w-[6%]">No.</th>
+                                    <th class="p-2.5 w-[15%]">Tanggal</th>
+                                    <th class="p-2.5 w-[18%]">Nomor Plate</th>
+                                    <th class="p-2.5 text-center w-[25%]">Nama Customer</th>
+                                    <th class="p-2.5 text-center w-[15%]">Metode</th>
+                                    <th class="p-2.5 text-right w-[15%]">Nominal</th>
+                                    <th class="p-2.5 text-center w-[10%]">Status</th> </tr>
+                            </thead>
+                        <tbody id="tabel-laporan-body" class="divide-y divide-slate-100 text-[8.5px] font-bold text-slate-700">
                     </tbody>
                 </table>
             </div>
@@ -204,6 +204,12 @@
         const barTransfer = document.getElementById('bar-transfer');
         if (barTransfer) barTransfer.style.height = dataTerfilter.length > 0 ? ((totalTransfer / maxNominal) * 100) + "%" : "0%";
     }
+
+    let tdStatus = document.createElement('td');
+        tdStatus.className = "p-2 text-center";
+        tdStatus.innerHTML = `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[7px] font-black uppercase">LUNAS</span>`;
+        tr.appendChild(tdStatus);
+        
     function renderTabelLaporanKeuangan(dataToRender) {
         const tbody = document.getElementById('tabel-laporan-body');
         if (!tbody) return;
@@ -279,5 +285,4 @@
         onFilterBulanTahunLaporanChange();
     });
 </script>
-
 @endsection

@@ -145,18 +145,18 @@
             <div class="flex-1 overflow-y-auto report-scroll-clean bg-white">
                 <table class="w-full border-collapse text-left table-fixed border-hidden">
                     <thead class="sticky top-0 z-10 bg-blue-600 text-white text-[8.5px] font-black uppercase tracking-wider shadow-sm">
-                        <tr>
-                            <th class="p-2.5 text-center w-[5%]">No.</th>
-                            <th class="p-2.5 text-center w-[15%]">Nomor Polisi</th>
-                            <th class="p-2.5 text-center w-[22%]">Nama Customer</th>
-                            <th class="p-2.5 text-center w-[20%]">Tipe / Model Mobil</th>
-                            <th class="p-2.5 text-center w-[18%]">Paket &amp; Detail Kerja</th>
-                            <th class="p-2.5 text-center w-[10%]">Total Biaya</th>
-                            <th class="p-2.5 text-center w-[10%]">Status Nota</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabel-riwayat-body" class="divide-y divide-slate-100 text-[8.5px] text-slate-700">
-                        </tbody>
+                                <tr>
+                                    <th class="p-2.5 text-center w-[5%]">No.</th>
+                                    <th class="p-2.5 text-center w-[15%]">Nomor Polisi</th>
+                                    <th class="p-2.5 text-center w-[22%]">Nama Customer</th>
+                                    <th class="p-2.5 text-center w-[20%]">Tipe / Model Mobil</th>
+                                    <th class="p-2.5 text-center w-[18%]">Paket &amp; Detail Kerja</th>
+                                    <th class="p-2.5 text-center w-[10%]">Total Biaya</th>
+                                    <th class="p-2.5 text-center w-[10%]">Status Nota</th>
+                                </tr>
+                            </thead>
+                        <tbody id="tabel-riwayat-body" class="divide-y divide-slate-100 text-[8.5px] text-slate-700">
+                    </tbody>
                 </table>
             </div>
 
@@ -232,14 +232,11 @@
 
     function renderTabelRiwayatServis(dataToRender) {
         const tbody = document.getElementById('tabel-riwayat-body');
-        if (!tbody) return;
-        tbody.innerHTML = "";
-
         if (!dataToRender || dataToRender.length === 0) {
             tbody.innerHTML = `
                 <tr>
                     <td colspan="7" class="p-8 text-center text-slate-400 font-medium italic text-[8.5px]">
-                        👋 Belum ada arsip log riwayat servis terkonfirmasi dari sistem kasir/admin. Tampilan dashboard dikunci 0.
+                        👋 Belum ada arsip log riwayat servis terkonfirmasi dari sistem kasir/admin.
                     </td>
                 </tr>
             `;
@@ -264,7 +261,7 @@
 
             // 3. Nama Pemilik
             let tdNama = document.createElement('td');
-            tdNama.className = "p-2 text-left text-slate-800 truncate pl-4 font-bold";
+            tdNama.className = "p-2 text-center text-slate-800 truncate font-bold";
             tdNama.innerText = row.nama;
             tr.appendChild(tdNama);
 
@@ -291,10 +288,12 @@
 
             // 7. Status Nota Lunas Modern
             let tdStatus = document.createElement('td');
-            tdStatus.className = "p-2 text-center px-4";
+            tdStatus.className = "p-2 text-center";
             tdStatus.innerHTML = `
-                <div class="w-full flex flex-col items-center">
-                    <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[7.5px] font-black uppercase tracking-wider whitespace-nowrap">LUNAS (ARCHIVED)</span>
+                <div class="flex justify-center">
+                    <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[7.5px] font-black uppercase tracking-wider whitespace-nowrap">
+                        LUNAS
+                    </span>
                 </div>
             `;
             tr.appendChild(tdStatus);
