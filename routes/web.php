@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController; // BARU: Memanggil jembatan Dashboard Controller
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\StatusProgressController;
 use App\Http\Controllers\ReservationController;
@@ -14,51 +14,48 @@ use App\Http\Controllers\BookingController;
     // Semua Rute yang Terproteksi Login (Middleware Auth)
     Route::middleware(['auth', 'verified'])->group(function () {
 
-    // Rute Manajemen Profil User Admin
+    // 1. Rute Manajemen Profil User Admin
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // ==========================================================================
-    // PERBAIKAN UTAMA: Jalur Menu Dashboard Dialihkan ke DashboardController@index
-    // ==========================================================================
+    // 2. Rute Dashboard Admin
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Semua Rute Menu Utama & Transaksi Dashboard Carwash Nyata
+    // 3. Rute Customer (Tempatkan di sini, tidak perlu middleware auth ganda)
+    Route::get('/customer/beranda', function () {
+        return view('customer.beranda');
+    })->name('customer.beranda');
+
+    // 4. Rute Transaksi & Progress (Rute yang sudah berelasi)
     Route::get('/status-progres', [StatusProgressController::class, 'index'])->name('status-progress.index');
-
-    Route::get('/booking-calendar', [BookingController::class, 'index'])->name('booking.calendar');
-    Route::post('/booking/verify/{id}', [BookingController::class, 'verify']);
-
-    Route::get('/jadwal-mekanik', function () { return view('jadwal-mekanik'); })->name('jadwal.mekanik');
-
-    Route::get('/stok-bahan', function () { return view('stok-bahan'); })->name('stok.bahan');
-
-    // Tambahkan di dalam route group middleware auth
-    Route::post('/submit-booking', [ReservationController::class, 'storeCustomerBooking'])->name('api.booking.store');
-
-    // Tambahkan baris ini di dalam group middleware 'auth'
     Route::post('/api/update-status-mobil/{id}', [StatusProgressController::class, 'updateStatus'])->name('status.update');
 
-    // 1. Rute untuk menampilkan halaman (Tetap GET)
+    // 5. Rute Booking & Jadwal
+    Route::get('/booking-calendar', [BookingController::class, 'index'])->name('booking.calendar');
+    Route::post('/booking/verify/{id}', [BookingController::class, 'verify']);
+    Route::get('/jadwal-mekanik', function () { return view('jadwal-mekanik'); })->name('jadwal.mekanik');
+    Route::post('/submit-booking', [ReservationController::class, 'storeCustomerBooking'])->name('api.booking.store');
+
+    // 6. Rute Transaksi (View & Store)
     Route::get('/input-transaksi', [TransaksiController::class, 'create'])->name('input.transaksi.view');
-
-    // 2. Rute untuk memproses data dari form (Harus POST)
     Route::post('/input-transaksi', [TransaksiController::class, 'store'])->name('input.transaksi.store');
-
-    // 🌟 KHUSUS RIWAYAT SERVIS AWAL RILIS: Mengambil data riel kosong dari database transaksi kasir
-    Route::get('/riwayat-servis', [TransaksiController::class, 'riwayat'])->name('riwayat.servis');
-
-    // 🔥 JALUR LAPORAN PENDAPATAN: Mengarah ke fungsi laporan() di TransaksiController
-    Route::get('/laporan-pendapatan', [TransaksiController::class, 'laporan'])->name('laporan.pendapatan');
-
-    // Ini adalah "pintu" baru untuk membawa data dari kalender ke form transaksi
     Route::get('/input-transaksi/{id}', [TransaksiController::class, 'createFromBooking'])->name('input.transaksi.booking');
 
-    // Rute Tambahan untuk Tombol Export Excel
+    // 7. Rute Stok Bahan
+    Route::get('/stok-bahan', function () { return view('stok-bahan'); })->name('stok.bahan');
+
+    // 8. Rute Riwayat Servis
+    Route::get('/riwayat-servis', [TransaksiController::class, 'riwayat'])->name('riwayat.servis');
+
+    // 9. Rute Laporan Pendapatan
+    Route::get('/laporan-pendapatan', [TransaksiController::class, 'laporan'])->name('laporan.pendapatan');
+
+    // 10. Rute Tambahan untuk Tombol Export Excel
     Route::get('/laporan-pendapatan/export', function () {
         return "Sistem Export Excel sedang dipersiapkan.";
     })->name('laporan.pendapatan.export');
+
 });
 
 // Memanggil Sistem Autentikasi Bawaan Laravel (Login / Register)

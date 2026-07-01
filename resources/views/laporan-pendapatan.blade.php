@@ -104,7 +104,7 @@
 
                 <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col flex-1 min-h-[250px]">
                     <span class="block text-[9px] font-black text-slate-400 uppercase tracking-[0.15em] text-center mb-6">
-                        Analisis Akumulasi Distribusi Aliran Metode Pembayaran
+                        Analisis Akumulasi Distribusi Metode Pembayaran
                     </span>
 
                     <div class="flex-1 flex items-end justify-around h-full border-b border-slate-100 pb-2 gap-6 px-2">
@@ -205,11 +205,6 @@
         if (barTransfer) barTransfer.style.height = dataTerfilter.length > 0 ? ((totalTransfer / maxNominal) * 100) + "%" : "0%";
     }
 
-    let tdStatus = document.createElement('td');
-        tdStatus.className = "p-2 text-center";
-        tdStatus.innerHTML = `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[7px] font-black uppercase">LUNAS</span>`;
-        tr.appendChild(tdStatus);
-        
     function renderTabelLaporanKeuangan(dataToRender) {
         const tbody = document.getElementById('tabel-laporan-body');
         if (!tbody) return;
@@ -265,9 +260,19 @@
             tdNominal.innerText = formatRupiah(row.nominal);
             tr.appendChild(tdNominal);
             tbody.appendChild(tr);
-        });
+
+            // 7. Status Progres
+            let tdStatus = document.createElement('td');
+            tdStatus.className = "p-2 text-center";
+            tdStatus.innerHTML = `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[7px] font-black uppercase">LUNAS</span>`;
+            tr.appendChild(tdStatus);
+
+            tbody.appendChild(tr);
+            });
+
         updateGrafikDanStatistik(dataToRender);
     }
+
     function onFilterBulanTahunLaporanChange() {
         const blnFilter = document.getElementById('filter-bulan') ? document.getElementById('filter-bulan').value : "ALL";
         const thnFilter = document.getElementById('filter-tahun') ? document.getElementById('filter-tahun').value : "ALL";
@@ -284,5 +289,6 @@
         if (liveTahunEl) liveTahunEl.innerText = tahunDuniaNyata;
         onFilterBulanTahunLaporanChange();
     });
+    
 </script>
 @endsection

@@ -100,11 +100,6 @@
                         <x-input-error :messages="$errors->get('password')" class="mt-1 text-xs text-center" />
                     </div>
 
-                    <!-- Keterangan Layanan Premium Korporat -->
-                    <div class="text-center pt-2">
-                        <p class="text-center text-[10px] text-gray-400 font-bold uppercase tracking-widest">Premium Service & Reservation</p>
-                    </div>
-
                     <!-- Tombol Log In Modern (Inter-Bold Premium + Efek Bayangan Hidup) -->
                     <button type="submit"
                         class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black text-sm py-3.5 px-4 rounded-xl shadow-lg shadow-blue-200 hover:shadow-xl hover:shadow-blue-300 active:scale-[0.99] transition-all duration-200 uppercase tracking-widest flex items-center justify-center gap-2">
@@ -113,7 +108,7 @@
                     </button>
 
                     <!-- Jendela Akses Lupa Password - KINI LEBIH HIDUP DI TENGAH -->
-                    <div class="text-center pt-2">
+                    <div class="text-center pt-1">
                         @if (Route::has('password.request'))
                             <a class="text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors duration-150 ease-in-out" href="{{ route('password.request') }}">
                                 Forgot your password?
@@ -134,6 +129,4 @@
 
 <!-- Pemanggilan library ikon Lucide secara real-time -->
 <script src="https://unpkg.com/lucide@latest"></script>
-<script>
-    lucide.createIcons();
-</script>
+<script> lucide.createIcons(); </script>

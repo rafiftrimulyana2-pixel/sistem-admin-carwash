@@ -32,6 +32,7 @@ class TransaksiController extends Controller
     // 2. Simpan ke tabel TRANSAKSIS (Hanya simpan data yang valid)
     $data['paket_cuci'] = 'REGULER WASH';
     $data['status'] = 'SELESAI';
+
     Transaksi::create($data);
 
     // 3. Simpan ke tabel RESERVATIONS (Gunakan data yang tadi divalidasi)
@@ -75,8 +76,8 @@ class TransaksiController extends Controller
             'tgl'      => date('d', strtotime($item->created_at)),
             'bln'      => date('m', strtotime($item->created_at)),
             'thn'      => date('Y', strtotime($item->created_at)),
-            'nopol'    => $item->plat_nomor,
-            'nama'     => $item->nama_pelanggan,
+            'nopol'    => $item->plat_nomor ?? '-',
+            'nama'     => $item->nama_pelanggan ?? '-',
             'metode'   => 'TUNAI', // Sesuai kolom di JS
             'nominal'  => (int)$item->total_bayar,
         ];

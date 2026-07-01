@@ -58,4 +58,8 @@ class ReservationController extends Controller
 
         return response()->json(['message' => 'Booking diterima!']);
     }
+
+    public function apiGetReservations() {
+    return response()->json(Reservation::all());
+    }
 }
