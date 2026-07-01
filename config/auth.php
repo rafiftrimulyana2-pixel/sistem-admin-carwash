@@ -42,6 +42,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'customer' => [
+            'driver' => 'session',
+                'provider' => 'customers',
+        ],
     ],
 
     /*
@@ -64,13 +68,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
+            'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'customers' => [                            // Pastikan provider ini merujuk ke model Customer
+            'driver' => 'eloquent',
+                'model' => App\Models\Customer::class,
+        ],
     ],
 
     /*
