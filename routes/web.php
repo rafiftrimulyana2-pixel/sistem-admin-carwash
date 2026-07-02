@@ -17,6 +17,9 @@ use App\Http\Controllers\CustomerController;
     // Rute Halaman Depan Awalan Website
     Route::get('/', function () { return view('welcome'); });
 
+    // Memanggil Sistem Autentikasi Bawaan Laravel (Login / Register)
+    require __DIR__.'/auth.php';
+
     // Semua Rute yang Terproteksi Login (Middleware Auth) seperti (Dashboard, Transaksi, Laporan, dll)
     Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -54,6 +57,8 @@ use App\Http\Controllers\CustomerController;
     // 8. Rute Booking & Jadwal (Rute yang sudah berelasi)
     Route::get('/jadwal-mekanik', function () { return view('jadwal-mekanik'); })->name('jadwal.mekanik');
     Route::post('/submit-booking', [ReservationController::class, 'storeCustomerBooking'])->name('api.booking.store');
+
+    Route::get('/detail-pesanan/{id}', [TransaksiController::class, 'show'])->name('detail.pesanan');
     });
 });
 
@@ -85,6 +90,3 @@ use App\Http\Controllers\CustomerController;
             })->name('customer.beranda');
     });
 });
-
-    // Memanggil Sistem Autentikasi Bawaan Laravel (Login / Register)
-    require __DIR__.'/auth.php';

@@ -96,16 +96,25 @@ class TransaksiController extends Controller
     $booking = \App\Models\Reservation::findOrFail($id);
 
     if ($request->action == 'terima') {
+
         // 1. Update status booking menjadi PENCUCIAN (agar masuk ke Progress)
         $booking->update(['status' => 'PENCUCIAN']);
 
         // 2. Data ini nantinya ditarik oleh sistem input transaksi
         return response()->json(['success' => true, 'message' => 'Booking diterima!']);
-    } else {
+
+        } else {
+
         // Logika Tolak
         $booking->update(['status' => 'DITOLAK']);
         // Kirim notifikasi ke customer (bisa via WA API atau catatan di sistem)
         return response()->json(['success' => true, 'message' => 'Booking ditolak.']);
         }
+    }
+
+    public function show($id)
+    {
+        $booking = Reservation::findOrFail($id);
+        return view('detail-pesanan', compact('booking'));
     }
 }

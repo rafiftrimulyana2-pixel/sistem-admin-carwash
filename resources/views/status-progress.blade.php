@@ -11,9 +11,15 @@
     .progress-list-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     .float-shadow { transition: all 0.3s ease; }
     .float-shadow:hover { transform: translateY(-5px); box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2); }
+
+    html, body, main, .flex-1 {
+    overflow: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    }
 </style>
 
-<div class="w-full h-screen bg-[#f8fafc] flex flex-col overflow-hidden text-slate-700">
+<div class="w-full min-h-screen bg-[#f4f7fb] flex flex-col">
     <div class="w-full bg-blue-600 px-6 py-4 flex justify-between items-center shadow-lg shrink-0">
         <div class="space-y-0.5">
             <h1 class="text-white text-xs font-black uppercase tracking-widest">Status Progress Kendaraan</h1>
@@ -25,56 +31,70 @@
         </div>
     </div>
 
-    <div class="flex-1 flex flex-col p-6 gap-6 overflow-hidden">
-        <div class="flex justify-between items-center shrink-0">
-            <div class="flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm gap-1">
-                <button onclick="setKategoriTab('ALL', this)" class="tab-btn bg-blue-600 text-white px-4 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all">Semua Unit</button>
-                <button onclick="setKategoriTab('PROSES', this)" class="tab-btn text-slate-500 px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all">Sedang Dicuci</button>
-                <button onclick="setKategoriTab('READY', this)" class="tab-btn text-slate-500 px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all">Selesai</button>
+    <div class="max-w-5xl mx-auto p-6 pb-20">
+
+    <div class="mb-6">
+        <h1 class="text-3xl font-black text-slate-900 tracking-tight">STATUS PROGRES CUCI MOBIL</h1>
+        <p class="text-slate-500 font-bold mt-1">Pantau perkembangan pengerjaan kendaraan Anda secara real-time</p>
+    </div>
+
+    @foreach($bookings as $booking)
+    <div class="bg-white rounded-[32px] p-8 shadow-sm border border-slate-100 mb-6">
+        <div class="flex justify-between items-start mb-10">
+            <div>
+                <h2 class="text-2xl font-black">Toyota Avanza Putih</h2>
+                <p class="text-slate-500 font-bold">Plate: B 1234 ABC</p>
             </div>
-            <input type="text" id="search-plat-nama" onkeyup="jalankanSistemFilterProgresKombinasi()" placeholder="Cari Plat Nomor / Nama..." class="bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs font-bold w-64 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            <div class="flex gap-3">
+                <a href="{{ route('detail.pesanan', $booking->id) }}" class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-black hover:bg-blue-700 transition">Detail Pesanan</a>
+                <button class="border border-slate-300 px-6 py-3 rounded-2xl font-black">Bantuan</button>
+            </div>
         </div>
+        @endforeach
 
-        <div id="progress-list-wrapper" class="flex-1 overflow-y-auto space-y-3 pr-2"></div>
+        <div class="flex overflow-x-auto progress-list-scroll">
+            @php
+                $steps = [
+                    1 => ['label' => 'Pendaftaran', 'sub' => 'Confirmed', 'color' => 'bg-green-500', 'icon' => 'file-text'],
+                    2 => ['label' => 'Pra-Cuci', 'sub' => 'Sedang Dicuci', 'color' => 'bg-blue-500', 'icon' => 'refresh-cw'],
+                    3 => ['label' => 'Pembersihan', 'sub' => 'Interior', 'color' => 'bg-yellow-400', 'icon' => 'spray-can'],
+                    4 => ['label' => 'Waxing/Kilap', 'sub' => 'Waxing', 'color' => 'bg-yellow-500', 'icon' => 'sparkles'],
+                    5 => ['label' => 'Pengeringan', 'sub' => 'Drying', 'color' => 'bg-orange-500', 'icon' => 'wind'],
+                    6 => ['label' => 'Inspeksi', 'sub' => 'Inspection', 'color' => 'bg-orange-600', 'icon' => 'search'],
+                    7 => ['label' => 'Selesai', 'sub' => 'Done', 'color' => 'bg-green-600', 'icon' => 'check-circle'],
+                ];
+            @endphp
 
-        <div class="grid grid-cols-4 gap-4 shrink-0">
-    <div class="float-shadow bg-orange-500 text-white border border-orange-600 rounded-2xl p-3.5 shadow-md flex items-center gap-4 cursor-pointer">
-        <div class="p-2.5 bg-white/20 text-white rounded-xl shadow-inner">
-            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        </div>
-        <div>
-            <span class="block text-[8px] font-bold text-orange-100 uppercase tracking-wider">Estimasi Waktu Tunggu</span>
-            <span id="stat-estimasi" class="block text-xs font-black text-white mt-0.5">0 Menit</span>
+            @foreach($steps as $i => $s)
+            <div class="flex flex-col items-center min-w-[120px]">
+                <div class="w-14 h-14 rounded-full flex items-center justify-center text-white {{ $s['color'] }} shadow-lg">
+                    <i data-lucide="{{ $s['icon'] }}" class="w-6 h-6"></i>
+                </div>
+                <span class="text-[11px] font-black mt-3">{{ $i }}. {{ $s['label'] }}</span>
+                <span class="text-[9px] font-bold text-slate-400 uppercase">{{ $s['sub'] }}</span>
+            </div>
+            @if($i < 7) <div class="h-0.5 w-full bg-slate-200 mt-7 mx-2"></div> @endif
+            @endforeach
         </div>
     </div>
 
-    <div class="float-shadow bg-amber-500 text-white border border-amber-600 rounded-2xl p-3.5 shadow-md flex items-center gap-4 cursor-pointer">
-        <div class="p-2.5 bg-white/20 text-white rounded-xl shadow-inner">
-            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-slate-900 rounded-[32px] h-[300px] overflow-hidden relative">
+            <img src="{{ asset('storage/' . $booking->foto_mobil) }}" class="w-full h-full object-cover opacity-80" alt="Foto Mobil">
+            <div class="absolute bottom-6 left-6 text-white">
+                <p class="text-xs font-bold uppercase opacity-70">Lokasi</p>
+                <p class="font-black text-lg">Bay 3 - Pencucian Otomatis</p>
+            </div>
         </div>
-        <div>
-            <span class="block text-[8px] font-bold text-amber-100 uppercase tracking-wider">Sedang DiPencucian</span>
-            <span id="stat-cuci" class="block text-xs font-black text-white mt-0.5">0 Unit</span>
-        </div>
-    </div>
 
-    <div class="float-shadow bg-blue-600 text-white border border-blue-700 rounded-2xl p-3.5 shadow-md flex items-center gap-4 cursor-pointer">
-        <div class="p-2.5 bg-white/20 text-white rounded-xl shadow-inner">
-            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
-        </div>
-        <div>
-            <span class="block text-[8px] font-bold text-blue-100 uppercase tracking-wider">Proses Pengeringan</span>
-            <span id="stat-kering" class="block text-xs font-black text-white mt-0.5">0 Unit</span>
-        </div>
-    </div>
-
-    <div class="float-shadow bg-emerald-600 text-white border border-emerald-700 rounded-2xl p-3.5 shadow-md flex items-center gap-4 cursor-pointer">
-        <div class="p-2.5 bg-white/20 text-white rounded-xl shadow-inner">
-            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        </div>
-        <div>
-            <span class="block text-[8px] font-bold text-emerald-100 uppercase tracking-wider">Tersedia Slot Mobil</span>
-            <span id="stat-slot" class="block text-xs font-black text-white mt-0.5">0 Slot</span>
+        <div class="bg-white border border-slate-200 rounded-[32px] p-8 shadow-sm">
+            <h3 class="font-black text-lg mb-6">Ringkasan Pesanan</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between"><span class="text-slate-500">Layanan:</span> <span class="font-bold">{{ $booking->layanan }}</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Biaya:</span> <span class="font-bold text-blue-600">Rp {{ number_format($booking->biaya) }}</span></div>
+                <div class="pt-4 border-t"><span class="text-slate-500">Detail Pengerjaan:</span><p class="font-bold mt-1">{{ $booking->deskripsi }}</p></div>
+                <div class="pt-4 border-t"><span class="text-slate-500">Petugas:</span> <p class="font-bold">{{ $booking->petugas }}</p></div>
+            </div>
         </div>
     </div>
 </div>
@@ -148,6 +168,8 @@
     document.getElementById('stat-kering').innerText = arrayDatabaseProgresWorkshop.filter(r=>r.step===3).length + " Unit";
     document.getElementById('stat-slot').innerText = Math.max(0, kapasitasMaksimalSlot - unitAktif) + " Slot";
     }
+
+    lucide.createIcons();
 
     document.addEventListener("DOMContentLoaded", jalankanSistemFilterProgresKombinasi);
 </script>

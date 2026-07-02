@@ -11,6 +11,11 @@ class Reservation extends Model
         'plat_nomor',
         'jenis_paket',
         'status',
-        'total_bayar'
+        'total_bayar',
+        'layanan',
+        'biaya',
+        'deskripsi',
+        'petugas',
+        'step',
     ];
 }

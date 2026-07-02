@@ -9,13 +9,12 @@ class StatusProgressController extends Controller
 {
     public function index()
     {
-        // Mengambil booking yang sudah diverifikasi ('confirmed')
-        // atau sedang dalam proses (PENCUCIAN, PENGERINGAN, dll)
-        $antreanAktif = \App\Models\Reservation::whereNotIn('status', ['READY', 'FINISH'])
+        // Mengambil booking yang sudah diverifikasi ('confirmed') atau sedang dalam proses (PENCUCIAN, PENGERINGAN, dll)
+        $bookings = \App\Models\Reservation::whereIn('status', ['antrean', 'proses', 'PENCUCIAN'])
             ->orderBy('created_at', 'asc')
             ->get();
 
-        return view('status-progress', compact('antreanAktif'));
+        return view('status-progress', compact('bookings'));
     }
 
     public function updateStatus(Request $request, $id)
@@ -24,7 +23,7 @@ class StatusProgressController extends Controller
             'status' => 'required|string',
         ]);
 
-        $booking = Booking::findOrFail($id);
+        $booking = \App\Models\Reservation::findOrFail($id);
         $booking->status = $request->status;
         $booking->save();
 
