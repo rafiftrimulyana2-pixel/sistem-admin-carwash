@@ -37,7 +37,7 @@ use App\Http\Controllers\CustomerController;
 
     // 3. Rute Status Progress (Rute yang sudah berelasi)
     Route::get('/status-progres', [StatusProgressController::class, 'index'])->name('status-progress.index');
-    Route::post('/api/update-status-mobil/{id}', [StatusProgressController::class, 'updateStatus'])->name('status.update');
+    Route::post('/update-status/{id}', [StatusProgressController::class, 'updateStatus'])->name('status.update');
 
     // 4. Rute Transaksi (Booking & Store) - (Rute yang sudah berelasi)
     Route::get('/input-transaksi', [TransaksiController::class, 'create'])->name('input.transaksi.view');
