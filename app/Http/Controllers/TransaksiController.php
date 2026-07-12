@@ -22,6 +22,7 @@ class TransaksiController extends Controller
 
     // 1. Validasi
     $data = $request->validate([
+        'reservation_id'  => 'nullable',
         'nama_pelanggan'  => 'required',
         'plat_nomor'      => 'required',
         'jenis_kendaraan' => 'required',
@@ -41,8 +42,8 @@ class TransaksiController extends Controller
     ]);
 
     // 3. Simpan ke tabel RESERVATIONS (Gunakan data yang tadi divalidasi)
-    \App\Models\Transaksi::create([
-        'reservation_id'  => $reservation->id, // HUBUNGKAN DI SINI!
+    $transaksi = \App\Models\Transaksi::create([
+        'reservation_id' => $request->reservation_id,
         'nama_pelanggan'  => $data['nama_pelanggan'],
         'plat_nomor'      => $data['plat_nomor'],
         'total_bayar'     => $data['total_bayar'],

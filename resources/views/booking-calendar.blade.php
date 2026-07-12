@@ -209,16 +209,31 @@
     }
 
     // Fungsi Aksi Selesai
-    function aksi(id, status, pesan = "") {
-        // Di sini nanti kamu tambahkan fetch/ajax ke Laravel kamu
-        console.log(`Status: ${status}, Pesan: ${pesan}`);
+    async function aksi(id, status, pesan = "") {
+        if (status === 'Diterima') {
+            try {
+                const response = await fetch(`/verify-booking/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-        // Tutup modal dan reset
-        document.getElementById('modal-verifikasi').classList.add('hidden');
-        document.getElementById('catatan-tolak').value = ""; // Bersihkan textarea
-
-        alert(status === 'Diterima' ? "✅ Pemesanan Berhasil!" : "✉️ Penolakan terkirim: " + pesan);
-        renderList();
+                if (response.ok) {
+                    // Setelah status diubah di database, arahkan ke halaman transaksi
+                    // dengan membawa ID booking agar form terisi otomatis
+                    window.location.href = `/input-transaksi/booking/${id}`;
+                }
+            } catch (e) {
+                alert("Gagal memproses booking.");
+            }
+        } else {
+            // Logika Tolak
+            console.log("Menolak booking:", pesan);
+            alert("Booking ditolak: " + pesan);
+            location.reload();
+        }
     }
 
     // 3. Fungsi Render Kalender

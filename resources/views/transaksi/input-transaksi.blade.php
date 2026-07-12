@@ -90,23 +90,46 @@
                 <h3 class="text-[10px] font-black text-slate-800 uppercase tracking-widest">Informasi Identitas Pelanggan</h3>
             </div>
 
+            @if(isset($booking))
+                <input type="hidden" name="reservation_id" value="{{ $booking->id }}">
+            @endif
+
             <div class="grid grid-cols-2 gap-4">
-                @foreach([
-                    'plat_nomor' => 'Nomor Polisi Kendaraan',
-                    'nama_pelanggan' => 'Nama Pelanggan',
-                    'jenis_kendaraan' => 'Tipe / Model Mobil',
-                    'no_hp' => 'Nomor WhatsApp'
-                ] as $name => $label)
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">{{ $label }} *</label>
-                        <input type="{{ $name == 'no_hp' ? 'number' : 'text' }}"
-                            name="{{ $name }}"
-                            value="{{ old($name, $booking->$name ?? '') }}"
-                            required
-                            placeholder="Masukkan {{ $label }}..."
-                            class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-600 shadow-inner transition-all">
-                    </div>
-                @endforeach
+                {{-- Input Plat Nomor --}}
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Nomor Polisi Kendaraan *</label>
+                    <input type="text" name="plat_nomor"
+                        value="{{ old('plat_nomor', $booking->plat_nomor ?? '') }}"
+                        required placeholder="Masukkan Plat Nomor..."
+                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-600 shadow-inner transition-all">
+                </div>
+
+                {{-- Input Nama Pelanggan --}}
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Nama Pelanggan *</label>
+                    <input type="text" name="nama_pelanggan"
+                        value="{{ old('nama_pelanggan', $booking->nama_pelanggan ?? '') }}"
+                        required placeholder="Masukkan Nama..."
+                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-600 shadow-inner transition-all">
+                </div>
+
+                {{-- Input Tipe Kendaraan --}}
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Tipe / Model Mobil *</label>
+                    <input type="text" name="jenis_kendaraan"
+                        value="{{ old('jenis_kendaraan', $booking->jenis_kendaraan ?? '') }}"
+                        required placeholder="Masukkan Tipe Mobil..."
+                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-600 shadow-inner transition-all">
+                </div>
+
+                {{-- Input No HP --}}
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Nomor WhatsApp *</label>
+                    <input type="number" name="no_hp"
+                        value="{{ old('no_hp', $booking->no_hp ?? '') }}"
+                        required placeholder="Masukkan No WA..."
+                        class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-800 focus:outline-none focus:border-blue-600 shadow-inner transition-all">
+                </div>
             </div>
         </div>
 
@@ -130,13 +153,12 @@
     <div>
         <label class="text-[8px] font-black text-slate-400 uppercase tracking-wider">Kembalian (Rp)</label>
         <input type="text" id="uang-kembali" readonly class="w-full h-10 bg-emerald-50 border border-emerald-100 rounded-lg px-3 text-[10px] font-black text-emerald-700 shadow-inner">
-    </div>
-</div>
+            </div></div>
 
-<button type="button" onclick="prosesTransaksi()" class="w-full mt-5 h-10 bg-blue-600 text-white font-black rounded-lg hover:bg-blue-700 transition-all text-[9px] uppercase tracking-widest shadow-lg">
-    PROSES TRANSAKSI
-</button>
-    </form>
+            <button type="button" onclick="prosesTransaksi()" class="w-full mt-5 h-10 bg-blue-600 text-white font-black rounded-lg hover:bg-blue-700 transition-all text-[9px] uppercase tracking-widest shadow-lg">
+        PROSES TRANSAKSI
+    </button>
+</form>
 
 {{-- BAGIAN 3: TABEL TRANSAKSI (Sesuai permintaan Anda) --}}
 <div class="bg-white border border-slate-200 rounded-xl shadow-sm mt-8 overflow-hidden">
