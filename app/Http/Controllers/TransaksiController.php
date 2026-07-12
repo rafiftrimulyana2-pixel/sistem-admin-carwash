@@ -30,20 +30,24 @@ class TransaksiController extends Controller
     ]);
 
     // 2. Simpan ke tabel TRANSAKSIS (Hanya simpan data yang valid)
-    $data['paket_cuci'] = 'REGULER WASH';
-    $data['status'] = 'SELESAI';
-
-    Transaksi::create($data);
+    $reservation = \App\Models\Reservation::create([
+        'nama_pelanggan' => $data['nama_pelanggan'],
+        'plat_nomor'     => $data['plat_nomor'],
+        'no_hp'          => $data['no_hp'],
+        'jenis_paket'    => 'REGULER WASH',
+        'total_bayar'    => $data['total_bayar'],
+        'step'           => 7, // Langsung selesai jika transaksi lewat sini
+        'status'         => 'Selesai'
+    ]);
 
     // 3. Simpan ke tabel RESERVATIONS (Gunakan data yang tadi divalidasi)
-    \App\Models\Reservation::create([
+    \App\Models\Transaksi::create([
+        'reservation_id'  => $reservation->id, // HUBUNGKAN DI SINI!
         'nama_pelanggan'  => $data['nama_pelanggan'],
         'plat_nomor'      => $data['plat_nomor'],
-        'no_hp'           => $data['no_hp'],
-        'jenis_paket'     => 'REGULER WASH',
-        'status'          => 'PENCUCIAN',
         'total_bayar'     => $data['total_bayar'],
-        'created_at'      => now() // Ini yang akan jadi "Waktu Masuk"
+        'paket_cuci'      => 'REGULER WASH',
+        'status'          => 'SELESAI'
     ]);
 
     return response()->json(['success' => true]);

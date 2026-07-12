@@ -10,6 +10,7 @@ class Transaksi extends Model
     use HasFactory;
 
     protected $fillable = [
+        'reservation_id',
         'nama_pelanggan',
         'plat_nomor',
         'jenis_kendaraan',
@@ -17,4 +18,8 @@ class Transaksi extends Model
         'status',
         'paket_cuci',
     ];
+
+    public function reservation() {
+    return $this->belongsTo(Reservation::class);
+    }
 }

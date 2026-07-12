@@ -279,18 +279,12 @@
                                     <tr class="hover:bg-slate-50 transition-colors">
                                         <td class="p-4 text-center text-[11px] font-black text-slate-400">{{ $index + 1 }}</td>
                                         <td class="p-4 text-center text-[12px] font-bold text-slate-700">{{ $row->nama_pelanggan }}</td>
-                                        <td class="p-4 text-center">
-                                            <span class="px-3 py-1 bg-slate-100 text-blue-700 font-black text-[11px] rounded-lg italic border border-slate-200 shadow-sm">
-                                                {{ $row->plat_nomor }}
-                                            </span>
-                                        </td>
+                                        <td class="p-4 text-center text-[12px] font-black text-slate-800 tracking-wider">{{ $row->plat_nomor }}</td>
                                         <td class="p-4 text-center text-[11px] font-bold text-slate-600 uppercase">{{ $row->jenis_paket }}</td>
-                                        <td class="p-4 text-center text-[11px] font-black text-slate-500 tracking-widest">
-                                            {{ \Carbon\Carbon::parse($row->created_at)->format('H:i') }}
-                                        </td>
+                                        <td class="p-4 text-center text-[11px] font-black text-slate-500 tracking-widest">{{ \Carbon\Carbon::parse($row->created_at)->format('H:i') }}</td>
                                         <td class="p-4 text-center">
-                                            <span class="inline-block px-4 py-1.5 bg-emerald-500 text-white font-black text-[9px] uppercase tracking-widest rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
-                                                {{ $row->status }}
+                                            <span class="inline-block px-3 py-1 {{ ($row->step ?? 1) >= 7 ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700' }} font-black text-[9px] uppercase tracking-widest rounded-lg">
+                                                {{ $row->status ?? 'Proses' }}
                                             </span>
                                         </td>
                                     </tr>

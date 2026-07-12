@@ -36,8 +36,12 @@ class StatusProgressController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        // 1. Validasi dulu
         $request->validate(['step' => 'required|integer']);
 
+        try {
+
+        // Cari data
         $booking = \App\Models\Reservation::findOrFail($id);
         $booking->step = $request->step;
 
@@ -46,5 +50,8 @@ class StatusProgressController extends Controller
         $booking->save();
 
         return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 }

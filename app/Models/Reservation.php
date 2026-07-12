@@ -9,6 +9,7 @@ class Reservation extends Model
    protected $fillable = [
         'nama_pelanggan',
         'plat_nomor',
+        'no_hp',
         'jenis_paket',
         'status',
         'total_bayar',

@@ -12,21 +12,16 @@ class DashboardController extends Controller
     public function index()
     {
         // 1. KOTAK 1 & TABEL BAWAH: Ambil antrean unit dari database yang belum selesai
-        $antreanAktif = \App\Models\Reservation::whereNotIn('status', ['READY', 'FINISH'])
-            ->orderBy('created_at', 'asc')
-            ->get();
+        $antreanAktif = \App\Models\Reservation::where('step', '<', 7)->get();
 
         // 2. KOTAK 2: Hitung jumlah layanan selesai (LUNAS/READY) khusus HARI INI
-        $layananSelesai = Transaksi::whereDate('created_at', Carbon::today())
-            ->where(function($query) {
-                $query->where('status', 'READY')->orWhere('status', 'FINISH');
-            })->count();
+        $layananSelesai = \App\Models\Reservation::where('step', 7)->count();
 
         // 3. KOTAK 3: Total pelanggan unik dari tabel transaksi
-        $totalPelanggan = Transaksi::distinct('nama_pelanggan')->count('nama_pelanggan');
+        $totalPelanggan = \App\Models\Reservation::count();
 
         // 4. KOTAK 4: Total uang masuk (omzet) dari transaksi hari ini
-        $omzetHariIni = Transaksi::whereDate('created_at', Carbon::today())
+        $omzetHariIni = \App\Models\Transaksi::whereDate('created_at', \Carbon\Carbon::today())
             ->sum('total_bayar');
 
         // 5. LONCENG NOTIFIKASI: Fallback stok bahan kritis (Bila model Stok sudah ada)

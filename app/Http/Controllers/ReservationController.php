@@ -11,8 +11,8 @@ class ReservationController extends Controller
 {
     public function index()
     {
-        // 1. Ambil DATA LENGKAP untuk Tabel (Bukan cuma angka)
-        $antreanAktif = Reservation::where('status', 'PENCUCIAN')->orderBy('created_at', 'asc')->get();
+        // 1. Mengambil antrean yang belum selesai (step < 7)
+        $antreanAktif = Reservation::where('step', '<', 7)->orderBy('created_at', 'asc')->get();
 
         // 2. Hitung jumlah untuk angka di Kotak Statistik (Opsional, tapi bagus untuk tampilan)
         $jumlahAntrean = $antreanAktif->count();
@@ -24,10 +24,9 @@ class ReservationController extends Controller
 
         $totalPelanggan = User::where('role', 'customer')->count();
 
-        $omzetHariIni = Reservation::where('status', 'selesai')
-            ->whereDate('updated_at', Carbon::today())
+        $omzetHariIni = \App\Models\Transaksi::whereDate('created_at', Carbon::today())
             ->sum('total_bayar');
-
+            
         // 4. Kirimkan semua data ke dashboard
         return view('dashboard', compact(
             'antreanAktif',
