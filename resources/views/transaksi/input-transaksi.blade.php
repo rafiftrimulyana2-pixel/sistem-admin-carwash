@@ -257,7 +257,9 @@
             const response = await fetch("{{ route('input.transaksi.store') }}", {
                 method: 'POST',
                 body: formData,
-                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
             });
 
             const result = await response.json();

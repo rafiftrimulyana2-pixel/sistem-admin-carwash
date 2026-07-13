@@ -31,27 +31,31 @@ class TransaksiController extends Controller
     ]);
 
     // 2. Simpan ke tabel TRANSAKSIS (Hanya simpan data yang valid)
+    if ($request->reservation_id) {
+        $reservation = \App\Models\Reservation::findOrFail($request->reservation_id);
+    } else {
     $reservation = \App\Models\Reservation::create([
         'nama_pelanggan' => $data['nama_pelanggan'],
         'plat_nomor'     => $data['plat_nomor'],
         'no_hp'          => $data['no_hp'],
         'jenis_paket'    => 'REGULER WASH',
         'total_bayar'    => $data['total_bayar'],
-        'step'           => 7, // Langsung selesai jika transaksi lewat sini
-        'status'         => 'Selesai'
+        'step'           => 1,
+        'status'         => 'PENCUCIAN'
     ]);
 
     // 3. Simpan ke tabel RESERVATIONS (Gunakan data yang tadi divalidasi)
-    $transaksi = \App\Models\Transaksi::create([
-        'reservation_id' => $request->reservation_id,
+    \App\Models\Transaksi::create([
+        'reservation_id'  => $request->reservation_id ?? $reservation->id,
         'nama_pelanggan'  => $data['nama_pelanggan'],
         'plat_nomor'      => $data['plat_nomor'],
+        'jenis_kendaraan' => $data['jenis_kendaraan'],
         'total_bayar'     => $data['total_bayar'],
         'paket_cuci'      => 'REGULER WASH',
         'status'          => 'SELESAI'
     ]);
 
-    return response()->json(['success' => true]);
+    return response()->json(['success' => true]); }
     }
 
     // Update fungsi riwayat() di TransaksiController.php
@@ -63,9 +67,9 @@ class TransaksiController extends Controller
             'thn' => date('Y', strtotime($item->created_at)), // e.g., "2026"
             'nopol'    => $item->plat_nomor,
             'nama'     => $item->nama_pelanggan,
-            'kategori' => $item->paket_cuci, // Harus ada agar tidak undefined
-            'metode'   => 'TUNAI',          // Harus ada agar tidak undefined
-            'nominal'  => (int)$item->total_bayar, // INI YANG DIBACA JS
+            'kategori' => $item->paket_cuci,
+            'metode'   => 'TUNAI',
+            'nominal'  => (int)$item->total_bayar,
         ];
     });
     return view('riwayat-servis', compact('dataFinance'));
@@ -83,11 +87,10 @@ class TransaksiController extends Controller
             'thn'      => date('Y', strtotime($item->created_at)),
             'nopol'    => $item->plat_nomor ?? '-',
             'nama'     => $item->nama_pelanggan ?? '-',
-            'metode'   => 'TUNAI', // Sesuai kolom di JS
+            'metode'   => 'TUNAI',
             'nominal'  => (int)$item->total_bayar,
         ];
     });
-
     return view('laporan-pendapatan', compact('dataFinance'));
     }
 
