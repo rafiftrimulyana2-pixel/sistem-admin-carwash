@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
 use App\Models\Reservation;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
@@ -42,11 +43,12 @@ class TransaksiController extends Controller
         'total_bayar'    => $data['total_bayar'],
         'step'           => 1,
         'status'         => 'PENCUCIAN'
-    ]);
+        ]);
+    }
 
     // 3. Simpan ke tabel RESERVATIONS (Gunakan data yang tadi divalidasi)
     \App\Models\Transaksi::create([
-        'reservation_id'  => $request->reservation_id ?? $reservation->id,
+        'reservation_id'  => $reservation->id,
         'nama_pelanggan'  => $data['nama_pelanggan'],
         'plat_nomor'      => $data['plat_nomor'],
         'jenis_kendaraan' => $data['jenis_kendaraan'],
@@ -55,7 +57,7 @@ class TransaksiController extends Controller
         'status'          => 'SELESAI'
     ]);
 
-    return response()->json(['success' => true]); }
+    return response()->json(['success' => true]);
     }
 
     // Update fungsi riwayat() di TransaksiController.php
@@ -77,9 +79,13 @@ class TransaksiController extends Controller
 
     public function laporan()
     {
-    // Ambil data dan pastikan relasinya lengkap
+    // Mengambil semua data transaksi yang sudah selesai
     $semuaTransaksi = Transaksi::orderBy('created_at', 'desc')->get();
 
+    // Mengambil data pengeluaran
+    $semuaPengeluaran = \App\Models\Expense::orderBy('created_at', 'desc')->get();
+
+    // Memetakan data agar mudah dibaca oleh JavaScript (Frontend)
     $dataFinance = $semuaTransaksi->map(function($item) {
         return [
             'tgl'      => date('d', strtotime($item->created_at)),
@@ -89,10 +95,24 @@ class TransaksiController extends Controller
             'nama'     => $item->nama_pelanggan ?? '-',
             'metode'   => 'TUNAI',
             'nominal'  => (int)$item->total_bayar,
+            'type'     => 'IN' // Menandakan uang masuk
         ];
     });
-    return view('laporan-pendapatan', compact('dataFinance'));
-    }
+
+    // Format data pengeluaran agar seragam dengan data transaksi
+    $dataExpenses = $semuaPengeluaran->map(function($item) {
+        return [
+            'tgl'      => date('d', strtotime($item->created_at)),
+            'bln'      => date('m', strtotime($item->created_at)),
+            'thn'      => date('Y', strtotime($item->created_at)),
+            'nopol'    => '-',
+            'nama'     => $item->keterangan,
+            'metode'   => 'OUT',
+            'nominal'  => (int)$item->nominal,
+            'type'     => 'OUT' // Menandakan uang keluar
+        ];
+    });
+    return view('laporan-pendapatan', compact('dataFinance', 'dataExpenses'));}
 
     public function createFromBooking($id) {
     $booking = Reservation::findOrFail($id);

@@ -266,12 +266,12 @@
                             <table class="w-full text-left border-collapse">
                                 <thead class="bg-blue-600 text-white font-black uppercase tracking-widest text-[9px]">
                                     <tr>
-                                        <th class="p-4 text-center">No</th>
-                                        <th class="p-4 text-center">Nama Pelanggan</th>
-                                        <th class="p-4 text-center">Plat Nomor</th>
-                                        <th class="p-4 text-center">Layanan</th>
-                                        <th class="p-4 text-center">Waktu Masuk</th>
-                                        <th class="p-4 text-center">Status</th>
+                                        <th class="p-3.5 text-center">No</th>
+                                        <th class="p-3.5 text-center">Nama Pelanggan</th>
+                                        <th class="p-3.5 text-center">Plat Nomor</th>
+                                        <th class="p-3.5 text-center">Layanan</th>
+                                        <th class="p-3.5 text-center">Waktu Masuk</th>
+                                        <th class="p-3.5 text-center">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100">

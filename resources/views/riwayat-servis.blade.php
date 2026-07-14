@@ -146,13 +146,13 @@
                 <table class="w-full border-collapse text-left table-fixed border-hidden">
                     <thead class="sticky top-0 z-10 bg-blue-600 text-white text-[8.5px] font-black uppercase tracking-wider shadow-sm">
                                 <tr>
-                                    <th class="p-2.5 text-center w-[5%]">No.</th>
-                                    <th class="p-2.5 text-center w-[15%]">Nomor Polisi</th>
-                                    <th class="p-2.5 text-center w-[22%]">Nama Customer</th>
-                                    <th class="p-2.5 text-center w-[20%]">Tipe / Model Mobil</th>
-                                    <th class="p-2.5 text-center w-[18%]">Paket &amp; Detail Kerja</th>
-                                    <th class="p-2.5 text-center w-[10%]">Total Biaya</th>
-                                    <th class="p-2.5 text-center w-[10%]">Status Nota</th>
+                                    <th class="p-3 text-center w-[5%]">No.</th>
+                                    <th class="p-3 text-center w-[15%]">Nomor Polisi</th>
+                                    <th class="p-3 text-center w-[22%]">Nama Customer</th>
+                                    <th class="p-3 text-center w-[20%]">Tipe / Model Mobil</th>
+                                    <th class="p-3 text-center w-[18%]">Paket &amp; Detail Kerja</th>
+                                    <th class="p-3 text-center w-[10%]">Total Biaya</th>
+                                    <th class="p-3 text-center w-[10%]">Status Nota</th>
                                 </tr>
                             </thead>
                         <tbody id="tabel-riwayat-body" class="divide-y divide-slate-100 text-[8.5px] text-slate-700">
