@@ -31,16 +31,16 @@ class BookingController extends Controller
 
     public function verify($id)
     {
+
     // Gunakan Reservation
     $booking = \App\Models\Reservation::findOrFail($id);
 
     // Ubah status ke PENCUCIAN agar otomatis muncul di Dashboard
-    $booking->update([
-        'status' => 'PENCUCIAN',
-        'step'   => 1
-    ]);
+    $booking->update(['status' => 'PENCUCIAN', 'step' => 1]);
 
-    return response()->json(['success' => true]);
-    }
-    
+    // Arahkan admin langsung ke halaman input transaksi dengan membawa ID booking
+    return response()->json([
+        'success' => true,
+        'redirect_url' => route('input.transaksi.booking', ['id' => $id])
+        ]); }
 }
