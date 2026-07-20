@@ -90,6 +90,7 @@
 </style>
 
 <script src="https://unpkg.com/lucide@latest"></script>
+
 <script>
     /* Mengaktifkan ikon secara instan sebelum browser memproses rendering layout berat */
     lucide.createIcons();

@@ -422,24 +422,20 @@
     </div>
 </div>
 
-{{-- SCRIPT SINKRONISASI JAM REAL-TIME --}}
 <script>
-    // Memperbarui halaman secara otomatis setiap 30 detik
-    // sehingga waktu masuk terbaru akan langsung muncul di daftar
+
+    // Memperbarui halaman secara otomatis setiap 30 detik sehingga waktu masuk terbaru akan langsung muncul di daftar
     setInterval(() => {
         window.location.reload();
     }, 30000);
 
     // Skrip ini akan otomatis update jika ada data baru
     function refreshData() {
-        // Anda bisa menggunakan AJAX/Fetch di sini untuk memperbarui tabel setiap 30 detik
-        // tanpa harus me-reload halaman
+        // Anda bisa menggunakan AJAX/Fetch di sini untuk memperbarui tabel setiap 30 detik tanpa harus me-reload halaman
     }
     setInterval(refreshData, 30000);
 
-    function openProfileModal() { document.getElementById('profileModal').classList.remove('hidden'); }
-    function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
-
+    // 2. Skrip Jam & Status Sistem Real-Time
     function updateClock() {
         const now = new Date();
         const timeString = now.getHours().toString().padStart(2, '0') + ':' +
@@ -469,5 +465,6 @@
     }
     setInterval(updateClock, 1000);
     updateClock();
+
 </script>
 @endsection

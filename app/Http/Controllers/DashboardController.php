@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Transaksi; // Kita fokuskan hanya menggunakan satu jantung model: Transaksi
+use App\Models\Transaksi;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -21,13 +21,10 @@ class DashboardController extends Controller
         $totalPelanggan = \App\Models\Reservation::count();
 
         // 4. KOTAK 4: Total uang masuk (omzet) dari transaksi hari ini
-        $omzetHariIni = \App\Models\Transaksi::whereDate('created_at', \Carbon\Carbon::today())
-            ->sum('total_bayar');
+        $omzetHariIni = \App\Models\Transaksi::whereDate('created_at', \Carbon\Carbon::today()) ->sum('total_bayar');
 
         // 5. LONCENG NOTIFIKASI: Fallback stok bahan kritis (Bila model Stok sudah ada)
-        $stokKritis = class_exists('\App\Models\Stok')
-            ? \App\Models\Stok::where('stok', '<=', 5)->get()
-            : collect([]);
+        $stokKritis = \App\Models\Bahan::where('stok', '<=', 5)->get();
 
         // Mengirimkan semua data nyata (dimulai dari 0 jika database kosong)
         return view('dashboard', compact(
