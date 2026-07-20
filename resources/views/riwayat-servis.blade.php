@@ -42,7 +42,7 @@
 
     <div class="w-full flex-1 flex flex-col p-4 gap-3.5 overflow-hidden">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3.5 flex-shrink-0">
-            <div class="bg-white border border-slate-100 rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-900/5">
+            <div class="bg-white rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-400/10">
                 <div>
                     <span class="block text-[9px] font-black text-slate-400 uppercase tracking-wider">Total Pendapatan</span>
                     <span id="card-total-rupiah" class="block text-base font-black text-slate-800 tracking-tight mt-1">Rp 0</span>
@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-100 rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-900/5">
+            <div class="bg-white rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-400/10">
                 <div>
                     <span class="block text-[9px] font-black text-slate-400 uppercase tracking-wider">Mobil Terarsip</span>
                     <span id="card-qty-selesai" class="block text-base font-black text-slate-800 tracking-tight mt-1">0 Kendaraan</span>
@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-100 rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-900/5">
+            <div class="bg-white rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-400/10">
                 <div>
                     <span class="block text-[9px] font-black text-slate-400 uppercase tracking-wider">Metode Tunai / Cash</span>
                     <span id="card-qty-approved" class="block text-base font-black text-slate-800 tracking-tight mt-1">0 Transaksi</span>
@@ -78,7 +78,7 @@
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-100 rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-900/5">
+            <div class="bg-white rounded-xl p-4 flex justify-between items-center shadow-md shadow-slate-400/10">
                 <div>
                     <span class="block text-[9px] font-black text-slate-400 uppercase tracking-wider">Rata-rata / Nota</span>
                     <span id="card-total-average" class="block text-base font-black text-slate-800 tracking-tight mt-1">Rp 0</span>
@@ -89,13 +89,10 @@
                     </svg>
                 </div>
             </div>
-
         </div>
 
-        <div class="w-full flex-1 bg-white border border-slate-200 rounded-xl flex flex-col overflow-hidden shadow-sm">
-
-            <div class="w-full px-4 py-3 border-b border-slate-100 bg-white flex flex-col lg:flex-row justify-between items-center gap-4 flex-shrink-0">
-
+        <div class="w-full flex-1 bg-white rounded-xl flex flex-col overflow-hidden shadow-sm">
+            <div class="w-full px-4 py-3 bg-white flex flex-col lg:flex-row justify-between items-center gap-4 flex-shrink-0">
                 <div class="relative w-full sm:w-72">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>

@@ -134,7 +134,7 @@
         <div class="px-8 flex-1">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
-                <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/20 transition-all duration-300">
+                <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/10 transition-all duration-300">
                     <div class="flex flex-col gap-4">
                         <div class="flex justify-between items-start">
                             <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-600/30">
@@ -159,7 +159,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/20 transition-all duration-300">
+                <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/10 transition-all duration-300">
                     <div class="flex flex-col gap-4">
                         <div class="flex justify-between items-start">
                             <div class="w-12 h-12 bg-emerald-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
@@ -184,7 +184,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/20 transition-all duration-300">
+                <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/10 transition-all duration-300">
                     <div class="flex flex-col gap-4">
                         <div class="flex justify-between items-start">
                             <div class="w-12 h-12 bg-violet-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-violet-600/30">
@@ -209,7 +209,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/20 transition-all duration-300">
+                <div class="bg-white rounded-[24px] p-6 border border-gray-100 shadow-lg shadow-slate-400/10 transition-all duration-300">
                     <div class="flex flex-col gap-4">
                         <div class="flex justify-between items-start">
                             <div class="w-12 h-12 bg-orange-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
@@ -237,10 +237,10 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 pb-10 items-stretch">
                 <div class="lg:col-span-2 flex flex-col h-full">
-                    <div class="bg-white border border-slate-200 flex flex-col h-full overflow-hidden rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                    <div class="bg-white flex flex-col h-full overflow-hidden rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
 
                         {{-- HEADER TABLE --}}
-                        <div class="px-7 py-6 border-b border-slate-100 flex justify-between items-center bg-white">
+                        <div class="px-7 py-6 flex justify-between items-center bg-white">
                             <div class="flex items-center gap-4">
                                 <div class="w-1.5 h-9 bg-blue-600 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.4)]"></div>
                                 <div>
@@ -305,8 +305,8 @@
                 </div>
 
                 <div class="lg:col-span-1 flex flex-col">
-                    <div class="bg-white border-2 border-slate-100 flex flex-col h-full overflow-hidden rounded-xl shadow-sm">
-                        <div class="bg-slate-50 px-6 py-5 border-b border-slate-100 flex justify-between items-center">
+                    <div class="bg-white flex flex-col h-full overflow-hidden rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                        <div class="bg-white px-6 py-5 border-b border-slate-100 flex justify-between items-center">
                             <div>
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Live Monitor</span>
                                 <h4 class="text-slate-800 font-bold uppercase text-[12px] mt-1">Slot Booking</h4>
@@ -316,6 +316,7 @@
                                 <p id="system-status" class="text-[9px] font-bold text-slate-400 uppercase">Checking...</p>
                             </div>
                         </div>
+
                         <div class="p-6 border-t-4 border-t-blue-600 flex-1 overflow-y-hidden">
                             <div class="space-y-3">
                                 <div class="relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-400 p-4 rounded-2xl shadow-md group hover:scale-[1.02] transition-all cursor-pointer">

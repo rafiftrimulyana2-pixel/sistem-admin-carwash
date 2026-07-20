@@ -84,7 +84,7 @@
         @csrf
 
         {{-- BAGIAN 1: IDENTITAS --}}
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+        <div class="bg-white rounded-xl p-5 shadow-sm">
             <div class="flex items-center gap-2 mb-5 border-b border-slate-100 pb-3">
                 <div class="p-1.5 rounded-lg bg-blue-600 text-white font-black text-[9px] px-2">01</div>
                 <h3 class="text-[10px] font-black text-slate-800 uppercase tracking-widest">Informasi Identitas Pelanggan</h3>
@@ -134,7 +134,7 @@
         </div>
 
         {{-- BAGIAN 2: KALKULATOR (Ditambahkan mt-6 agar berjarak dengan bagian 1) --}}
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm mt-6">
+        <div class="bg-white rounded-xl p-5 shadow-sm mt-6">
             <div class="flex items-center gap-2 mb-5 border-b border-slate-100 pb-3">
                 <div class="p-1.5 rounded-lg bg-blue-600 text-white font-black text-[9px] px-2">02</div>
                 <h3 class="text-[10px] font-black text-slate-800 uppercase tracking-widest">Kalkulator Pembayaran</h3>
@@ -199,7 +199,7 @@
                 </tr>
                 @empty
                 <tr id="empty-row">
-                    <td colspan="7" class="p-8 text-center text-slate-400 italic">Belum ada transaksi</td>
+                    <td colspan="7" class="p-8 text-center text-slate-400 italic">Belum ada transaksi yang tersimpan</td>
                 </tr>
             @endforelse
         </tbody>

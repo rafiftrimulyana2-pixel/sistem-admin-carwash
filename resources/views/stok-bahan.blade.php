@@ -91,7 +91,7 @@
         </div>
     </header>
 
-    <div class="p-6 flex flex-col gap-6">
+    <div class="p-5 flex flex-col gap-5">
 
         {{-- 📊 AREA 5 KOTAK CARD METRIK ATAS (TEKS INTER BOLD, BEBAS GARIS WARNA, PAKAI SHADOW LEMBUT) --}}
         <div class="grid grid-cols-5 gap-5">
@@ -142,77 +142,78 @@
             </div>
         </div>
 
-    <div class="bg-white rounded-2xl border shadow-lg shadow-slate-900/10 overflow-hidden">
+        <div class="bg-white rounded-2xl border shadow-lg shadow-slate-100/10 overflow-hidden">
+
         {{-- AREA FILTER LENGKAP --}}
-<div class="p-6 border-b border-slate-100 grid grid-cols-4 gap-4 items-end">
-    <div class="col-span-1">
-    <label class="text-[9px] font-black text-slate-400 uppercase mb-1 block">Cari Bahan/SKU</label>
-    <div class="relative flex items-center">
-        <i data-lucide="search" class="absolute left-3 w-4 h-4 text-slate-400"></i>
+        <div class="p-6 grid grid-cols-4 gap-4 items-end">
+            <div class="col-span-1">
+            <label class="text-[9px] font-black text-slate-400 uppercase mb-1 block">Cari Bahan/SKU</label>
+            <div class="relative flex items-center">
+                <i data-lucide="search" class="absolute left-3 w-4 h-4 text-slate-400"></i>
 
-        <input type="text" id="search-input" onkeyup="render()" placeholder="Cari..."
-               class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs font-bold h-10 outline-none focus:border-blue-600 shadow-inner">
-    </div>
-</div>
-
-    <div class="col-span-1">
-        <label class="text-[9px] font-black text-slate-400 uppercase mb-1 block">Kategori</label>
-        <select id="cat-filter" onchange="render()" class="w-full h-10 bg-slate-50 border border-slate-200 rounded-xl px-3 text-xs font-black outline-none shadow-inner focus:border-blue-600">
-            <option value="">Semua Kategori</option>
-            <option value="Shampoo & Sabun">Shampoo & Sabun</option>
-            <option value="Wax & Polish">Wax & Polish</option>
-        </select>
-    </div>
-
-    <div class="col-span-1">
-        <label class="text-[9px] font-black text-slate-400 uppercase mb-1 block">Status Stok</label>
-        <select id="stat-filter" onchange="render()" class="w-full h-10 bg-slate-50 border border-slate-200 rounded-xl px-3 text-xs font-black outline-none shadow-inner focus:border-blue-600">
-            <option value="">Semua Status</option>
-            <option value="AMAN">Aman</option>
-            <option value="MENIPIS">Menipis</option>
-            <option value="HABIS">Habis</option>
-        </select>
-    </div>
-
-    <button onclick="bukaModal(true)" class="btn-action bg-blue-600 text-white px-6 h-10 rounded-xl text-xs font-black uppercase shadow-lg shadow-blue-500/30 transition-all hover:bg-blue-700 active:scale-95 flex items-center justify-center gap-2">
-        <i data-lucide="plus" class="w-4 h-4"></i>
-        TAMBAH STOK
-    </button>
-</div>
-
-        {{-- TABEL DENGAN GRADIENT & DESAIN HIDUP --}}
-<div class="max-h-[400px] overflow-y-auto custom-scrollbar">
-    <table class="w-full text-center border-collapse">
-        <thead class="bg-gradient-to-r from-blue-600 to-blue-700 text-white font-black text-[9px] uppercase sticky top-0 shadow-md z-10">
-            <tr>
-                <th class="p-4">Icon</th><th class="p-4">Nama Bahan</th><th class="p-4">Kategori</th>
-                <th class="p-4">Stok</th><th class="p-4">Harga</th><th class="p-4">Status</th><th class="p-4">Aksi</th>
-            </tr>
-        </thead>
-        <tbody id="stock-body" class="text-slate-700 font-bold text-xs divide-y divide-slate-100"></tbody>
-    </table>
-</div>
-
-{{-- MODAL DENGAN GRADIENT --}}
-<div id="modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center z-50">
-    <div class="bg-white p-8 w-[400px] rounded-3xl shadow-2xl border border-slate-100 transform transition-all">
-        <h3 class="font-black text-center mb-6 flex items-center justify-center gap-2 text-blue-600">
-            <i data-lucide="package-plus"></i> INPUT BAHAN BARU
-        </h3>
-        <form id="form-item" class="space-y-4">
-            <div class="relative"><i data-lucide="package" class="absolute left-3 top-3.5 w-4 h-4 text-slate-400"></i><input type="text" id="in-name" required placeholder="Nama Bahan" class="w-full border p-3 pl-10 rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-blue-500"></div>
-            <div class="relative"><i data-lucide="tags" class="absolute left-3 top-3.5 w-4 h-4 text-slate-400"></i><input type="text" id="in-cat" required placeholder="Kategori" class="w-full border p-3 pl-10 rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-blue-500"></div>
-            <div class="grid grid-cols-2 gap-3">
-                <input type="number" id="in-qty" required placeholder="Stok" class="w-full border p-3 rounded-xl bg-slate-50 outline-none">
-                <input type="number" id="in-price" required placeholder="Harga" class="w-full border p-3 rounded-xl bg-slate-50 outline-none">
+                <input type="text" id="search-input" onkeyup="render()" placeholder="Cari..."
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs font-bold h-10 outline-none focus:border-blue-600 shadow-inner">
             </div>
-            <div class="flex gap-2 pt-2">
-                <button type="button" onclick="bukaModal(false)" class="flex-1 bg-slate-100 hover:bg-slate-200 py-3 rounded-xl font-black transition-all">BATAL</button>
-                <button type="submit" class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 rounded-xl font-black shadow-lg shadow-blue-500/30 transition-all">SIMPAN</button>
-            </div>
-        </form>
+        </div>
+
+        <div class="col-span-1">
+            <label class="text-[9px] font-black text-slate-400 uppercase mb-1 block">Kategori</label>
+            <select id="cat-filter" onchange="render()" class="w-full h-10 bg-slate-50 border border-slate-200 rounded-xl px-3 text-xs font-black outline-none shadow-inner focus:border-blue-600">
+                <option value="">Semua Kategori</option>
+                <option value="Shampoo & Sabun">Shampoo & Sabun</option>
+                <option value="Wax & Polish">Wax & Polish</option>
+            </select>
+        </div>
+
+        <div class="col-span-1">
+            <label class="text-[9px] font-black text-slate-400 uppercase mb-1 block">Status Stok</label>
+            <select id="stat-filter" onchange="render()" class="w-full h-10 bg-slate-50 border border-slate-200 rounded-xl px-3 text-xs font-black outline-none shadow-inner focus:border-blue-600">
+                <option value="">Semua Status</option>
+                <option value="AMAN">Aman</option>
+                <option value="MENIPIS">Menipis</option>
+                <option value="HABIS">Habis</option>
+            </select>
+        </div>
+
+        <button onclick="bukaModal(true)" class="btn-action bg-blue-600 text-white px-6 h-10 rounded-xl text-xs font-black uppercase shadow-lg shadow-blue-500/30 transition-all hover:bg-blue-700 active:scale-95 flex items-center justify-center gap-2">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            TAMBAH STOK
+        </button>
     </div>
-</div>
+
+    {{-- TABEL DENGAN GRADIENT & DESAIN HIDUP --}}
+    <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
+        <table class="w-full text-center border-collapse">
+            <thead class="bg-gradient-to-r from-blue-600 to-blue-700 text-white font-black text-[9px] uppercase sticky top-0 shadow-md z-10">
+                <tr>
+                    <th class="p-4">Icon</th><th class="p-4">Nama Bahan</th><th class="p-4">Kategori</th>
+                    <th class="p-4">Stok</th><th class="p-4">Harga</th><th class="p-4">Status</th><th class="p-4">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="stock-body" class="text-slate-700 font-bold text-xs divide-y divide-slate-100"></tbody>
+        </table>
+    </div>
+
+    {{-- MODAL DENGAN GRADIENT --}}
+    <div id="modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center z-50">
+        <div class="bg-white p-8 w-[400px] rounded-3xl shadow-2xl border border-slate-100 transform transition-all">
+            <h3 class="font-black text-center mb-6 flex items-center justify-center gap-2 text-blue-600">
+                <i data-lucide="package-plus"></i> INPUT BAHAN BARU
+            </h3>
+            <form id="form-item" class="space-y-4">
+                <div class="relative"><i data-lucide="package" class="absolute left-3 top-3.5 w-4 h-4 text-slate-400"></i><input type="text" id="in-name" required placeholder="Nama Bahan" class="w-full border p-3 pl-10 rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-blue-500"></div>
+                <div class="relative"><i data-lucide="tags" class="absolute left-3 top-3.5 w-4 h-4 text-slate-400"></i><input type="text" id="in-cat" required placeholder="Kategori" class="w-full border p-3 pl-10 rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-blue-500"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="number" id="in-qty" required placeholder="Stok" class="w-full border p-3 rounded-xl bg-slate-50 outline-none">
+                    <input type="number" id="in-price" required placeholder="Harga" class="w-full border p-3 rounded-xl bg-slate-50 outline-none">
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="bukaModal(false)" class="flex-1 bg-slate-100 hover:bg-slate-200 py-3 rounded-xl font-black transition-all">BATAL</button>
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 rounded-xl font-black shadow-lg shadow-blue-500/30 transition-all">SIMPAN</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 <script>
     let db = [];

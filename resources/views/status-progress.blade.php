@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <div class="w-full p-6 bg-slate-50 min-h-screen">
+    <div class="w-full p-6 min-h-screen">
 
     <!-- 1. Statistik Bar (Warna Putih, Mengambang, Bayangan Tipis) -->
     <div class="grid grid-cols-4 gap-6 mb-8">
@@ -152,22 +152,19 @@
                     </div>
                 </div>
 
+                </div>
+                    </div>
+                        @empty
+                            <div class="w-full flex items-center justify-center p-5 bg-white rounded-2xl border border-dashed border-slate-300 shadow-sm">
+                                <div class="text-center">
+                                    <i data-lucide="inbox" class="w-5 h-5 text-slate-300 mb-2 mx-auto"></i>
+                                    <p class="text-slate-400 font-bold uppercase text-[10px]">Belum ada unit yang sedang dalam pengerjaan</p>
+                                </div>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
             </div>
-                </div>
-                    @empty
-                <!-- KOTAK PESAN (Hanya muncul jika data KOSONG) -->
-                <!-- Ini adalah kode yang benar untuk diletakkan di sini -->
-
-                <div class="w-full flex items-center justify-center p-12 bg-white rounded-2xl border border-dashed border-slate-300 shadow-sm">
-                    <div class="text-center">
-                        <i data-lucide="inbox" class="w-12 h-12 text-slate-300 mb-2 mx-auto"></i>
-                    <p class="text-slate-400 font-bold uppercase text-[10px]">Belum ada unit yang sedang dalam pengerjaan</p>
-                </div>
-                </div>
-            @endforelse
-        </div>
-    </div>
-</div>
 
 <script>
    function updateStatusProgress(id) {

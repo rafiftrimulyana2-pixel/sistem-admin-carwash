@@ -90,7 +90,7 @@
         <div class="col-span-9 space-y-5">
 
             {{-- FILTER PANEL --}}
-            <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm">
+            <div class="bg-white rounded-2xl p-5 shadow-sm">
                 <div class="mb-4">
                     <h2 class="text-xs font-black text-slate-800 uppercase tracking-wider">
                         Pengaturan Kontrol Monitoring Shift
@@ -124,8 +124,8 @@
             </div>
 
             {{-- WADAH TABEL UTAMA (DATA KARYAWAN MEKANIK) --}}
-            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
-                <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center bg-white">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col">
+                <div class="px-5 py-4 flex justify-between items-center bg-white">
                     <div class="space-y-0.5">
                         <h2 class="text-xs font-black text-slate-800 uppercase tracking-wider">Data Kontrol Alokasi Karyawan Mekanik</h2>
                         <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Pemantauan realtime status penugasan divisi mekanik lapangan</p>
@@ -163,7 +163,7 @@
         <div class="col-span-3 space-y-5">
 
             {{-- KALENDER BOX --}}
-            <div class="bg-white rounded-2xl overflow-hidden shadow-xl shadow-slate-900/10 ring-1 ring-black/5">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-xl shadow-slate-500/5 ">
                 <div class="bg-blue-600 px-4 py-3 flex justify-between items-center border-b border-blue-700">
                     <div>
                         <h2 class="text-white text-[10px] font-black uppercase tracking-wider">Kalender Internal</h2>
@@ -187,7 +187,7 @@
             </div>
 
             {{-- TIMELINE AKTIVITAS OPERASIONAL --}}
-            <div class="bg-blue-600 border border-blue-700 rounded-2xl overflow-hidden shadow-sm">
+            <div class="bg-blue-600 rounded-2xl overflow-hidden shadow-sm">
                 <div class="px-4 py-3.5 border-b border-blue-700 flex justify-between items-center">
                     <div>
                         <h2 class="text-[10px] font-black text-white uppercase tracking-wider">Aktivitas Sistem</h2>

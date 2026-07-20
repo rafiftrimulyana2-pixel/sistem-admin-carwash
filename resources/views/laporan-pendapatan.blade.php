@@ -34,7 +34,7 @@
     </div>
 
     <div class="w-full flex-1 flex flex-col p-4 gap-3.5 overflow-hidden">
-        <div class="w-full bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex flex-col lg:flex-row gap-4 justify-between items-center flex-shrink-0">
+        <div class="w-full bg-white rounded-xl p-3 shadow-sm flex flex-col lg:flex-row gap-4 justify-between items-center flex-shrink-0">
             <div class="flex items-center gap-2">
                 <div class="h-2 w-2 rounded-full bg-blue-600 animate-pulse"></div>
                 <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">Sistem Rekapitulasi Kas Perusahaan</span>
@@ -120,7 +120,7 @@
             </div>
         </div>
 
-        <div class="w-full h-full bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col overflow-hidden">
+        <div class="w-full h-full bg-white rounded-xl shadow-sm flex flex-col overflow-hidden">
 
             <!-- BARU: HEADER FILTER, PENCARIAN, DAN EXPORT -->
             <div class="p-4 border-b border-slate-100 bg-white flex items-center justify-between gap-4">
@@ -149,9 +149,10 @@
                                 <th class="p-3 text-center w-[25%]">Nama Customer</th>
                                 <th class="p-3 text-center w-[15%]">Metode</th>
                                 <th class="p-3 text-right w-[15%]">Nominal</th>
-                                <th class="p-3 text-center w-[10%]">Status</th> </tr>
-                            </thead>
-                    </tbody>
+                                <th class="p-3 text-center w-[10%]">Status</th>
+                            </tr>
+                        </thead>
+                    <tbody id="tabel-laporan-body" class="divide-y divide-slate-100 text-[8.5px] font-bold text-slate-700"> </tbody>
                 </table>
             </div>
         </div>
@@ -262,10 +263,11 @@
         const tbody = document.getElementById('tabel-laporan-body');
         if (!tbody) return;
         tbody.innerHTML = "";
+
         if (!dataToRender || dataToRender.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="6" class="p-8 text-center text-slate-400 font-medium italic text-[8.5px]">
+                    <td colspan="7" class="p-8 text-center text-slate-400 font-medium italic text-[8.5px]">
                         👋 Belum ada data pendapatan terkonfirmasi pada periode filter ini, Chief. Tampilan dikunci 0.
                     </td>
                 </tr>

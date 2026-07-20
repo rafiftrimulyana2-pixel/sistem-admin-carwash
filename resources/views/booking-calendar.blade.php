@@ -12,17 +12,15 @@
 </style>
 
 <div class="booking-scope w-full h-[calc(100vh-2px)] bg-[#f4f7fb] flex flex-col overflow-hidden text-slate-700">
-
-    <div class="w-full bg-blue-600 border-b border-blue-700 px-6 py-3.5 flex justify-between items-center shadow-md z-20">
-        <div>
-            <h1 class="text-white text-sm font-black uppercase tracking-tight">SISTEM MANAJEMEN BOOKING KALENDER</h1>
+    <div class="w-full bg-blue-600 border-b border-blue-700 px-6 py-3.5 flex justify-between items-center shadow-md z-20"><div>
+        <h1 class="text-white text-sm font-black uppercase tracking-tight">SISTEM MANAJEMEN BOOKING KALENDER</h1>
             <p class="text-blue-100 text-[9px] font-bold uppercase tracking-wider mt-0.5">Penjadwalan Customer, Monitoring Slot, & Validasi Ketersediaan Jadwal</p>
-        </div>
-    </div>
-<div class="flex-1 overflow-y-auto p-8 custom-scroll bg-[#f4f7fb]">
-    <div class="grid grid-cols-12 gap-8 max-w-[1600px] mx-auto">
-        <div class="col-span-8">
-    <div class="bg-white rounded-[2rem] border border-slate-200 overflow-hidden">
+                        </div>
+                        </div>
+                    <div class="flex-1 overflow-y-auto p-5 custom-scroll bg-[#f4f7fb]">
+                <div class="grid grid-cols-12 gap-8 max-w-[1600px] mx-auto">
+            <div class="col-span-8">
+        <div class="bg-white rounded-[2rem] border border-slate-200 overflow-hidden">
 
         <!-- HEADER -->
         <div class="px-6 pt-6 pb-1">
@@ -50,26 +48,28 @@
         </div>
 
         <div class="w-full h-1 bg-blue-600"></div>
-
-        <div class="px-8 pt-6 pb-8">
-            <div class="grid grid-cols-7 gap-3 mb-4">
-                @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $d)
-                    <div class="text-[9px] font-black {{ $d=='Minggu' ? 'text-rose-500' : 'text-slate-400' }} uppercase text-center pb-2">{{$d}}</div>
-                @endforeach
-            </div>
-                <div class="grid grid-cols-7 gap-3" id="calendar-grid">
+            <div class="px-8 pt-6 pb-8">
+                <div class="grid grid-cols-7 gap-3 mb-4">
+                    @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $d)
+                        <div class="text-[9px] font-black {{ $d=='Minggu' ? 'text-rose-500' : 'text-slate-400' }} uppercase text-center pb-2">{{$d}}</div>
+                    @endforeach
+                </div>
+                    <div class="grid grid-cols-7 gap-3" id="calendar-grid">
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="col-span-4 space-y-6">
+
+    <div class="col-span-4 space-y-6">
+
     <!-- Card Ringkasan: Statis dan rata (tanpa shadow mengambang) -->
     <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 rounded-[2rem] text-white">
         <div class="flex items-center gap-3 mb-6">
+
             <!-- Ikon tetap di kotak putih -->
             <div class="p-2 bg-white rounded-xl">
                 <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-600"></i>
-            </div>
+                </div>
             <h3 class="font-black text-sm uppercase tracking-widest">Ringkasan Operasional</h3>
         </div>
 
@@ -90,40 +90,37 @@
         </div>
     </div>
 
-
-<!-- KONTEN LIST BOOKING -->
-<div class="bg-white p-8 rounded-[2rem] shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] border border-slate-100">
-    <div class="flex flex-col items-center justify-center gap-3 mb-8">
-        <div class="p-3 bg-blue-50 text-blue-600 rounded-2xl shadow-inner"><i data-lucide="clipboard-list" class="w-5 h-5"></i></div>
-        <h3 class="font-black text-[10px] uppercase tracking-[0.2em] text-slate-800">List Booking Terbaru</h3>
-    </div>
-    <div id="booking-list" class="space-y-4 max-h-[300px] overflow-y-auto custom-scroll"></div>
-</div>
-
-<!-- MODAL VERIFIKASI LENGKAP -->
-<div id="modal-verifikasi" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center z-50 p-2">
-    <div class="bg-white p-6 rounded-[2rem] w-[450px] shadow-2xl space-y-2">
-        <h3 class="font-black text-slate-800 text-center uppercase tracking-widest text-sm border-b pb-3 flex items-center justify-center gap-2">
-            <i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i> Form Data Pemesanan
-        </h3>
-
-        <div id="modal-body" class="space-y-3 text-[10px] text-slate-600 font-bold bg-slate-50 p-3 rounded-2xl">
-            <div class="flex items-center gap-3"><i data-lucide="user" class="w-4 h-4 text-blue-600"></i> <span id="m-name">Nama: -</span></div>
-            <div class="flex items-center gap-3"><i data-lucide="map-pin" class="w-4 h-4 text-blue-600"></i> <span id="m-loc">Alamat: -</span></div>
-            <div class="flex items-center gap-3"><i data-lucide="phone" class="w-4 h-4 text-blue-600"></i> <span id="m-wa">WhatsApp: -</span></div>
-            <div class="flex items-center gap-3"><i data-lucide="barcode" class="w-4 h-4 text-blue-600"></i> <span id="m-code">Kode: -</span></div>
-            <div class="flex items-center gap-3"><i data-lucide="car" class="w-4 h-4 text-blue-600"></i> <span id="m-car">Mobil: -</span></div>
-            <div class="flex items-center gap-3"><i data-lucide="zap" class="w-4 h-4 text-blue-600"></i> <span id="m-serv">Layanan: -</span></div>
-            <div class="flex items-center gap-3 border-t pt-3 mt-2"><i data-lucide="credit-card" class="w-4 h-4 text-emerald-600"></i> <span id="m-price" class="text-emerald-600">Harga: -</span></div>
+    <!-- KONTEN LIST BOOKING -->
+    <div class="bg-white p-8 rounded-[2rem] shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)] border border-slate-100">
+        <div class="flex flex-col items-center justify-center gap-3 mb-8">
+            <div class="p-3 bg-blue-50 text-blue-600 rounded-2xl shadow-inner"><i data-lucide="clipboard-list" class="w-5 h-5"></i></div>
+            <h3 class="font-black text-[10px] uppercase tracking-[0.2em] text-slate-800">List Booking Terbaru</h3>
         </div>
+        <div id="booking-list" class="space-y-4 max-h-[300px] overflow-y-auto custom-scroll"></div>
+    </div>
 
-        <textarea id="catatan-tolak" class="w-full p-3 border-2 border-slate-200 rounded-xl text-xs font-bold hidden focus:border-blue-500 outline-none" placeholder="Tulis alasan penolakan..."></textarea>
+    <!-- MODAL VERIFIKASI LENGKAP -->
+    <div id="modal-verifikasi" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center z-50 p-2">
+        <div class="bg-white p-6 rounded-[2rem] w-[450px] shadow-2xl space-y-2">
+            <h3 class="font-black text-slate-800 text-center uppercase tracking-widest text-sm border-b pb-3 flex items-center justify-center gap-2">
+                <i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i> Form Data Pemesanan
+            </h3>
 
-        <div class="flex gap-2 mt-6">
-            <button id="btn-terima" class="flex-1 py-3 bg-blue-600 text-white font-black rounded-xl text-[10px] hover:bg-blue-700 shadow-lg transition-all">KONFIRMASI</button>
+            <div id="modal-body" class="space-y-3 text-[10px] text-slate-600 font-bold bg-slate-50 p-3 rounded-2xl">
+                <div class="flex items-center gap-3"><i data-lucide="user" class="w-4 h-4 text-blue-600"></i> <span id="m-name">Nama: -</span></div>
+                <div class="flex items-center gap-3"><i data-lucide="map-pin" class="w-4 h-4 text-blue-600"></i> <span id="m-loc">Alamat: -</span></div>
+                <div class="flex items-center gap-3"><i data-lucide="phone" class="w-4 h-4 text-blue-600"></i> <span id="m-wa">WhatsApp: -</span></div>
+                <div class="flex items-center gap-3"><i data-lucide="barcode" class="w-4 h-4 text-blue-600"></i> <span id="m-code">Kode: -</span></div>
+                <div class="flex items-center gap-3"><i data-lucide="car" class="w-4 h-4 text-blue-600"></i> <span id="m-car">Mobil: -</span></div>
+                <div class="flex items-center gap-3"><i data-lucide="zap" class="w-4 h-4 text-blue-600"></i> <span id="m-serv">Layanan: -</span></div>
+                <div class="flex items-center gap-3 border-t pt-3 mt-2"><i data-lucide="credit-card" class="w-4 h-4 text-emerald-600"></i> <span id="m-price" class="text-emerald-600">Harga: -</span></div>
+            </div>
 
-    <button id="btn-tolak" class="flex-1 py-3 bg-slate-100 text-slate-700 font-black rounded-xl text-[10px] hover:bg-rose-500 hover:text-white transition-all">TOLAK PEMESANAN</button>
-</div>
+            <textarea id="catatan-tolak" class="w-full p-3 border-2 border-slate-200 rounded-xl text-xs font-bold hidden focus:border-blue-500 outline-none" placeholder="Tulis alasan penolakan..."></textarea>
+                <div class="flex gap-2 mt-6">
+                    <button id="btn-terima" class="flex-1 py-3 bg-blue-600 text-white font-black rounded-xl text-[10px] hover:bg-blue-700 shadow-lg transition-all">KONFIRMASI</button>
+                <button id="btn-tolak" class="flex-1 py-3 bg-slate-100 text-slate-700 font-black rounded-xl text-[10px] hover:bg-rose-500 hover:text-white transition-all">TOLAK PEMESANAN</button>
+            </div>
 
 <script>
     // Mengambil data dari Laravel langsung ke JS
